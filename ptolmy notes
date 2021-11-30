@@ -1,0 +1,26 @@
+DG=BD=60	=r
+DE=BD/2		=s =r/2=30
+EZ=BE		=a. a2=r2+s2
+DZ=EZ-DE	=b =a-s
+BZ		=c. c2=b2+r2
+GZ=DG+DZ	=t =r+b
+
+GZ*DZ+DE2=EZ2	=t*b+s2=a2 
+		=(2s+(a-s))(a-s)+s2=a2
+		=(a+s)(a-s)+s2=a2
+		(a+s)(a-s)=a2-s2
+EZ2=BE2		=a2
+BE2=DE2+BD2	=a2=s2+r2
+GZ*DZ+DE2=DE2+BD2 =t*b+s2=s2+r2
+GZ*DZ=BD2	t*b=r2
+GZ*DZ=DG2	t*b=r2
+GZ/DG=DG/DZ	t/r=r/b
+		
+AEC=4BEC
+AEC=2BCE
+BCE=2CED
+AEC=4CED
+CDE=BEC
+BED=BCE
+BD/BE=BE/BC
+BD/CD=CD/CB
