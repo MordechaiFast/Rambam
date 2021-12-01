@@ -18,14 +18,14 @@ print ("\nRambam calulations\n")
 
 #6:3
 from year import lunarMonth
-printTime("One month is:", lunarMonth, space)
+#printTime("6:3 One month is:", lunarMonth, space)
 
 #6:4
 # The length of the various types of years.
 from year import lunarYear, leapYear
 from season import season, solarYear, solarYearExcess
 #"""
-printTime("Twevle months is:", lunarYear)
+printTime("6:4 Twevle months is:", lunarYear)
 printTime("Thirteen months is:", leapYear)
 printTime("A solar year is:", solarYear)
 printTime("That is more than a lunar year by:", solarYearExcess, space)
@@ -39,7 +39,7 @@ lunarYearInWeek = lunarYear.inWeek()
 leapYearInWeek = leapYear.inWeek()
 """The ofset of the molad after one leap year"""
 """
-printTime("Each month moves the molad:", lunarMonthInWeek)
+printTime("6:5 Each month moves the molad:", lunarMonthInWeek)
 printTime("Each regular year:", lunarYearInWeek)
 printTime("Each leap year:", leapYearInWeek, space)
 #"""
@@ -47,47 +47,47 @@ printTime("Each leap year:", leapYearInWeek, space)
 #6:6-8
 exampleMonth = timeInterval(1,17,107)
 """
-printTime("For example, if molad Nissan is:", exampleMonth)
-printTime("Molad Iyyar will be:", exampleMonth.add(lunarMonthInWeek), space)
-printTime("Molad Nissan the next year will be:", exampleMonth.add(lunarYearInWeek), space)
-"""
+printTime("6:7 For example, if molad Nissan is:", exampleMonth)
+printTime("Molad Iyyar will be:", exampleMonth + lunarMonthInWeek, space)
+printTime("6:8 Molad Nissan the next year will be:", exampleMonth + lunarYearInWeek, space)
+#"""
 
 from year import BHRD
-printTime("BHRD was:", BHRD, space)
+#printTime("6:8 BHRD was:", BHRD, space)
 
 #6:9
 # When adding the movements in the week, one must reduce the chalakim, hours and days.
-#printTime("The molad of Tishrei after BHRD was, after rounding:", BHRD.add(lunarYearInWeek).inWeek(), space)
+#printTime("The molad of Tishrei after BHRD was, after rounding:", (BHRD + lunarYearInWeek).inWeek(), space)
 
 #6:10
 from year import cycleYears, cycle
 from season import solarCycle, solarCycleExcess
 #"""
-printTime("One 19 year cycle is:", cycle)
+printTime("6:10 One 19 year cycle is:", cycle)
 printTime("One solar cycle is:", solarCycle)
 printTime("That is more than a lunar cycle by:", solarCycleExcess, space)
 #"""
 
 #6:11
 from year import leapYears
-print("The leap years are:", leapYears, "\n")
+#print("6:11 The leap years are:", leapYears, "\n")
 
 #6:12
-cycleInWeek = (lunarYearInWeek.multiply(12)).add(leapYearInWeek.multiply(7)).inWeek()
+cycleInWeek = (lunarYearInWeek * 12 + leapYearInWeek * 7).inWeek()
 """The length of a cycle in days of the week."""
-#printTime("Each cycle moves the molad:", cycleInWeek, space)
+printTime("6:12 Each cycle moves the molad:", cycleInWeek, space)
 
 #6:13
 # Adding a cycle's days of the week gets you the next cycle.
-#printTime("After BHRD the next cycle began:", BHRD.add(cycleInWeek), space)
+#printTime("6:13 After BHRD the next cycle began:", BHRD.add(cycleInWeek), space)
 
 #6:14
 # Given a year, find the molad for the start of that year.
 from year import year
-#"""
+"""
 RambamsYear = year(4938)
-print("The year the Ramabam was writing was:", RambamsYear.yearsFromCreation)
-print ("That was cycle", RambamsYear.cyclesToYear + 1, " year", RambamsYear.placeInCycle, "\n")
+print("6:14 The year the Ramabam was writing was:", RambamsYear.yearsFromCreation)
+print("That was cycle", RambamsYear.cyclesToYear + 1, " year", RambamsYear.placeInCycle, "\n")
 #"""
 
 #6:15
@@ -120,7 +120,7 @@ def printMonthsOfYear (aYear: year, printNextTishrei = False):
         thisMonth = month(aYear.yearAfter(), 7)
         print(monthNames[0], "\t", thisMonth.molad.inWeek().days, thisMonth.molad.hours, thisMonth.molad.chalakim, "\t", thisMonth.roshChodeshDay)
 
-#"""
+"""
 for y in [5745, 5765, 5766]:
     print("\nYear", y)
     printMonthsOfYear(year(y), printNextTishrei)
@@ -153,11 +153,20 @@ print ("The Rambam's example first occurs on year:", myYear.yearsFromCreation)
 
 #Perek 9 - the seasons by the even measure
 #9:1
-printTime("Some say the lenght of a solar year is:", solarYear, space)
+#printTime("Some say the lenght of a solar year is:", solarYear, space)
 #9:2
 from season import seasonLength
-printTime("19 solar years are then in excess of the lunar years by:", solarCycleExcess)
-printTime("A standard season lenght is:", seasonLength, space)
- #9:5
-exampleSeason = season(year(4930))
-printTime("The Nissan season of 4930", exampleSeason.time)
+#printTime("19 solar years are then in excess of the lunar years by:", solarCycleExcess)
+#printTime("A standard season lenght is:", seasonLength, space)
+
+#9:5
+"""
+for y in range(4922, 4930):
+    exampleYear = year(y)
+    exampleMonth = month(exampleYear,1)
+    exampleSeason = season(exampleYear)
+    print("Year", y)
+    printTime("The molad of Nissan is", exampleMonth.molad)
+    print("That is year", exampleYear.placeInCycle, "of its cycle.")
+    printTime("The Nissan season is", exampleSeason.time, space)
+"""

@@ -5,13 +5,13 @@ BHRD = timeInterval(2,5,204)
 """Starting molad"""
 lunarMonth = timeInterval(29,12,793)
 """The length of a month"""
-lunarYear = lunarMonth.multiply(12)
+lunarYear = lunarMonth * 12
 """The lenght of a lunar year of 12 months"""
-leapYear = lunarYear.add(lunarMonth)
+leapYear = lunarYear + lunarMonth
 """The lenght of a leap year of 13 months"""
 cycleYears = 19
 """In a cycle of 19 lunar years with 7 leap years, the number of days is the same as 19 solar years"""
-cycle = (lunarYear.multiply(12)).add(leapYear.multiply(7))
+cycle = lunarYear * 12 + leapYear * 7
 """The length of a 19 lunar year cycle with 7 leap years"""
 leapYears = [3, 6, 8, 11, 14, 17, 19]
 """The leap years in a 19 year cycle are years 3, 6, 8, 11, 14, 17, and 19"""
@@ -47,7 +47,7 @@ class year:
             self.cyclesToYear = self.yearsFromCreation // cycleYears
     
         # 3) Add together the full cycles
-        self.molad = BHRD.add(cycle.multiply(self.cyclesToYear))
+        self.molad = BHRD + cycle * self.cyclesToYear
         """The molad of the begning of this year"""
         
         # (The Rambam says to do this by adding the weekly movements. That is easier for finding the molad in days of the week. However, I have done the calculation with the full number of days since the comupter doesn't care and this is needed for later calculations.)
@@ -57,9 +57,9 @@ class year:
         # The given year does not get its length added to the total time. This is accomplished by the for loop itself; the place in cycle is out of the range.
         for y in range(1, self.placeInCycle):
             if y in leapYears:
-                self.molad = self.molad.add(leapYear)
+                self.molad = self.molad + leapYear
             else:
-                self.molad = self.molad.add(lunarYear)
+                self.molad = self.molad + lunarYear
     
         #(Halacha 15 is in the month class)
 

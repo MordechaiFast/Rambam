@@ -22,7 +22,7 @@ class month:
                 # We want Tishrei to be 0, so take away 7.
                 self.monthCount = monthReference - 7
             # For months between Nissan and Tishrei, it depends if the given year is a leap year.
-            elif year.placeInCycle in leapYears:
+            elif self.year.placeInCycle in leapYears:
                 # Nissan is 7 months from Tishrei in a leap year.
                 self.monthCount = monthReference + 6
             else:
@@ -31,15 +31,12 @@ class month:
     
         #6:15
         # To find the molad of a specific month, add the molad of a month for each month until the requiered month.
-        self.molad = year.molad.add(lunarMonth.multiply(self.monthCount))
+        self.molad = self.year.molad.add(lunarMonth.multiply(self.monthCount))
 
         # Defning the day of Rosh Chodesh
         #8:1-2 
         # A month can only be of whole days.
-        shortMonth = 29
-        """Some months are lacking and have 29 days"""
-        wholeMonth = 30
-        """Some months are whole and have 30 days."""
+        shortMonth, wholeMonth = 29, 30
 
         #8:4
         # For a month following a full month, Rosh Chodesh is two days.

@@ -34,23 +34,29 @@ class timeInterval:
         self.hours = self.hours % hoursInDay
 
     #math functions
-    def add(self, addtime):
+    def __add__(self,addtime):
         new = timeInterval()
         new.days = self.days + addtime.days
         new.hours = self.hours + addtime.hours
         new.chalakim = self.chalakim + addtime.chalakim
         new.reduce()
         return new
-    
-    def multiply(self, factor:int):
+    def add(self, addtime):
+        return self+addtime
+
+    def __mul__(self, factor):
         new = timeInterval()
         new.days = self.days * factor
         new.hours = self.hours * factor
         new.chalakim = self.chalakim * factor
         new.reduce()
         return new
-    
+    def multiply(self, factor:int):
+        return self * factor
+
     def subtract(self, minustime):
+        return self - minustime
+    def __sub__(self, minustime):
         new = timeInterval()
         borrowHour = False
         borrowDay = False
@@ -86,6 +92,8 @@ class timeInterval:
         return new
 
     def divide(self, divisor):
+        return self // divisor
+    def __floordiv__(self, divisor):
         if divisor == 0:
             raise ZeroDivisionError
         new = timeInterval()
