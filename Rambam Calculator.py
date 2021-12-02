@@ -23,8 +23,8 @@ from year import lunarMonth
 #6:4
 # The length of the various types of years.
 from year import lunarYear, leapYear
-from season import season, solarYear, solarYearExcess
-#"""
+from season import solarYear, solarYearExcess
+"""
 printTime("6:4 Twevle months is:", lunarYear)
 printTime("Thirteen months is:", leapYear)
 printTime("A solar year is:", solarYear)
@@ -32,24 +32,19 @@ printTime("That is more than a lunar year by:", solarYearExcess, space)
 #"""
 
 #6:5
-lunarMonthInWeek = lunarMonth.inWeek()
-"""The ofset of the molad after one month"""
-lunarYearInWeek = lunarYear.inWeek()
-"""The ofset of the molad after one regular year"""
-leapYearInWeek = leapYear.inWeek()
-"""The ofset of the molad after one leap year"""
+from year import lunarMonthRemainder, lunarYearRemainder, leapYearRemainder 
 """
-printTime("6:5 Each month moves the molad:", lunarMonthInWeek)
-printTime("Each regular year:", lunarYearInWeek)
-printTime("Each leap year:", leapYearInWeek, space)
+printTime("6:5 Each month moves the molad:", lunarMonthRemainder)
+printTime("Each regular year:", lunarYearRemainder)
+printTime("Each leap year:", leapYearRemainder, space)
 #"""
 
 #6:6-8
 exampleMonth = timeInterval(1,17,107)
 """
 printTime("6:7 For example, if molad Nissan is:", exampleMonth)
-printTime("Molad Iyyar will be:", exampleMonth + lunarMonthInWeek, space)
-printTime("6:8 Molad Nissan the next year will be:", exampleMonth + lunarYearInWeek, space)
+printTime("Molad Iyyar will be:", exampleMonth + lunarMonthRemainder, space)
+printTime("6:8 Molad Nissan the next year will be:", exampleMonth + lunarYearRemainder, space)
 #"""
 
 from year import BHRD
@@ -57,12 +52,12 @@ from year import BHRD
 
 #6:9
 # When adding the movements in the week, one must reduce the chalakim, hours and days.
-#printTime("The molad of Tishrei after BHRD was, after rounding:", (BHRD + lunarYearInWeek).inWeek(), space)
+#printTime("6:9 The molad of Tishrei after BHRD was, after rounding:", BHRD + lunarYearRemainder, space)
 
 #6:10
 from year import cycleYears, cycle
 from season import solarCycle, solarCycleExcess
-#"""
+"""
 printTime("6:10 One 19 year cycle is:", cycle)
 printTime("One solar cycle is:", solarCycle)
 printTime("That is more than a lunar cycle by:", solarCycleExcess, space)
@@ -73,13 +68,12 @@ from year import leapYears
 #print("6:11 The leap years are:", leapYears, "\n")
 
 #6:12
-cycleInWeek = (lunarYearInWeek * 12 + leapYearInWeek * 7).inWeek()
-"""The length of a cycle in days of the week."""
-printTime("6:12 Each cycle moves the molad:", cycleInWeek, space)
+from year import cycleRemainder
+#printTime("6:12 Each cycle moves the molad:", cycleRemainder, space)
 
 #6:13
 # Adding a cycle's days of the week gets you the next cycle.
-#printTime("6:13 After BHRD the next cycle began:", BHRD.add(cycleInWeek), space)
+#printTime("6:13 After BHRD the next cycle began:", BHRD.add(cycleRemainder), space)
 
 #6:14
 # Given a year, find the molad for the start of that year.
@@ -113,17 +107,24 @@ def printMonthsOfYear (aYear: year, printNextTishrei = False):
     for m in range (n):
         thisMonth = month(aYear, m, startFromTishrei)
         if thisMonth.twoDayRoshChodesh:
-            if thisMonth.roshChodeshDay == 1: print(names[m], "\t", thisMonth.molad.inWeek().days, thisMonth.molad.hours, thisMonth.molad.chalakim,"\t", 7,1)
-            else: print(names[m], "\t", thisMonth.molad.inWeek().days, thisMonth.molad.hours, thisMonth.molad.chalakim, "\t", thisMonth.roshChodeshDay - 1, thisMonth.roshChodeshDay)
-        else: print(names[m], "\t", thisMonth.molad.inWeek().days, thisMonth.molad.hours, thisMonth.molad.chalakim, "\t", thisMonth.roshChodeshDay)
+            if thisMonth.day == 1: print(names[m], "\t", thisMonth.molad.days, thisMonth.molad.hours, thisMonth.molad.chalakim,"\t", 7,1)
+            else: print(names[m], "\t", thisMonth.molad.days, thisMonth.molad.hours, thisMonth.molad.chalakim, "\t", thisMonth.day - 1, thisMonth.day)
+        else: print(names[m], "\t", thisMonth.molad.days, thisMonth.molad.hours, thisMonth.molad.chalakim, "\t", thisMonth.day)
     if printNextTishrei:
         thisMonth = month(aYear.yearAfter(), 7)
-        print(monthNames[0], "\t", thisMonth.molad.inWeek().days, thisMonth.molad.hours, thisMonth.molad.chalakim, "\t", thisMonth.roshChodeshDay)
+        print(monthNames[0], "\t", thisMonth.molad.days, thisMonth.molad.hours, thisMonth.molad.chalakim, "\t", thisMonth.day)
 
-"""
-for y in [5745, 5765, 5766]:
+#"""
+dummyYear = 0
+for y in [5745, 5765]:
     print("\nYear", y)
-    printMonthsOfYear(year(y), printNextTishrei)
+    try: 
+        printMonthsOfYear(year(y), printNextTishrei)
+    except KeyError as d:
+        if d.args[0] == 5: print("GTRD")
+        if d.args[0] == 3: print("BTU TKPT")
+        print("There are", d, "days between Rosh HaShana of year", y, "and the next year's. Is this year GTRD or next year BTU TKPT?")
+        printMonthsOfYear(year(y, dummyYear), printNextTishrei)        
 #"""
 
 # Perek 7 - The day of Rosh HaShanah

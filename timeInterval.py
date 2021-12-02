@@ -6,7 +6,7 @@ chalakimInHour = 1080
 
 # Defining a time interval and how to calculate with it
 class timeInterval:
-    """Used for the lenght of a month or year, a molad, or the movement of the molad from one date to another."""
+    """Used for the lenght of a month, year, etc."""
 
     def __init__(self, days=0, hours=0, chalakim=0):
         self.days = days
@@ -104,3 +104,27 @@ class timeInterval:
         new.chalakim = chalakimDivident // divisor
         new.reduce()
         return new
+
+class molad (timeInterval):
+    """A time of week"""
+    def __init__(self, totalTime: timeInterval):
+        super().__init__(days=totalTime.days, hours=totalTime.hours, chalakim=totalTime.chalakim)
+        
+        self.days %= 7
+        # We want Shabbos to be appear as 7, even though its mod is 0.
+        if self.days == 0 : self.days = 7
+
+    def reduce(self):
+        super().reduce()
+        self.days %= 7
+        # We want Shabbos to be appear as 7, even though its mod is 0.
+        if self.days == 0 : self.days = 7
+
+    def __add__(self, addtime):
+        return molad(super().__add__(addtime))
+    def __mul__(self, factor):
+        return molad(super().__mul__(factor))
+    def __sub__(self, minustime):
+        return molad(super().__sub__(minustime))
+    def __floordiv__(self, divisor):
+        return molad(super().__floordiv__(divisor))

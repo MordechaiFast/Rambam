@@ -1,4 +1,4 @@
-from year import year, leapYears, lunarMonth
+from year import year, leapYears, lunarMonthRemainder
 
 class month:
     """monthReference starts with 0 for Tishrei or 1 for Nissan.
@@ -31,7 +31,8 @@ class month:
     
         #6:15
         # To find the molad of a specific month, add the molad of a month for each month until the requiered month.
-        self.molad = self.year.molad.add(lunarMonth.multiply(self.monthCount))
+        self.molad = self.year.molad + lunarMonthRemainder * self.monthCount
+        """The molad of this month"""
 
         # Defning the day of Rosh Chodesh
         #8:1-2 
@@ -43,7 +44,7 @@ class month:
         # (I don't have a nice way to fit Tishrei into this, so it is here a seperate condition) 
         if self.monthCount == 0:
             self.twoDayRoshChodesh = False
-            """Whether or not this month has a two day Rosh Chodesh"""
+            """If this month has a two day Rosh Chodesh"""
         elif year.wholeMonths[self.monthCount-1]:
             self.twoDayRoshChodesh = True
         else:
@@ -51,15 +52,15 @@ class month:
 
         # Working out the date of Rosh Chodesh for the month, and the day of the week. (Not worked out in Rambam.)
         # Start with the first month: Rosh Chodesh Tishrei is Rosh Hashana. 
-        self.roshChodeshDate = year.roshHashanahDate
+        self.date = year.date
         """The date of Rosh Chodesh of this month, in days from 
         the Shabbos before BHRD"""
 
         for i in range (self.monthCount):
             if year.wholeMonths[i]:
-                self.roshChodeshDate += wholeMonth
+                self.date += wholeMonth
             else:
-                self.roshChodeshDate += shortMonth
-        self.roshChodeshDay = self.roshChodeshDate % 7
+                self.date += shortMonth
+        self.day = self.date % 7
         """The day of the week of Rosh Chodesh of this month, 1-7"""
-        if self.roshChodeshDay == 0: self.roshChodeshDay = 7
+        if self.day == 0: self.day = 7
