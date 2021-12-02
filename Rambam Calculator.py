@@ -78,8 +78,9 @@ from year import cycleRemainder
 #6:14
 # Given a year, find the molad for the start of that year.
 from year import year
-"""
+
 RambamsYear = year(4938)
+"""
 print("6:14 The year the Ramabam was writing was:", RambamsYear.yearsFromCreation)
 print("That was cycle", RambamsYear.cyclesToYear + 1, " year", RambamsYear.placeInCycle, "\n")
 #"""
@@ -107,14 +108,17 @@ def printMonthsOfYear (aYear: year, printNextTishrei = False):
     for m in range (n):
         thisMonth = month(aYear, m, startFromTishrei)
         if thisMonth.twoDayRoshChodesh:
-            if thisMonth.day == 1: print(names[m], "\t", thisMonth.molad.days, thisMonth.molad.hours, thisMonth.molad.chalakim,"\t", 7,1)
-            else: print(names[m], "\t", thisMonth.molad.days, thisMonth.molad.hours, thisMonth.molad.chalakim, "\t", thisMonth.day - 1, thisMonth.day)
-        else: print(names[m], "\t", thisMonth.molad.days, thisMonth.molad.hours, thisMonth.molad.chalakim, "\t", thisMonth.day)
+            if thisMonth.day == 1:
+                print(names[m], "\t", thisMonth.molad.days, thisMonth.molad.hours, thisMonth.molad.chalakim,"\t", 7,1)
+            else:
+                print(names[m], "\t", thisMonth.molad.days, thisMonth.molad.hours, thisMonth.molad.chalakim, "\t", thisMonth.day - 1, thisMonth.day)
+        else:
+            print(names[m], "\t", thisMonth.molad.days, thisMonth.molad.hours, thisMonth.molad.chalakim, "\t", thisMonth.day)
     if printNextTishrei:
         thisMonth = month(aYear.yearAfter(), 7)
         print(monthNames[0], "\t", thisMonth.molad.days, thisMonth.molad.hours, thisMonth.molad.chalakim, "\t", thisMonth.day)
 
-#"""
+"""
 dummyYear = 0
 for y in [5745, 5765]:
     print("\nYear", y)
@@ -143,6 +147,10 @@ for y in [5745, 5765]:
 # SET MOLAD FOR (3,11) AND SHOW THAT THE MOON IS NOT VISABLE ON DAY 6 
 
 #Perek 8 - The day of Rosh Chodesh
+
+#8:4
+#print ("8:4 Tishrei is a two day rosh chodesh", month(RambamsYear, 7).twoDayRoshChodesh)
+
 #8:9
 """Find a year where Rosh Hashanah is on 5 and next year's is on 2, not leap year
 for y in range(1,6000):

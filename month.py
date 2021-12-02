@@ -31,7 +31,7 @@ class month:
     
         #6:15
         # To find the molad of a specific month, add the molad of a month for each month until the requiered month.
-        self.molad = self.year.molad + lunarMonthRemainder * self.monthCount
+        self.molad = year.molad + lunarMonthRemainder * self.monthCount
         """The molad of this month"""
 
         # Defning the day of Rosh Chodesh
@@ -41,12 +41,10 @@ class month:
 
         #8:4
         # For a month following a full month, Rosh Chodesh is two days.
-        # (I don't have a nice way to fit Tishrei into this, so it is here a seperate condition) 
-        if self.monthCount == 0:
-            self.twoDayRoshChodesh = False
-            """If this month has a two day Rosh Chodesh"""
-        elif year.wholeMonths[self.monthCount-1]:
+        if year.wholeMonths[self.monthCount-1]:
+        # [-1] returns the last item in the list, which is what we want.
             self.twoDayRoshChodesh = True
+            """If this month has a two day Rosh Chodesh"""
         else:
             self.twoDayRoshChodesh = False
 
@@ -62,5 +60,5 @@ class month:
             else:
                 self.date += shortMonth
         self.day = self.date % 7
-        """The day of the week of Rosh Chodesh of this month, 1-7"""
+        """The day of the week of Rosh Chodesh of this month from 1-7"""
         if self.day == 0: self.day = 7
