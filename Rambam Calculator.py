@@ -91,15 +91,10 @@ from month import month
 
 printNextTishrei = True
 startFromTishrei = True
-
 def printMonthsOfYear (aYear: year, printNextTishrei = False):
-    """Prints all of the months of the given year, with their
-    names, molad, and days of Rosh Chodesh."""
-    if aYear.placeInCycle not in leapYears:
-        n = 12
-    else:
-        n = 13
-    for m in range (n):
+    """Prints all of the months of the given year, with their names, molad, and days of Rosh Chodesh."""
+
+    for m in range (12 if aYear.placeInCycle not in leapYears else 13):
         thisMonth = month(aYear, m, startFromTishrei)
         if thisMonth.twoDayRoshChodesh:
             if thisMonth.day == 1:
@@ -112,7 +107,7 @@ def printMonthsOfYear (aYear: year, printNextTishrei = False):
         thisMonth = month(aYear.yearAfter(), 7)
         print(thisMonth.name, "\t", thisMonth.molad.days, thisMonth.molad.hours, thisMonth.molad.chalakim, "\t", thisMonth.day)
 
-#"""
+#""" GTRD and BTU TKPT teasting
 dummyYear = 0
 for y in [5745, 5765]:
     print("\nYear", y)

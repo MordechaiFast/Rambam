@@ -14,24 +14,16 @@ class timeInterval:
         self.chalakim = chalakim
         self.reduce()
 
-    # Used in 6:5 and onwards.
-    def inWeek(self):
-        """Returns the time by the day of the week. Shabbos is returned as 7"""
-        dayOfWeek = self.days % 7
-        # We want Shabbos to be appear as 7, even though its mod is 0.
-        if dayOfWeek != 0: return timeInterval(dayOfWeek, self.hours, self.chalakim)
-        else: return timeInterval(7, self.hours, self.chalakim)
-
     #6:9
     def reduce(self):
         """Reduces the number of chalakim to less than 1080 and the hours to less than 24, adding the whole hours and whole days. Does not affect the day count."""
         
         # First carry the whole hours, then round the remaining chalakim. 
         self.hours += self.chalakim // chalakimInHour
-        self.chalakim = self.chalakim % chalakimInHour
+        self.chalakim %= chalakimInHour
         # Next carry the whole days, then round the remaining hours.
         self.days += self.hours // hoursInDay
-        self.hours = self.hours % hoursInDay
+        self.hours %= hoursInDay
 
     #math functions
     def __add__(self,addtime):
@@ -41,9 +33,7 @@ class timeInterval:
         new.chalakim = self.chalakim + addtime.chalakim
         new.reduce()
         return new
-    def add(self, addtime):
-        return self+addtime
-
+ 
     def __mul__(self, factor):
         new = timeInterval()
         new.days = self.days * factor
@@ -51,11 +41,7 @@ class timeInterval:
         new.chalakim = self.chalakim * factor
         new.reduce()
         return new
-    def multiply(self, factor:int):
-        return self * factor
 
-    def subtract(self, minustime):
-        return self - minustime
     def __sub__(self, minustime):
         new = timeInterval()
         borrowHour = False
@@ -91,11 +77,7 @@ class timeInterval:
         new.reduce()
         return new
 
-    def divide(self, divisor):
-        return self // divisor
     def __floordiv__(self, divisor):
-        if divisor == 0:
-            raise ZeroDivisionError
         new = timeInterval()
         new.days = self.days // divisor
         hourDivident = self.hours + (self.days % divisor * hoursInDay)
@@ -109,12 +91,10 @@ class timeInWeek (timeInterval):
     """A time of week"""
     def __init__(self, totalTime: timeInterval):
         super().__init__(days=totalTime.days, hours=totalTime.hours, chalakim=totalTime.chalakim)
-        
-        self.days %= 7
-        # We want Shabbos to be appear as 7, even though its mod is 0.
-        if self.days == 0 : self.days = 7
 
     def reduce(self):
+        """Reduces the number of chalakim to less than 1080 and the hours to less than 24, adding the whole hours and whole days. Sets the day to a day of the week 1-7."""
+
         super().reduce()
         self.days %= 7
         # We want Shabbos to be appear as 7, even though its mod is 0.
