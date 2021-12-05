@@ -1,5 +1,5 @@
 # This class needs cycle, cycleYears, and BHRD.
-from timeInterval import timeInterval, molad
+from timeInterval import timeInWeek, timeInterval
 
 BHRD = timeInterval(2,5,204)
 """Starting molad"""
@@ -9,7 +9,7 @@ lunarYear = lunarMonth * 12
 """The lenght of a lunar year of 12 months"""
 leapYear = lunarYear + lunarMonth
 """The lenght of a leap year of 13 months"""
-lunarMonthRemainder = molad(lunarMonth)
+lunarMonthRemainder = timeInWeek(lunarMonth)
 """The ofset of the molad after one month"""
 lunarYearRemainder = lunarMonthRemainder * 12
 """The ofset of the molad after one regular year"""
@@ -21,7 +21,7 @@ cycle = lunarYear * 12 + leapYear * 7
 """The length of a 19 lunar year cycle with 7 leap years"""
 cycleRemainder = lunarYearRemainder * 12 + leapYearRemainder * 7
 """The length of a cycle in days of the week."""
-leapYears = [3, 6, 8, 11, 14, 17, 19]
+leapYears = {3, 6, 8, 11, 14, 17, 19}
 """The leap years in a 19 year cycle are years 3, 6, 8, 11, 14, 17, and 19"""
 
 class year:
@@ -55,7 +55,7 @@ class year:
             self.cyclesToYear = self.yearsFromCreation // cycleYears
     
         # 3) Add together the full cycles
-        self.molad = molad(BHRD + cycleRemainder * self.cyclesToYear)
+        self.molad = timeInWeek(BHRD + cycleRemainder * self.cyclesToYear)
         """The molad of the begning of this year"""
         
         # 4) Add the regular years and the leap years
@@ -106,7 +106,7 @@ class year:
         # BTU TKPT - If the molad of Tishrei is on a day 2, and the molad is after 15 hours and 589 chalakim, and it is the year after a  leap year, Rosh Chodesh is set to day 3. 
         elif ((self.molad.days == 2)
          and ((self.molad.hours > 15) or ((self.molad.hours == 15) and (self.molad.chalakim >= 589)))
-         and ((self.placeInCycle - 1 in leapYears) or (self.placeInCycle - 1 == 0))):
+         and (self.placeInCycle - 1 in leapYears or 0)):
             self.day = self.molad.days + 1
         
         #7:6
@@ -114,7 +114,7 @@ class year:
         else:
             self.day = self.molad.days
         
-        if self.day == 7 and self.molad.days == 7: #date.days%7==0
+        if self.day == 7 and self.molad.days == 7: # date.days%7==0 so day-days==7, but we want 0
             self.date = date.days
             """The date of Rosh Hashanah of this year in days from Shabbos before BHRD"""
         else:
@@ -123,6 +123,7 @@ class year:
         
         #8:3 
         # Since the length of a lunar month is not exactly 29 1/2 days, some years have more whole months than short months and (as a result of pushing off Rosh Hashana) some years have more short months than whole months.
+        
         #8:5
         # The months that are always set by the fixed calandar are Nissan 30, Iyyar 29, Sivan 30, Tamuz 29, Av 30, Elul 29, Tishrei 30, Teves 29, Shevat 30, Addar (II) 29.
         

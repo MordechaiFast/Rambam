@@ -105,7 +105,7 @@ class timeInterval:
         new.reduce()
         return new
 
-class molad (timeInterval):
+class timeInWeek (timeInterval):
     """A time of week"""
     def __init__(self, totalTime: timeInterval):
         super().__init__(days=totalTime.days, hours=totalTime.hours, chalakim=totalTime.chalakim)
@@ -121,10 +121,10 @@ class molad (timeInterval):
         if self.days == 0 : self.days = 7
 
     def __add__(self, addtime):
-        return molad(super().__add__(addtime))
+        return timeInWeek(super().__add__(addtime))
     def __mul__(self, factor):
-        return molad(super().__mul__(factor))
+        return timeInWeek(super().__mul__(factor))
     def __sub__(self, minustime):
-        return molad(super().__sub__(minustime))
+        return timeInWeek(super().__sub__(minustime))
     def __floordiv__(self, divisor):
-        return molad(super().__floordiv__(divisor))
+        return timeInWeek(super().__floordiv__(divisor))
