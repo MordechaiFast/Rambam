@@ -2,36 +2,49 @@ from year import year, leapYears, lunarMonthRemainder
 
 class month:
     """monthReference starts with 0 for Tishrei or 1 for Nissan.
+
     Holds the year that the month is in, 
-    the month's number starting from Tishrei, 
+    the month's name, 
     the molad of that month, 
-    and the date and day of Rosh Chodesh."""
+    and the date and day of the week Rosh Chodesh."""
     
     def __init__(self, year: year, monthReference: int, startFromTishrei = False) -> None:
-        #Save the year
+        # Save the year
         self.year = year
         """The year that this month is a part of"""
 
         # Convert month from Nissan to months from Tishrei, when neccesary
         if startFromTishrei:
-            self.monthCount = monthReference
+            monthCount = monthReference
             """The number of this month from Tishrei = 0"""
         else:
             # For months between Tishrei and Nissan: 
             if monthReference > 6:
                 # We want Tishrei to be 0, so take away 7.
-                self.monthCount = monthReference - 7
+                monthCount = monthReference - 7
             # For months between Nissan and Tishrei, it depends if the given year is a leap year.
-            elif self.year.placeInCycle in leapYears:
+            elif year.placeInCycle in leapYears:
                 # Nissan is 7 months from Tishrei in a leap year.
-                self.monthCount = monthReference + 6
+                monthCount = monthReference + 6
             else:
                 # Nissan is 6 months from Tishrei in a regular year.
-                self.monthCount = monthReference + 5
+                monthCount = monthReference + 5
+
+        # Find the month's name
+        monthNames = ["Tishrei", "Marchesvan", "Kislev ", "Teves  ", "Shevat ", "Addar  ",
+        "Nissan ", "Iyyar  ", "Sivan  ", "Tamuz  ", "Av     ", "Elul   "]
+        monthNamesInLeapYear = ["Tishrei", "Marchesvan", "Kislev ", "Teves  ", "Shevat ",
+        "Addar I", "Addar II", "Nissan ", "Iyyar  ", "Sivan  ", "Tamuz  ", "Av     ", "Elul   "]
+        if year.placeInCycle not in leapYears:
+            self.name = monthNames[monthCount]
+            """The name of the month"""
+        else:
+            self.name = monthNamesInLeapYear[monthCount]
+    
     
         #6:15
         # To find the molad of a specific month, add the molad of a month for each month until the requiered month.
-        self.molad = year.molad + lunarMonthRemainder * self.monthCount
+        self.molad = year.molad + lunarMonthRemainder * monthCount
         """The molad of this month"""
 
         # Defning the day of Rosh Chodesh
@@ -41,7 +54,7 @@ class month:
 
         #8:4
         # For a month following a full month, Rosh Chodesh is two days.
-        if year.wholeMonths[self.monthCount-1]:
+        if year.wholeMonths[monthCount-1]:
         # [-1] returns the last item in the list, which is what we want.
             self.twoDayRoshChodesh = True
             """If this month has a two day Rosh Chodesh"""
@@ -54,7 +67,7 @@ class month:
         """The date of Rosh Chodesh of this month, in days from 
         the Shabbos before BHRD"""
 
-        for i in range (self.monthCount):
+        for i in range (monthCount):
             if year.wholeMonths[i]:
                 self.date += wholeMonth
             else:

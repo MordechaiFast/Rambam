@@ -33,7 +33,7 @@ class year:
     # 1) Take the number of years from the year of creation.
     def __init__(self, count: int, startYear = 1) -> None:
         # startYear being 0 means that this is an internal calculation instance of the year class, and we won't want to calculate if its length, only it's Rosh Hashana day, for the needs of the previous year. 
-        if startYear == 1 or startYear == 0:
+        if startYear in {1,0}:
             self.yearsFromCreation = count
             """The number of years from year 1 = the year of BHRD"""
         
@@ -55,7 +55,7 @@ class year:
             self.cyclesToYear = self.yearsFromCreation // cycleYears
     
         # 3) Add together the full cycles
-        self.molad = timeInWeek(BHRD + cycleRemainder * self.cyclesToYear)
+        self.molad = timeInWeek(BHRD) + cycleRemainder * self.cyclesToYear
         """The molad of the begning of this year"""
         
         # 4) Add the regular years and the leap years

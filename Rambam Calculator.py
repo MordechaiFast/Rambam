@@ -89,10 +89,6 @@ print("That was cycle", RambamsYear.cyclesToYear + 1, " year", RambamsYear.place
 # For any month, find the molad of that month.
 from month import month
 
-monthNames = ["Tishrei", "Marchesvan", "Kislev ", "Teves  ", "Shevat ", "Addar  ",
-"Nissan ", "Iyyar  ", "Sivan  ", "Tamuz  ", "Av     ", "Elul   "]
-monthNamesInLeapYear = ["Tishrei", "Marchesvan", "Kislev ", "Teves  ", "Shevat ",
-"Addar I", "Addar II", "Nissan ", "Iyyar  ", "Sivan  ", "Tamuz  ", "Av     ", "Elul   "]
 printNextTishrei = True
 startFromTishrei = True
 
@@ -101,24 +97,22 @@ def printMonthsOfYear (aYear: year, printNextTishrei = False):
     names, molad, and days of Rosh Chodesh."""
     if aYear.placeInCycle not in leapYears:
         n = 12
-        names = monthNames
     else:
         n = 13
-        names = monthNamesInLeapYear
     for m in range (n):
         thisMonth = month(aYear, m, startFromTishrei)
         if thisMonth.twoDayRoshChodesh:
             if thisMonth.day == 1:
-                print(names[m], "\t", thisMonth.molad.days, thisMonth.molad.hours, thisMonth.molad.chalakim,"\t", 7,1)
+                print(thisMonth.name, "\t", thisMonth.molad.days, thisMonth.molad.hours, thisMonth.molad.chalakim,"\t", 7,1)
             else:
-                print(names[m], "\t", thisMonth.molad.days, thisMonth.molad.hours, thisMonth.molad.chalakim, "\t", thisMonth.day - 1, thisMonth.day)
+                print(thisMonth.name, "\t", thisMonth.molad.days, thisMonth.molad.hours, thisMonth.molad.chalakim, "\t", thisMonth.day - 1, thisMonth.day)
         else:
-            print(names[m], "\t", thisMonth.molad.days, thisMonth.molad.hours, thisMonth.molad.chalakim, "\t", thisMonth.day)
+            print(thisMonth.name, "\t", thisMonth.molad.days, thisMonth.molad.hours, thisMonth.molad.chalakim, "\t", thisMonth.day)
     if printNextTishrei:
         thisMonth = month(aYear.yearAfter(), 7)
-        print(monthNames[0], "\t", thisMonth.molad.days, thisMonth.molad.hours, thisMonth.molad.chalakim, "\t", thisMonth.day)
+        print(thisMonth.name, "\t", thisMonth.molad.days, thisMonth.molad.hours, thisMonth.molad.chalakim, "\t", thisMonth.day)
 
-"""
+#"""
 dummyYear = 0
 for y in [5745, 5765]:
     print("\nYear", y)
