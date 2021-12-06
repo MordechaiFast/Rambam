@@ -86,6 +86,13 @@ class timeInterval:
         new.chalakim = chalakimDivident // divisor
         new.reduce()
         return new
+    
+    def __eq__(self, __o: object) -> bool:
+        if ( self.days == __o.days 
+         and self.hours == __o.hours 
+         and self.chalakim == __o.chalakim):
+            return True
+        else: return False
 
 class timeInWeek (timeInterval):
     """A time of week"""
