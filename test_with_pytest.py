@@ -17,8 +17,10 @@ def test_all_lengths():
     assert lunarMonthRemainder == timeInterval(1, 12, 793)
     assert lunarYearRemainder ==  timeInterval(4, 8, 876)
     assert leapYearRemainder == timeInterval(5, 21, 589)
-    # Test values in 6:6
-    exampleMonth = timeInterval(1,17,107)
-    assert exampleMonth + (1,12,783) == timeInterval(3,5,900)
+    
+# Test values in 6:6
+exampleMonth = timeInterval(1,17,107)
+def test_adding_tuple():
+    assert exampleMonth + (1,12,793) == timeInterval(3,5,900)
 def test_BHRD():
     assert BHRD + (4, 8, 876) == timeInterval(6, 14)
