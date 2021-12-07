@@ -22,6 +22,13 @@ class TestLengthValues(unittest.TestCase):
         self.assertEqual(lunarYearRemainder, timeInterval(4, 8, 876))
     def test_leap_lear_molad(self):
         self.assertEqual(leapYearRemainder, timeInterval(5, 21, 589))
+
+    # Test non-intiger values
+    def test_fractional_days(self):
+        self.assertEqual(timeInterval(1,6), timeInterval(1.25))
+    def test_fractional_hours(self):
+        self.assertEqual(timeInterval(0, 7.5), timeInterval(0,7,540))
+  
     
     #def test_cycle_molad(self):
         #self.assertEqual(cycleRemainder, timeInterval())

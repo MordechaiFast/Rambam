@@ -107,7 +107,7 @@ def printMonthsOfYear (aYear: year, printNextTishrei = False):
         thisMonth = month(aYear.yearAfter(), 7)
         print(thisMonth.name, "\t", thisMonth.molad, "\t", thisMonth.day)
 
-""" GTRD and BTU TKPT testing
+# """ GTRD and BTU TKPT testing
 dummyYear = 0
 for y in [5745, 5765]:
     print("\nYear", y)

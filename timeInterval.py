@@ -9,9 +9,19 @@ class timeInterval:
     """Used for the lenght of a month, year, etc."""
 
     def __init__(self, days=0, hours=0, chalakim=0):
+        # Convert fractional days into hours
+        if days % 1 != 1:
+            hours += (days % 1) * hoursInDay
+            days = days // 1
         self.days = days
+        
+        if hours % 1 != 1:
+            chalakim += (hours % 1) * chalakimInHour
+            hours = hours // 1
         self.hours = hours
-        self.chalakim = chalakim
+
+        # Fractional chalakim will be ignored untill the subclass fine time interval
+        self.chalakim = chalakim // 1
         self.reduce()
 
     #6:9
