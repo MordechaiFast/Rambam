@@ -4,14 +4,14 @@ from month import month
 
 #9:1
 solarYear = timeInterval(365,6)
-"""The lenght of a year of 365.25 days"""
+"""The length of a year of 365.25 days"""
 #9:2
 solarCycle = solarYear * cycleYears
-"""The lenght of 19 years of 365.25 days"""
+"""The length of 19 years of 365.25 days"""
 solarCycleExcess = solarCycle - cycle
 """The movement of the seasons relative to the molad after a 19 year cycle"""
 seasonLength = solarYear // 4
-"""The lenght of a season, one quarter of a 365.25 day year"""
+"""The length of a season, one quarter of a 365.25 day year"""
 
 #9:3
 seasonBeforeMolad = timeInterval(7, 9, 642)

@@ -70,7 +70,6 @@ class year:
         for y in range(1, self.placeInCycle):
             if y in leapYears: date += leapYear
             else:              date += lunarYear
-        
     
         #(Halacha 15 is in the month class)
 
@@ -114,7 +113,8 @@ class year:
         else:
             self.day = self.molad.days
         
-        if self.day == 7 and self.molad.days == 7: # date.days%7==0 so day-days==7, but we want 0
+        if self.day == 7 and self.molad.days == 7:
+            # date.days%7==0 so day-days==7, but we want 0
             self.date = date.days
             """The date of Rosh Hashanah of this year in days from Shabbos before BHRD"""
         else:
@@ -137,6 +137,7 @@ class year:
         #8:6
         yearType = { 'full' : False, 'lacking' : False, 'orderly' : False}
         """An indicator if the current year's months (Marhesvan and Kislev) are lacking, whole, or accorting to thier normal pattern, Marheshvan lacking and Kislev whole."""
+        
         #8:7
         # Determinimg the type of year for setting the days of Rosh Chodesh of the different months.
         if startYear != 0:
@@ -144,20 +145,21 @@ class year:
             """Tells the newly created year not to unnessicarily calculate its own month lenght arangement (and avoid and infinate recurtion) by setting the start year to 0"""
             daysBetween = (self.yearAfter(dummyYear).day - self.day -1) % 7
             """The number of days between Rosh Hashanah this year and Rosh Hashana next year, not inclusive"""
-            try: #Since we will be calling yearType, and the without GTRD and BTU TKPT the year might be none of the above...
-                if self.placeInCycle not in leapYears:
-                    #For different days between, set different year types
-                    yearType[{2: 'lacking', 3: 'orderly', 4: 'full'}[daysBetween]] = True
-
-                #8:8
-                else:   #On a leap year:
-                    yearType[{4: 'lacking', 5: 'orderly', 6: 'full'}[daysBetween]] = True
-            finally:
-                # (8:6) The months of Marheshvan and Kislev are variable.
-                # Tishrei is month 0 
-                if yearType['lacking']: self.wholeMonths[2] = False
-                if yearType['full']: self.wholeMonths[1] = True
+            if self.placeInCycle not in leapYears:
+                #For different days between, set different year types
+                yearType[{2: 'lacking', 3: 'orderly', 4: 'full'}[daysBetween]] = True
+            
+            #8:8
+            else:   #On a leap year:
+                yearType[{4: 'lacking', 5: 'orderly', 6: 'full'}[daysBetween]] = True
+            
+            # (8:6) The months of Marheshvan and Kislev are variable.
+            # Tishrei is month 0 
+            if yearType['lacking']: self.wholeMonths[2] = False
+            if yearType['full']: self.wholeMonths[1] = True
     
     def yearAfter (self, dummyYear = False):
-        """Generates the next year after this one"""
+        """Generates the next year after this one.
+        
+        A dummy year is one that does not determin if its months are lacking or whole."""
         return year(self.yearsFromCreation + 1, (0 if dummyYear else 1))

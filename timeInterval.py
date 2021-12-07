@@ -27,6 +27,12 @@ class timeInterval:
 
     #math functions
     def __add__(self,addtime):
+        if type(addtime) is tuple:
+            addtime += (0,0,0)
+            addtime = timeInterval(addtime[0], addtime[1], addtime[2])
+        elif not isinstance(addtime, timeInterval):
+            raise TypeError("Can only add timeInterval or tuple")
+
         new = timeInterval()
         new.days = self.days + addtime.days
         new.hours = self.hours + addtime.hours
@@ -43,6 +49,12 @@ class timeInterval:
         return new
 
     def __sub__(self, minustime):
+        if type(minustime) is tuple:
+            minustime += (0,0,0)
+            minustime = timeInterval(minustime[0], minustime[1], minustime[2])
+        elif not isinstance(minustime, timeInterval):
+            raise TypeError("Can only subtract timeInterval or tuple")
+
         new = timeInterval()
         borrowHour = False
         borrowDay = False
@@ -94,8 +106,11 @@ class timeInterval:
             return True
         else: return False
 
+    def __str__(self) -> str:
+        return f"{self.days} {self.hours:>2} {self.chalakim:>4}"
+
 class timeInWeek (timeInterval):
-    """A time of week"""
+    """A time of week, or the offset of a time of week."""
     def __init__(self, totalTime: timeInterval):
         super().__init__(days=totalTime.days, hours=totalTime.hours, chalakim=totalTime.chalakim)
 

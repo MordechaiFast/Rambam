@@ -52,7 +52,7 @@ from year import BHRD
 
 #6:9
 # When adding the movements in the week, one must reduce the chalakim, hours and days.
-#printTime("6:9 The molad of Tishrei after BHRD was, after rounding:", BHRD + lunarYearRemainder, space)
+printTime("6:9 The molad of Tishrei after BHRD was, after rounding:", BHRD + lunarYearRemainder, space)
 
 #6:10
 from year import cycleYears, cycle
@@ -73,7 +73,7 @@ from year import cycleRemainder
 
 #6:13
 # Adding a cycle's days of the week gets you the next cycle.
-#printTime("6:13 After BHRD the next cycle began:", BHRD.add(cycleRemainder), space)
+# printTime("6:13 After BHRD the next cycle began:", BHRD + cycleRemainder, space)
 
 #6:14
 # Given a year, find the molad for the start of that year.
@@ -98,16 +98,16 @@ def printMonthsOfYear (aYear: year, printNextTishrei = False):
         thisMonth = month(aYear, m, startFromTishrei)
         if thisMonth.twoDayRoshChodesh:
             if thisMonth.day == 1:
-                print(thisMonth.name, "\t", thisMonth.molad.days, thisMonth.molad.hours, thisMonth.molad.chalakim,"\t", 7,1)
+                print(thisMonth.name, "\t", thisMonth.molad,"\t", 7,1)
             else:
-                print(thisMonth.name, "\t", thisMonth.molad.days, thisMonth.molad.hours, thisMonth.molad.chalakim, "\t", thisMonth.day - 1, thisMonth.day)
+                print(thisMonth.name, "\t", thisMonth.molad, "\t", thisMonth.day - 1, thisMonth.day)
         else:
-            print(thisMonth.name, "\t", thisMonth.molad.days, thisMonth.molad.hours, thisMonth.molad.chalakim, "\t", thisMonth.day)
+            print(thisMonth.name, "\t", thisMonth.molad, "\t", thisMonth.day)
     if printNextTishrei:
         thisMonth = month(aYear.yearAfter(), 7)
-        print(thisMonth.name, "\t", thisMonth.molad.days, thisMonth.molad.hours, thisMonth.molad.chalakim, "\t", thisMonth.day)
+        print(thisMonth.name, "\t", thisMonth.molad, "\t", thisMonth.day)
 
-#""" GTRD and BTU TKPT teasting
+""" GTRD and BTU TKPT testing
 dummyYear = 0
 for y in [5745, 5765]:
     print("\nYear", y)
