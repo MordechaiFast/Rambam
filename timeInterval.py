@@ -10,14 +10,12 @@ class timeInterval:
 
     def __init__(self, days=0, hours=0, chalakim=0):
         # Convert fractional days into hours
-        if days % 1 != 1:
-            hours += (days % 1) * hoursInDay
-            days = days // 1
+        hours += (days % 1) * hoursInDay
+        days //= 1
         self.days = days
         
-        if hours % 1 != 1:
-            chalakim += (hours % 1) * chalakimInHour
-            hours = hours // 1
+        chalakim += (hours % 1) * chalakimInHour
+        hours //= 1
         self.hours = hours
 
         # Fractional chalakim will be ignored untill the subclass fine time interval
@@ -34,6 +32,25 @@ class timeInterval:
         # Next carry the whole days, then round the remaining hours.
         self.days += self.hours // hoursInDay
         self.hours %= hoursInDay
+
+    # comparison functions
+    def __eq__(self, __o: object) -> bool:
+        if ( self.days == __o.days 
+         and self.hours == __o.hours 
+         and self.chalakim == __o.chalakim):
+            return True
+        else: return False
+
+    def __ge__(self, __o: object) -> bool:
+        if self.days > __o.days:
+            return True
+        elif self.days == __o.days:
+            if self.hours > __o.hours:
+                return True
+            elif self.hours == __o.hours:
+                if self.chalakim >= __o.chalakim:
+                    return True
+        return False
 
     #math functions
     def __add__(self,addtime):
@@ -109,13 +126,6 @@ class timeInterval:
         new.reduce()
         return new
     
-    def __eq__(self, __o: object) -> bool:
-        if ( self.days == __o.days 
-         and self.hours == __o.hours 
-         and self.chalakim == __o.chalakim):
-            return True
-        else: return False
-
     def __str__(self) -> str:
         return f"{self.days} {self.hours:>2} {self.chalakim:>4}"
 

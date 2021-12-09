@@ -7,6 +7,9 @@ def test_fractions():
     assert timeInterval(0, 7.5) == timeInterval(0,7,540)
     assert timeInterval(1.1) == timeInterval(1,2,432)
     assert timeInterval(0,0,1.5) == timeInterval(0,0,1)
+def test_nagative_input():
+    assert timeInterval(2,-1) == timeInterval(1,23)
+    assert timeInterval(-1,-1,-1) == timeInterval(-2,22,1079)
 def test_all_lengths():
     # Test values in 6:4
     # Multiplication test
@@ -35,12 +38,16 @@ def test_BHRD():
 def test_rounding():
     assert timeInWeek(BHRD) + (5,18,876) == timeInWeek(timeInterval(1))
 
+def test_ge():
+    assert BHRD >= exampleMonth
+    assert not (exampleMonth >= BHRD), "This is supposed to fail."
+
 # Try negitave time
-def test_add_negetive():
-    assert BHRD + (-1, -2, -4) == timeInterval(1, 3, 200)
-def test_subtract_negetive():
-    assert BHRD - (-1, -2, -4) == timeInterval(3, 7, 208)
 def test_negetive_result():
     assert BHRD - (7,) == timeInterval(-5, 5, 204)
     assert BHRD - (7, 5, 204) == timeInterval(-5)
     assert BHRD - (7, 6) == timeInterval(-6, 23, 204)
+def test_add_negetive():
+    assert BHRD + (-1, -2, -4) == timeInterval(1, 3, 200)
+def test_subtract_negetive():
+    assert BHRD - (-1, -2, -4) == timeInterval(3, 7, 208)
