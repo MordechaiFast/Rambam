@@ -9,29 +9,44 @@ class timeInterval:
     """Used for the lenght of a month, year, etc."""
 
     def __init__(self, days=0, hours=0, chalakim=0):
-        # Convert fractional days into hours
-        hours += (days % 1) * hoursInDay
-        days //= 1
         self.days = days
-        
-        chalakim += (hours % 1) * chalakimInHour
-        hours //= 1
         self.hours = hours
-
-        # Fractional chalakim will be ignored untill the subclass fine time interval
-        self.chalakim = chalakim // 1
+        self.chalakim = chalakim
         self.reduce()
 
     #6:9
     def reduce(self):
-        """Reduces the number of chalakim to less than 1080 and the hours to less than 24, adding the whole hours and whole days. Does not affect the day count."""
+        """Reduces the number of chalakim to less than 1080 and the hours to less than 24, adding the whole hours and whole days. Converts fractional parts of days and hours to hours and chalakim. Does not affect the day count."""
+        # Convert fractional days into hours
+        self.hours += (self.days % 1) * hoursInDay
+        self.days //= 1
         
-        # First carry the whole hours, then round the remaining chalakim. 
+        # Convert fractional hours into chalakim
+        self.chalakim += (self.hours % 1) * chalakimInHour
+        self.hours //= 1
+
+        # Fractional chalakim will be ignored untill the subclass fine time interval
+        self.chalakim //= 1
+
+        # Carry the whole hours, then round the remaining chalakim. (This also works for negetive inputs.)
         self.hours += self.chalakim // chalakimInHour
         self.chalakim %= chalakimInHour
-        # Next carry the whole days, then round the remaining hours.
+        
+        # Carry the whole days, then round the remaining hours.
         self.days += self.hours // hoursInDay
         self.hours %= hoursInDay
+
+    # iteration functions
+    def __getitem__(self, key) -> int:
+        if   key == 0: return self.days
+        elif key == 1: return self.hours
+        elif key == 2: return self.chalakim
+        else: raise IndexError
+    def __setitem__(self, key, value):
+        if   key == 0: self.days = value
+        elif key == 1: self.hours = value
+        elif key == 2: self.chalakim = value
+        else: raise IndexError
 
     # comparison functions
     def __eq__(self, __o: object) -> bool:
@@ -55,6 +70,7 @@ class timeInterval:
     #math functions
     def __add__(self,addtime):
         if type(addtime) is tuple:
+            # In case of a tuple of 0 or one number, compleate the tuple to three places.
             addtime += (0,0,0)
             addtime = timeInterval(addtime[0], addtime[1], addtime[2])
         elif not isinstance(addtime, timeInterval):
@@ -150,3 +166,5 @@ class timeInWeek (timeInterval):
         return timeInWeek(super().__sub__(minustime))
     def __floordiv__(self, divisor):
         return timeInWeek(super().__floordiv__(divisor))
+
+t=timeInterval(-1,-1,-1)
