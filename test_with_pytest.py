@@ -26,6 +26,8 @@ def test_all_lengths():
     assert lunarMonthRemainder == timeInterval(1, 12, 793)
     assert lunarYearRemainder ==  timeInterval(4, 8, 876)
     assert leapYearRemainder == timeInterval(5, 21, 589)
+    # Test value in 9:1
+    assert seasonLength == timeInterval(91,7.5)
     
 # Test values in 6:6-7
 exampleMonth = timeInterval(1,17,107)
@@ -65,3 +67,8 @@ def test_index_setting():
 def test_index_out_of_bounds():
     try: assert BHRD[3]
     except IndexError : pass
+def test_len_func():
+    assert len(BHRD) == 3
+    assert len(solarYear) == 2
+    assert len(timeInterval(1)) == 1
+    assert len(timeInterval()) == 0

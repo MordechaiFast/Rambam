@@ -47,101 +47,62 @@ class timeInterval:
         elif key == 1: self.hours = value
         elif key == 2: self.chalakim = value
         else: raise IndexError
+    def __len__(self):
+        if   self[2]: return 3
+        elif self[1]: return 2
+        elif self[0]: return 1
+        else: return 0
 
     # comparison functions
-    def __eq__(self, __o: object) -> bool:
-        if ( self.days == __o.days 
-         and self.hours == __o.hours 
-         and self.chalakim == __o.chalakim):
-            return True
-        else: return False
+    def __eq__(self, other) -> bool:
+        for i in range(len(self)):
+            if self[i] == other[i]: continue
+            else: return False
+        return True
 
-    def __ge__(self, __o: object) -> bool:
-        if self.days > __o.days:
-            return True
-        elif self.days == __o.days:
-            if self.hours > __o.hours:
-                return True
-            elif self.hours == __o.hours:
-                if self.chalakim >= __o.chalakim:
-                    return True
-        return False
+    def __ge__(self, other) -> bool:
+        for i in range(len(self)):
+            if self[i] > other[i]: return True
+            elif self[i] == other[i]: continue
+            else: return False
+        return True
 
     #math functions
-    def __add__(self,addtime):
-        if type(addtime) is tuple:
+    def __add__(self,addend):
+        if type(addend) is tuple:
             # In case of a tuple of 0 or one number, compleate the tuple to three places.
-            addtime += (0,0,0)
-            addtime = timeInterval(addtime[0], addtime[1], addtime[2])
-        elif not isinstance(addtime, timeInterval):
+            addend += (0,0,0)
+            addend = timeInterval(addend[0], addend[1], addend[2])
+        elif not isinstance(addend, timeInterval):
             raise TypeError("Can only add timeInterval or tuple")
 
-        new = timeInterval()
-        new.days = self.days + addtime.days
-        new.hours = self.hours + addtime.hours
-        new.chalakim = self.chalakim + addtime.chalakim
-        new.reduce()
-        return new
+        sum = timeInterval()
+        sum.days = self.days + addend.days
+        sum.hours = self.hours + addend.hours
+        sum.chalakim = self.chalakim + addend.chalakim
+        sum.reduce()
+        return sum
  
-    def __mul__(self, factor):
-        new = timeInterval()
-        new.days = self.days * factor
-        new.hours = self.hours * factor
-        new.chalakim = self.chalakim * factor
-        new.reduce()
-        return new
-
-    def __sub__(self, minustime):
-        if type(minustime) is tuple:
-            minustime += (0,0,0)
-            minustime = timeInterval(minustime[0], minustime[1], minustime[2])
-        elif not isinstance(minustime, timeInterval):
+    def __sub__(self, subtrahend):
+        if type(subtrahend) is tuple:
+            subtrahend += (0,0,0)
+            subtrahend = timeInterval(subtrahend[0], subtrahend[1], subtrahend[2])
+        elif not isinstance(subtrahend, timeInterval):
             raise TypeError("Can only subtract timeInterval or tuple")
 
-        new = timeInterval()
-        borrowHour = False
-        borrowDay = False
+        return self + (-subtrahend.days, -subtrahend.hours, -subtrahend.chalakim)
 
-        #subtract the chalakim
-        if self.chalakim >= minustime.chalakim:
-            new.chalakim = self.chalakim - minustime.chalakim
-        else:
-            borrowHour = True
-            new.chalakim = self.chalakim + chalakimInHour - minustime.chalakim
-        
-        #subtract the hours
-        if borrowHour:
-            if self.hours - 1 >= minustime.hours:
-                new.hours = self.hours - 1 - minustime.hours
-            else:
-                borrowDay = True
-                new.hours = self.hours + hoursInDay - 1 - minustime.hours
-        else:
-            if self.hours >= minustime.hours:
-                new.hours = self.hours - minustime.hours
-            else:
-                borrowDay = True
-                new.hours = self.hours + hoursInDay - minustime.hours
-        
-        #subtract the days
-        if borrowDay:
-            new.days = self.days - 1 - minustime.days
-        else:
-            new.days = self.days - minustime.days
-        
-        new.reduce()
-        return new
+    def __mul__(self, factor):
+        product = timeInterval()
+        for i in self:
+            product[i] = self[i] * factor
+        product.reduce()
+        return product
 
     def __floordiv__(self, divisor):
-        new = timeInterval()
-        new.days = self.days // divisor
-        hourDivident = self.hours + (self.days % divisor * hoursInDay)
-        new.hours = hourDivident // divisor
-        chalakimDivident = self.chalakim + (hourDivident % divisor * chalakimInHour)
-        new.chalakim = chalakimDivident // divisor
-        new.reduce()
-        return new
+        return self * (1 / divisor)
     
+    # String function
     def __str__(self) -> str:
         return f"{self.days} {self.hours:>2} {self.chalakim:>4}"
 
@@ -158,13 +119,11 @@ class timeInWeek (timeInterval):
         # We want Shabbos to be appear as 7, even though its mod is 0.
         if self.days == 0 : self.days = 7
 
-    def __add__(self, addtime):
-        return timeInWeek(super().__add__(addtime))
+    def __add__(self, addend):
+        return timeInWeek(super().__add__(addend))
     def __mul__(self, factor):
         return timeInWeek(super().__mul__(factor))
-    def __sub__(self, minustime):
-        return timeInWeek(super().__sub__(minustime))
+    def __sub__(self, subtrahend):
+        return timeInWeek(super().__sub__(subtrahend))
     def __floordiv__(self, divisor):
         return timeInWeek(super().__floordiv__(divisor))
-
-t=timeInterval(-1,-1,-1)

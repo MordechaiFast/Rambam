@@ -21,8 +21,10 @@ cycle = lunarYear * 12 + leapYear * 7
 """The length of a 19 lunar year cycle with 7 leap years"""
 cycleRemainder = lunarYearRemainder * 12 + leapYearRemainder * 7
 """The length of a cycle in days of the week."""
-leapYears = {3, 6, 8, 11, 14, 17, 19}
+leapYears = {0, 3, 6, 8, 11, 14, 17, 19}
 """The leap years in a 19 year cycle are years 3, 6, 8, 11, 14, 17, and 19"""
+GTRD = timeInterval(3, 9, 204)
+BTUTKPT = timeInterval(2, 15, 589)
 
 class year:
     """Holds the year number from Creation, 
@@ -97,15 +99,15 @@ class year:
         #7:4 
         # GTRD - If the molad of Tishrei is on a day 3, and the molad is after 9 hours and 204 chalakim, and the year is not a  leap year, Rosh Chodesh is set to day 5, which is two days after the molad. 
         elif ((self.molad.days == 3)
-         and ((self.molad.hours > 9) or ((self.molad.hours == 9) and (self.molad.chalakim >= 204)))
+         and (self.molad >= GTRD)
          and (self.placeInCycle not in leapYears)):
             self.day = self.molad.days + 2
 
         #7:5 
         # BTU TKPT - If the molad of Tishrei is on a day 2, and the molad is after 15 hours and 589 chalakim, and it is the year after a  leap year, Rosh Chodesh is set to day 3. 
         elif ((self.molad.days == 2)
-         and ((self.molad.hours > 15) or ((self.molad.hours == 15) and (self.molad.chalakim >= 589)))
-         and (self.placeInCycle - 1 in leapYears or 0)):
+         and (self.molad >= BTUTKPT)
+         and (self.placeInCycle - 1 in leapYears)):
             self.day = self.molad.days + 1
         
         #7:6
