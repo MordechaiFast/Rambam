@@ -55,13 +55,25 @@ class timeInterval:
 
     # comparison functions
     def __eq__(self, other) -> bool:
-        for i in range(len(self)):
+        if type(other) is tuple:
+            # In case of a tuple of 0 or one number, compleate the tuple to three places.
+            other += (0,0,0)
+            other = timeInterval(other[0], other[1], other[2])
+        elif not isinstance(other, timeInterval):
+            raise TypeError("Can only compare timeInterval or tuple")
+        for i in range(3):
             if self[i] == other[i]: continue
             else: return False
         return True
 
     def __ge__(self, other) -> bool:
-        for i in range(len(self)):
+        if type(other) is tuple:
+            # In case of a tuple of 0 or one number, compleate the tuple to three places.
+            other += (0,0,0)
+            other = timeInterval(other[0], other[1], other[2])
+        elif not isinstance(other, timeInterval):
+            raise TypeError("Can only compare timeInterval or tuple")
+        for i in range(3):
             if self[i] > other[i]: return True
             elif self[i] == other[i]: continue
             else: return False
@@ -94,7 +106,7 @@ class timeInterval:
 
     def __mul__(self, factor):
         product = timeInterval()
-        for i in self:
+        for i in range(len(self)):
             product[i] = self[i] * factor
         product.reduce()
         return product
