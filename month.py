@@ -1,4 +1,11 @@
 from year import year, leapYears, lunarMonthRemainder
+monthNames = ["Tishrei", "Marchesvan", "Kislev ", "Teves  ", "Shevat ", "Addar  ",
+"Nissan ", "Iyyar  ", "Sivan  ", "Tamuz  ", "Av     ", "Elul   "]
+monthNamesInLeapYear = ["Tishrei", "Marchesvan", "Kislev ", "Teves  ", "Shevat ",
+"Addar I", "Addar II", "Nissan ", "Iyyar  ", "Sivan  ", "Tamuz  ", "Av     ", "Elul   "]
+#8:1-2 
+# A month can only be of whole days.
+shortMonth, wholeMonth = 29, 30
 
 class month:
     """monthReference starts with 0 for Tishrei or 1 for Nissan.
@@ -31,16 +38,11 @@ class month:
                 monthCount = monthReference + 5
 
         # Find the month's name
-        monthNames = ["Tishrei", "Marchesvan", "Kislev ", "Teves  ", "Shevat ", "Addar  ",
-        "Nissan ", "Iyyar  ", "Sivan  ", "Tamuz  ", "Av     ", "Elul   "]
-        monthNamesInLeapYear = ["Tishrei", "Marchesvan", "Kislev ", "Teves  ", "Shevat ",
-        "Addar I", "Addar II", "Nissan ", "Iyyar  ", "Sivan  ", "Tamuz  ", "Av     ", "Elul   "]
         if year.placeInCycle not in leapYears:
             self.name = monthNames[monthCount]
             """The name of the month"""
         else:
             self.name = monthNamesInLeapYear[monthCount]
-    
     
         #6:15
         # To find the molad of a specific month, add the molad of a month for each month until the requiered month.
@@ -48,10 +50,6 @@ class month:
         """The molad of this month"""
 
         # Defning the day of Rosh Chodesh
-        #8:1-2 
-        # A month can only be of whole days.
-        shortMonth, wholeMonth = 29, 30
-
         #8:4
         # For a month following a full month, Rosh Chodesh is two days.
         if year.wholeMonths[monthCount-1]:

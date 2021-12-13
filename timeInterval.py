@@ -1,7 +1,7 @@
 #6:2
-hoursInDay = 24
+HOURS_IN_DAY = 24
 """The day is broken up into 24 hours. """
-chalakimInHour = 1080
+CHALAKIM_IN_HOUR = 1080
 """The hour is broken up into 1080 chalakim (parts). This is just a number that has many divisors."""
 
 # Defining a time interval and how to calculate with it
@@ -18,23 +18,23 @@ class timeInterval:
     def reduce(self):
         """Reduces the number of chalakim to less than 1080 and the hours to less than 24, adding the whole hours and whole days. Converts fractional parts of days and hours to hours and chalakim. Does not affect the day count."""
         # Convert fractional days into hours
-        self.hours += (self.days % 1) * hoursInDay
+        self.hours += (self.days % 1) * HOURS_IN_DAY
         self.days //= 1
         
         # Convert fractional hours into chalakim
-        self.chalakim += (self.hours % 1) * chalakimInHour
+        self.chalakim += (self.hours % 1) * CHALAKIM_IN_HOUR
         self.hours //= 1
 
         # Fractional chalakim will be ignored untill the subclass fine time interval
         self.chalakim //= 1
 
         # Carry the whole hours, then round the remaining chalakim. (This also works for negetive inputs.)
-        self.hours += self.chalakim // chalakimInHour
-        self.chalakim %= chalakimInHour
+        self.hours += self.chalakim // CHALAKIM_IN_HOUR
+        self.chalakim %= CHALAKIM_IN_HOUR
         
         # Carry the whole days, then round the remaining hours.
-        self.days += self.hours // hoursInDay
-        self.hours %= hoursInDay
+        self.days += self.hours // HOURS_IN_DAY
+        self.hours %= HOURS_IN_DAY
 
     # iteration functions
     def __getitem__(self, key) -> int:
@@ -56,11 +56,12 @@ class timeInterval:
     # comparison functions
     def __eq__(self, other) -> bool:
         if type(other) is tuple:
-            # In case of a tuple of 0 or one number, compleate the tuple to three places.
+            # In case of a tuple of less than three numbers, compleate the tuple to three places.
             other += (0,0,0)
             other = timeInterval(other[0], other[1], other[2])
         elif not isinstance(other, timeInterval):
             raise TypeError("Can only compare timeInterval or tuple")
+        
         for i in range(3):
             if self[i] == other[i]: continue
             else: return False
@@ -68,11 +69,12 @@ class timeInterval:
 
     def __ge__(self, other) -> bool:
         if type(other) is tuple:
-            # In case of a tuple of 0 or one number, compleate the tuple to three places.
+            # In case of a tuple of less than three numbers, compleate the tuple to three places.
             other += (0,0,0)
             other = timeInterval(other[0], other[1], other[2])
         elif not isinstance(other, timeInterval):
             raise TypeError("Can only compare timeInterval or tuple")
+        
         for i in range(3):
             if self[i] > other[i]: return True
             elif self[i] == other[i]: continue
@@ -82,7 +84,7 @@ class timeInterval:
     #math functions
     def __add__(self,addend):
         if type(addend) is tuple:
-            # In case of a tuple of 0 or one number, compleate the tuple to three places.
+            # In case of a tuple of less than three numbers, compleate the tuple to three places.
             addend += (0,0,0)
             addend = timeInterval(addend[0], addend[1], addend[2])
         elif not isinstance(addend, timeInterval):
