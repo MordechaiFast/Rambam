@@ -1,6 +1,7 @@
+from season import *
 from timeInterval import *
 from year import *
-from season import *
+
 
 def test_fractions():
     assert timeInterval(1.25) == (1,6)
@@ -41,6 +42,22 @@ def test_index_setting():
 def test_index_out_of_bounds():
     try: assert BHRD[3]
     except IndexError : pass
+
+def test_non_tuple_comparison():
+    try: assert BHRD == 2
+    except TypeError as err: 
+        print(err.args)
+    try: assert BHRD >= 2
+    except TypeError as err: 
+        print(err.args)
+def test_non_tuple_math():
+    try: BHRD + 2
+    except TypeError as err: 
+        print(err.args)
+    try: BHRD - 2
+    except TypeError as err: 
+        print(err.args)
+
 def test_len_func():
     assert len(BHRD) == 3
     assert len(solarYear) == 2
@@ -48,3 +65,5 @@ def test_len_func():
     assert len(timeInterval()) == 0
 def test_eq():
     assert BHRD == (2, 5, 204)
+def test_gt():
+    assert BHRD >= (1,2,3)
