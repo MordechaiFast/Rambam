@@ -14,6 +14,9 @@ class timeInterval:
         self.chalakim = chalakim
         self.reduce()
 
+    FULL_LENGTH = 3
+    """How many places this type of time measure accepts."""
+
     #6:9
     def reduce(self):
         """Reduces the number of chalakim to less than 1080 and the hours to less than 24, adding the whole hours and whole days. Converts fractional parts of days and hours to hours and chalakim. Does not affect the day count."""
@@ -47,64 +50,59 @@ class timeInterval:
         elif key == 1: self.hours = value
         elif key == 2: self.chalakim = value
         else: raise IndexError
+
+    # Allow operators to work with tuples
+    def tuple_check(self, input, operation: str):
+        if type(input) is tuple:
+            # In case of a tuple of less than three numbers, compleate the tuple to three places.
+            input += (0,0,0)
+            input = timeInterval(input[0], input[1], input[2])
+        elif not isinstance(input, timeInterval):
+            raise TypeError("Can only " + operation + " timeInterval or tuple")
+        return input
+
+    # The following methods should work unchanged in a four item subclass.
     def __len__(self):
-        if   self[2]: return 3
-        elif self[1]: return 2
-        elif self[0]: return 1
+        for i in range (self.FULL_LENGTH -1, -1, -1):
+            if self[i]: return i + 1
         else: return 0
 
     # comparison functions
     def __eq__(self, other) -> bool:
-        if type(other) is tuple:
-            # In case of a tuple of less than three numbers, compleate the tuple to three places.
-            other += (0,0,0)
-            other = timeInterval(other[0], other[1], other[2])
-        elif not isinstance(other, timeInterval):
-            raise TypeError("Can only compare timeInterval or tuple")
+        other = self.tuple_check(other, "compare")
         
-        for i in range(3):
+        for i in range(self.FULL_LENGTH):
             if self[i] == other[i]: continue
             else: return False
-        return True
+        else: return True
 
     def __ge__(self, other) -> bool:
-        if type(other) is tuple:
-            # In case of a tuple of less than three numbers, compleate the tuple to three places.
-            other += (0,0,0)
-            other = timeInterval(other[0], other[1], other[2])
-        elif not isinstance(other, timeInterval):
-            raise TypeError("Can only compare timeInterval or tuple")
+        other = self.tuple_check(other, "compare")
         
-        for i in range(3):
+        for i in range(self.FULL_LENGTH):
             if self[i] > other[i]: return True
             elif self[i] == other[i]: continue
             else: return False
-        return True
+        else: return True
 
     #math functions
-    def __add__(self,addend):
-        if type(addend) is tuple:
-            # In case of a tuple of less than three numbers, compleate the tuple to three places.
-            addend += (0,0,0)
-            addend = timeInterval(addend[0], addend[1], addend[2])
-        elif not isinstance(addend, timeInterval):
-            raise TypeError("Can only add timeInterval or tuple")
+    def __add__(self, addend):
+        addend = self.tuple_check(addend, "add")
 
         sum = timeInterval()
-        sum.days = self.days + addend.days
-        sum.hours = self.hours + addend.hours
-        sum.chalakim = self.chalakim + addend.chalakim
+        for i in range (self.FULL_LENGTH):
+            sum[i] = self[i] + addend[i]
         sum.reduce()
         return sum
  
     def __sub__(self, subtrahend):
-        if type(subtrahend) is tuple:
-            subtrahend += (0,0,0)
-            subtrahend = timeInterval(subtrahend[0], subtrahend[1], subtrahend[2])
-        elif not isinstance(subtrahend, timeInterval):
-            raise TypeError("Can only subtract timeInterval or tuple")
+        subtrahend = self.tuple_check(subtrahend, "subtract")
 
-        return self + (-subtrahend.days, -subtrahend.hours, -subtrahend.chalakim)
+        difference = timeInterval()
+        for i in range (self.FULL_LENGTH -1, -1, -1):
+            difference[i] = self[i] + -subtrahend[i]
+        difference.reduce()
+        return difference
 
     def __mul__(self, factor):
         product = timeInterval()
