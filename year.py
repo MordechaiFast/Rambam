@@ -94,8 +94,8 @@ class year:
         
         #7:3
         # If the molad is after noon and the next day is 1, 4, or 6, Rosh Chodesh is two days after the molad.
-            else:
-                self.day = self.molad.days + 2
+            elif self.molad.days % 7 + 1 in ADU:
+                self.day = self.molad.days % 7 + 2
 
         #7:4 
         # GTRD - If the molad of Tishrei is on a day 3, and the molad is after 9 hours and 204 chalakim, and the year is not a  leap year, Rosh Chodesh is set to day 5, which is two days after the molad. 
