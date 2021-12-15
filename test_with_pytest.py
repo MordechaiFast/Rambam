@@ -46,17 +46,17 @@ def test_index_out_of_bounds():
 def test_non_tuple_comparison():
     try: assert BHRD == 2
     except TypeError as err: 
-        print(err.args)
+        assert err.args[0] == "Can only compare timeInterval or tuple"
     try: assert BHRD >= 2
     except TypeError as err: 
-        print(err.args)
+        assert err.args[0] == "Can only compare timeInterval or tuple"
 def test_non_tuple_math():
     try: BHRD + 2
     except TypeError as err: 
-        print(err.args)
+        assert err.args[0] == "Can only add timeInterval or tuple"
     try: BHRD - 2
     except TypeError as err: 
-        print(err.args)
+        assert err.args[0] == "Can only subtract timeInterval or tuple"
 
 def test_len_func():
     assert len(BHRD) == 3

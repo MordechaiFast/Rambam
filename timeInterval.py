@@ -85,6 +85,14 @@ class timeInterval:
             else: return False
         else: return True
 
+    def __lt__(self, other) -> bool:
+        other = self.tuple_check(other, "compare")
+        
+        for i in range(self.FULL_LENGTH):
+            if self[i] < other[i]: continue
+            else: return False
+        else: return True
+
     #math functions
     def __add__(self, addend):
         addend = self.tuple_check(addend, "add")
