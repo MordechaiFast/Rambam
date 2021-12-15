@@ -58,38 +58,92 @@ def test_month():
 
 def test_lo_ADU_rosh():
     # 7:1
+    print("7:1")
     for i in range(1, 6000):
         thisYear = year(i)
-        if thisYear.molad.days == 1:
-            assert thisYear.day == 2
-            break
-    print ("Year", thisYear.yearsFromCreation, "Molad", thisYear.molad, "Rosh Hashana", thisYear.day)
+        if thisYear.molad.days == 1: break
+    assert thisYear.day == 2
+    print (f"Year {thisYear.yearsFromCreation:>2} Molad {thisYear.molad} Rosh Hashana {thisYear.day}")
+    
     for i in range(1, 6000):
         thisYear = year(i)
-        if thisYear.molad.days == 4:
-            assert thisYear.day == 5
-            break
-    print ("Year", thisYear.yearsFromCreation, "Molad", thisYear.molad, "Rosh Hashana", thisYear.day)
+        if thisYear.molad.days == 4: break
+    assert thisYear.day == 5    
+    print (f"Year {thisYear.yearsFromCreation:>2} Molad {thisYear.molad} Rosh Hashana {thisYear.day}")
+    
     for i in range(1, 6000):
         thisYear = year(i)
-        if thisYear.molad.days == 6:
-            assert thisYear.day == 7
-            break
-    print ("Year", thisYear.yearsFromCreation, "Molad", thisYear.molad, "Rosh Hashana", thisYear.day)
+        if thisYear.molad.days == 6: break
+    assert thisYear.day == 7        
+    print (f"Year {thisYear.yearsFromCreation:>2} Molad {thisYear.molad} Rosh Hashana {thisYear.day}")
+
 def test_molad_zakan():
-    #7:2
-    conditions = 0
+    #7:2-3
+    print("7:2")
     for i in range(1, 6000):
         thisYear = year(i)
-        if thisYear.molad.days == 2:
-            if thisYear.molad.hours >= 18:
-                assert thisYear.day == 3
-                conditions += 1
-                if conditions == 2: break
-            if thisYear.molad.hours < 18:
-                assert thisYear.day == 2
-                conditions += 1
-                if conditions == 2: break
+        if thisYear.molad.days == 2 and thisYear.molad.hours >= 18: break
+    assert thisYear.day == 3
+    print (f"Year {thisYear.yearsFromCreation:>2} Molad {thisYear.molad} Rosh Hashana {thisYear.day}")
+    
+    for i in range(1, 6000):
+        thisYear = year(i)
+        if thisYear.molad.days == 2 and thisYear.molad.hours < 18: break
+    assert thisYear.day == 2
+    print (f"Year {thisYear.yearsFromCreation:>2} Molad {thisYear.molad} Rosh Hashana {thisYear.day}")
+
+    print("7:3")
+    for i in range(1, 6000):
+        thisYear = year(i)
+        if thisYear.molad.days == 7 and thisYear.molad.hours >= 18: break
+    assert thisYear.day == 2
+    print (f"Year {thisYear.yearsFromCreation:>2} Molad {thisYear.molad} Rosh Hashana {thisYear.day}")
+
+    for i in range(1, 6000):
+        thisYear = year(i)
+        if thisYear.molad.days == 3 and thisYear.molad.hours >= 18: break
+    assert thisYear.day == 5
+    print (f"Year {thisYear.yearsFromCreation:>2} Molad {thisYear.molad} Rosh Hashana {thisYear.day}")
+
+    for i in range(1, 6000):
+        thisYear = year(i)
+        if thisYear.molad.days == 5 and thisYear.molad.hours >= 18: break
+    assert thisYear.day == 7
+    print (f"Year {thisYear.yearsFromCreation:>2} Molad {thisYear.molad} Rosh Hashana {thisYear.day}")
+
+def test_GTRD():
+    #7:4
+    print("7:4")
+    for i in range(1, 6000):
+        thisYear = year(i)
+        if thisYear.molad.days == 3 and thisYear.molad >= (3, 9, 204) and thisYear.placeInCycle not in leapYears: break
+    assert thisYear.day == 5
+    print (f"Year {thisYear.yearsFromCreation:>2} Molad {thisYear.molad} Rosh Hashana {thisYear.day}")
+
+def test_BTUTKPT():
+    #7:5
+    print("7:5")
+    for i in range(1, 6000):
+        thisYear = year(i)
+        if thisYear.molad.days == 2 and thisYear.molad >= (2, 15, 589) and thisYear.placeInCycle -1 in leapYears: break
+    assert thisYear.day == 3
+    print (f"Year {thisYear.yearsFromCreation:>2} Molad {thisYear.molad} Rosh Hashana {thisYear.day}")
+
+def test_not_GTRD():
+    # 7:6
+    print("7:6")
+    for i in range(1, 6000):
+        thisYear = year(i)
+        if thisYear.molad.days == 3 and thisYear.molad < (3, 9, 204) and thisYear.placeInCycle not in leapYears: break
+    assert thisYear.day == 3
+    print (f"Year {thisYear.yearsFromCreation:>2} Molad {thisYear.molad} Rosh Hashana {thisYear.day}")
+
+    for i in range(1, 6000):
+        thisYear = year(i)
+        if thisYear.molad.days == 2 and thisYear.molad < (2, 15, 589) and thisYear.placeInCycle - 1 in leapYears: break
+    assert thisYear.day == 2
+    print (f"Year {thisYear.yearsFromCreation:>2} Molad {thisYear.molad} Rosh Hashana {thisYear.day}")
+    
 
 def test_season():
     # 9:1

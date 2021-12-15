@@ -65,5 +65,18 @@ def test_len_func():
     assert len(timeInterval()) == 0
 def test_eq():
     assert BHRD == (2, 5, 204)
+    assert not BHRD == (1, 2, 3)
+    assert not BHRD == (2, 5, 200)
 def test_gt():
-    assert BHRD >= (1,2,3)
+    assert BHRD >= (2, 5, 200)
+    assert BHRD >= (2, 5, 204)
+    assert not BHRD >= (2, 5, 210)
+
+def test_lt():
+    assert BHRD < (2, 5, 205)
+    assert BHRD < (2, 5, 204)
+    assert not BHRD < (2, 5, 200)
+
+def test_negetive_year():
+    assert year(0 ).molad == (3, 7, 695)
+    assert year(-1).molad == (5, 22, 899)
