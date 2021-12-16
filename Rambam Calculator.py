@@ -17,12 +17,12 @@ space = True
 print ("\nRambam calulations\n")
 
 #6:3
-from year import lunarMonth
+from year import LUNAR_MONTH
 #printTime("6:3 One month is:", lunarMonth, space)
 
 #6:4
 # The length of the various types of years.
-from year import lunarYear, leapYear
+from year import LUNAR_YEAR, LEAP_YEAR
 from season import solarYear, solarYearExcess
 """
 printTime("6:4 Twevle months is:", lunarYear)
@@ -32,7 +32,7 @@ printTime("That is more than a lunar year by:", solarYearExcess, space)
 #"""
 
 #6:5
-from year import lunarMonthRemainder, lunarYearRemainder, leapYearRemainder 
+from year import LUNAR_MONTH_REMAINDER, LUNAR_YEAR_REMAINDER, LEAP_YEAR_REMAINDER 
 """
 printTime("6:5 Each month moves the molad:", lunarMonthRemainder)
 printTime("Each regular year:", lunarYearRemainder)
@@ -52,10 +52,10 @@ from year import BHRD
 
 #6:9
 # When adding the movements in the week, one must reduce the chalakim, hours and days.
-printTime("6:9 The molad of Tishrei after BHRD was, after rounding:", BHRD + lunarYearRemainder, space)
+printTime("6:9 The molad of Tishrei after BHRD was, after rounding:", BHRD + LUNAR_YEAR_REMAINDER, space)
 
 #6:10
-from year import cycleYears, cycle
+from year import CYCLE_YEARS, CYCLE
 from season import solarCycle, solarCycleExcess
 """
 printTime("6:10 One 19 year cycle is:", cycle)
@@ -64,11 +64,11 @@ printTime("That is more than a lunar cycle by:", solarCycleExcess, space)
 #"""
 
 #6:11
-from year import leapYears
+from year import LEAP_YEARS
 #print("6:11 The leap years are:", leapYears, "\n")
 
 #6:12
-from year import cycleRemainder
+from year import CYCLE_REMAINDER
 #printTime("6:12 Each cycle moves the molad:", cycleRemainder, space)
 
 #6:13
@@ -77,9 +77,9 @@ from year import cycleRemainder
 
 #6:14
 # Given a year, find the molad for the start of that year.
-from year import year
+from year import Year
 
-RambamsYear = year(4938)
+RambamsYear = Year(4938)
 """
 print("6:14 The year the Ramabam was writing was:", RambamsYear.yearsFromCreation)
 print("That was cycle", RambamsYear.cyclesToYear + 1, " year", RambamsYear.placeInCycle, "\n")
@@ -87,15 +87,15 @@ print("That was cycle", RambamsYear.cyclesToYear + 1, " year", RambamsYear.place
 
 #6:15
 # For any month, find the molad of that month.
-from month import month
+from month import Month
 
 printNextTishrei = True
 startFromTishrei = True
-def printMonthsOfYear (aYear: year, printNextTishrei = False):
+def printMonthsOfYear (aYear: Year, printNextTishrei = False):
     """Prints all of the months of the given year, with their names, molad, and days of Rosh Chodesh."""
 
-    for m in range (12 if aYear.placeInCycle not in leapYears else 13):
-        thisMonth = month(aYear, m, startFromTishrei)
+    for m in range (12 if aYear.placeInCycle not in LEAP_YEARS else 13):
+        thisMonth = Month(aYear, m, startFromTishrei)
         if thisMonth.twoDayRoshChodesh:
             if thisMonth.day == 1:
                 print(thisMonth.name, "\t", thisMonth.molad,"\t", 7,1)
@@ -104,7 +104,7 @@ def printMonthsOfYear (aYear: year, printNextTishrei = False):
         else:
             print(thisMonth.name, "\t", thisMonth.molad, "\t", thisMonth.day)
     if printNextTishrei:
-        thisMonth = month(aYear.yearAfter(), 7)
+        thisMonth = Month(aYear.yearAfter(), 7)
         print(thisMonth.name, "\t", thisMonth.molad, "\t", thisMonth.day)
 
 # """ GTRD and BTU TKPT testing
@@ -112,12 +112,12 @@ dummyYear = 0
 for y in [5745, 5765]:
     print("\nYear", y)
     try: 
-        printMonthsOfYear(year(y), printNextTishrei)
+        printMonthsOfYear(Year(y), printNextTishrei)
     except KeyError as d:
         if d.args[0] == 5: print("GTRD")
         if d.args[0] == 3: print("BTU TKPT")
         print("There are", d, "days between Rosh HaShana of year", y, "and the next year's. Is this year GTRD or next year BTU TKPT?")
-        printMonthsOfYear(year(y, dummyYear), printNextTishrei)        
+        printMonthsOfYear(Year(y, dummyYear), printNextTishrei)        
 #"""
 
 # Perek 7 - The day of Rosh HaShanah

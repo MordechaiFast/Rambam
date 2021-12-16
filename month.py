@@ -1,13 +1,13 @@
-from year import year, leapYears, lunarMonthRemainder
-monthNames = ["Tishrei", "Marchesvan", "Kislev ", "Teves  ", "Shevat ", "Addar  ",
+from year import Year, LEAP_YEARS, LUNAR_MONTH_REMAINDER
+MONTH_NAMES = ["Tishrei", "Marchesvan", "Kislev ", "Teves  ", "Shevat ", "Addar  ",
 "Nissan ", "Iyyar  ", "Sivan  ", "Tamuz  ", "Av     ", "Elul   "]
-monthNamesInLeapYear = ["Tishrei", "Marchesvan", "Kislev ", "Teves  ", "Shevat ",
+MONTH_NAMES_IN_LEAP_YEAR = ["Tishrei", "Marchesvan", "Kislev ", "Teves  ", "Shevat ",
 "Addar I", "Addar II", "Nissan ", "Iyyar  ", "Sivan  ", "Tamuz  ", "Av     ", "Elul   "]
 #8:1-2 
 # A month can only be of whole days.
-shortMonth, wholeMonth = 29, 30
+SHORT_MONTH, WHOLE_MONTH = 29, 30
 
-class month:
+class Month:
     """monthReference starts with 0 for Tishrei or 1 for Nissan.
 
     Holds the year that the month is in, 
@@ -15,7 +15,7 @@ class month:
     the molad of that month, 
     and the date and day of the week Rosh Chodesh."""
     
-    def __init__(self, year: year, monthReference: int, startFromTishrei = False) -> None:
+    def __init__(self, year: Year, monthReference: int, startFromTishrei = False) -> None:
         # Save the year
         self.year = year
         """The year that this month is a part of"""
@@ -30,7 +30,7 @@ class month:
                 # We want Tishrei to be 0, so take away 7.
                 monthCount = monthReference - 7
             # For months between Nissan and Tishrei, it depends if the given year is a leap year.
-            elif year.placeInCycle in leapYears:
+            elif year.placeInCycle in LEAP_YEARS:
                 # Nissan is 7 months from Tishrei in a leap year.
                 monthCount = monthReference + 6
             else:
@@ -38,15 +38,15 @@ class month:
                 monthCount = monthReference + 5
 
         # Find the month's name
-        if year.placeInCycle not in leapYears:
-            self.name = monthNames[monthCount]
+        if year.placeInCycle not in LEAP_YEARS:
+            self.name = MONTH_NAMES[monthCount]
             """The name of the month"""
         else:
-            self.name = monthNamesInLeapYear[monthCount]
+            self.name = MONTH_NAMES_IN_LEAP_YEAR[monthCount]
     
         #6:15
         # To find the molad of a specific month, add the molad of a month for each month until the requiered month.
-        self.molad = year.molad + lunarMonthRemainder * monthCount
+        self.molad = year.molad + LUNAR_MONTH_REMAINDER * monthCount
         """The molad of this month"""
 
         # Defning the day of Rosh Chodesh
@@ -67,9 +67,9 @@ class month:
 
         for i in range (monthCount):
             if year.wholeMonths[i]:
-                self.date += wholeMonth
+                self.date += WHOLE_MONTH
             else:
-                self.date += shortMonth
+                self.date += SHORT_MONTH
         self.day = self.date % 7
         """The day of the week of Rosh Chodesh of this month from 1-7"""
         if self.day == 0: self.day = 7
