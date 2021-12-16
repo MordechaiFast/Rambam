@@ -38,10 +38,10 @@ def test_rounding():
     # Rounding test
     assert timeInWeek(BHRD) + (5,18,876) == timeInWeek(timeInterval(1))
 def test_cycle():
-    # Test of 6:10
+    # 6:10
     # Combined arithmatic test
     assert solarCycleExcess == (0, 1, 485)
-    # Test of 6:11
+    # 6:11
     assert leapYears >= {3, 6, 8, 11, 14, 17, 19}
     # For internal reasons, leapYears includes 0.
     # 6:12
@@ -78,7 +78,7 @@ def test_lo_ADU_rosh():
     print (f"Year {thisYear.yearsFromCreation:>2} Molad {thisYear.molad} Rosh Hashana {thisYear.day}")
 
 def test_molad_zakan():
-    #7:2-3
+    # 7:2-3
     print("7:2")
     for i in range(1, 6000):
         thisYear = year(i)
@@ -112,7 +112,7 @@ def test_molad_zakan():
     print (f"Year {thisYear.yearsFromCreation:>2} Molad {thisYear.molad} Rosh Hashana {thisYear.day}")
 
 def test_GTRD():
-    #7:4
+    # 7:4
     print("7:4")
     for i in range(1, 6000):
         thisYear = year(i)
@@ -121,7 +121,7 @@ def test_GTRD():
     print (f"Year {thisYear.yearsFromCreation:>2} Molad {thisYear.molad} Rosh Hashana {thisYear.day}")
 
 def test_BTUTKPT():
-    #7:5
+    # 7:5
     print("7:5")
     for i in range(1, 6000):
         thisYear = year(i)
@@ -143,7 +143,24 @@ def test_not_GTRD():
         if thisYear.molad.days == 2 and thisYear.molad < (2, 15, 589) and thisYear.placeInCycle - 1 in leapYears: break
     assert thisYear.day == 2
     print (f"Year {thisYear.yearsFromCreation:>2} Molad {thisYear.molad} Rosh Hashana {thisYear.day}")
-    
+
+def test_month_lengths():
+    # 8:5
+    thisYear = year(1)
+    for i in range(1, 13):
+        thisMonth = month(thisYear, i)
+        if   i in {1, 3, 5, 7, 11}:
+            assert not thisMonth.twoDayRoshChodesh
+        elif i in {2, 4, 6, 8, 12}:
+            assert thisMonth.twoDayRoshChodesh
+
+    thisYear = year(3)
+    for i in range(1, 14):
+        thisMonth = month(thisYear, i)
+        if   i in {1, 3, 5, 7, 11}:
+            assert not thisMonth.twoDayRoshChodesh
+        elif i in {2, 4, 6, 8, 12, 13}:
+            assert thisMonth.twoDayRoshChodesh    
 
 def test_season():
     # 9:1
