@@ -2,7 +2,6 @@ from season import *
 from timeInterval import *
 from year import *
 
-
 def test_fractions():
     assert timeInterval(1.25) == (1,6)
     assert timeInterval(0, 7.5) == (0,7,540)
@@ -13,12 +12,8 @@ def test_nagative_input():
     assert timeInterval(-1,-1,-1) == (-2,22,1079)
     assert timeInterval(0,-30) == (-2,18)
 
-exampleMonth = timeInterval(1,17,107)
-def test_ge():
-    assert BHRD >= exampleMonth
-    assert not (exampleMonth >= BHRD)
 def test_adding_tuple():
-    assert exampleMonth + (1,12) == (3,5,107)
+    assert BHRD + (1, 12) == (3, 17, 204)
 
 # Try negitave time
 def test_negetive_result():
@@ -67,16 +62,15 @@ def test_eq():
     assert BHRD == (2, 5, 204)
     assert not BHRD == (1, 2, 3)
     assert not BHRD == (2, 5, 200)
-def test_gt():
+def test_ge():
     assert BHRD >= (2, 5, 200)
     assert BHRD >= (2, 5, 204)
     assert not BHRD >= (2, 5, 210)
-
 def test_lt():
     assert BHRD < (2, 5, 205)
     assert BHRD < (2, 5, 204)
     assert not BHRD < (2, 5, 200)
 
 def test_negetive_year():
-    assert year(0 ).molad == (3, 7, 695)
-    assert year(-1).molad == (5, 22, 899)
+    assert Year(0 ).molad == (3, 7, 695)
+    assert Year(-1).molad == (5, 22, 899)

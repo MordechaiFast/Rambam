@@ -7,9 +7,9 @@ class TestLengthValues(unittest.TestCase):
 
     # Test values in 6:4
     def test_year_length(self):
-        self.assertEqual(lunarYear, timeInterval(354, 8, 876))
+        self.assertEqual(LUNAR_YEAR, timeInterval(354, 8, 876))
     def test_leap_year_length(self):
-        self.assertEqual(leapYear, timeInterval(383, 21, 589))
+        self.assertEqual(LEAP_YEAR, timeInterval(383, 21, 589))
     def test_solar_year_length(self):
         self.assertEqual(solarYear, timeInterval(365, 6))
     def test_solar_year_excess(self):
@@ -17,11 +17,11 @@ class TestLengthValues(unittest.TestCase):
 
     # Test values in 6:5
     def test_month_molad(self):
-        self.assertEqual(lunarMonthRemainder, timeInterval(1, 12, 793))
+        self.assertEqual(LUNAR_MONTH_REMAINDER, timeInterval(1, 12, 793))
     def test_year_molad(self):
-        self.assertEqual(lunarYearRemainder, timeInterval(4, 8, 876))
+        self.assertEqual(LUNAR_YEAR_REMAINDER, timeInterval(4, 8, 876))
     def test_leap_lear_molad(self):
-        self.assertEqual(leapYearRemainder, timeInterval(5, 21, 589))
+        self.assertEqual(LEAP_YEAR_REMAINDER, timeInterval(5, 21, 589))
 
     # Test non-intiger values
     def test_fractional_days(self):

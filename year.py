@@ -4,32 +4,30 @@ from timeInterval import timeInWeek, timeInterval
 # Constants
 BHRD = timeInterval(2,5,204)
 """Starting molad"""
-lunarMonth = timeInterval(29,12,793)
+LUNAR_MONTH = timeInterval(29,12,793)
 """The length of a month"""
-lunarYear = lunarMonth * 12
+LUNAR_YEAR = LUNAR_MONTH * 12
 """The lenght of a lunar year of 12 months"""
-leapYear = lunarYear + lunarMonth
+LEAP_YEAR = LUNAR_YEAR + LUNAR_MONTH
 """The lenght of a leap year of 13 months"""
-lunarMonthRemainder = timeInWeek(lunarMonth)
+LUNAR_MONTH_REMAINDER = timeInWeek(LUNAR_MONTH)
 """The ofset of the molad after one month"""
-lunarYearRemainder = lunarMonthRemainder * 12
+LUNAR_YEAR_REMAINDER = LUNAR_MONTH_REMAINDER * 12
 """The ofset of the molad after one regular year"""
-leapYearRemainder = lunarYearRemainder + lunarMonthRemainder
+LEAP_YEAR_REMAINDER = LUNAR_YEAR_REMAINDER + LUNAR_MONTH_REMAINDER
 """The ofset of the molad after one leap year"""
-cycleYears = 19
+CYCLE_YEARS = 19
 """In a cycle of 19 lunar years with 7 leap years, the number of days is the same as 19 solar years"""
-cycle = lunarYear * 12 + leapYear * 7
+CYCLE = LUNAR_YEAR * 12 + LEAP_YEAR * 7
 """The length of a 19 lunar year cycle with 7 leap years"""
-cycleRemainder = lunarYearRemainder * 12 + leapYearRemainder * 7
+CYCLE_REMAINDER = LUNAR_YEAR_REMAINDER * 12 + LEAP_YEAR_REMAINDER * 7
 """The length of a cycle in days of the week."""
-leapYears = {0, 3, 6, 8, 11, 14, 17, 19}
+LEAP_YEARS = {0, 3, 6, 8, 11, 14, 17, 19}
 """The leap years in a 19 year cycle are years 3, 6, 8, 11, 14, 17, and 19"""
 ADU = {1,4,6}
 """The day of Rosh Chodesh Tishrei (Rosh Hashanah) is never set to days 1, 4, or 6, according to the set calandar. """
-dummyYear = True
-"""Tells the newly created year not to unnessicarily calculate its own month lenght arangement (and avoid and infinate recurtion) by setting the start year to 0"""
 
-class year:
+class Year:
     """Holds the year number from Creation, 
     the cycles past and place in cycle, 
     the date and day of the week of Rosh Hashana, 
@@ -50,31 +48,31 @@ class year:
         # 2) Divide that into cycles. We now know the number of cycles and the year within the current cycle.
     
         # Since we will have to correct for the last year of  the cycle, first determin the year within the cycle.
-        self.placeInCycle = self.yearsFromCreation % cycleYears
+        self.placeInCycle = self.yearsFromCreation % CYCLE_YEARS
         """The place in the 19 year cycle from 1-19"""
         if self.placeInCycle == 0:
-            self.cyclesToYear = self.yearsFromCreation // cycleYears - 1
+            self.cyclesToYear = self.yearsFromCreation // CYCLE_YEARS - 1
             """The number of whole 19 year cycles before the current year"""
-            self.placeInCycle = cycleYears
+            self.placeInCycle = CYCLE_YEARS
         else:
-            self.cyclesToYear = self.yearsFromCreation // cycleYears
+            self.cyclesToYear = self.yearsFromCreation // CYCLE_YEARS
     
         # 3) Add together the full cycles
-        self.molad = timeInWeek(BHRD) + cycleRemainder * self.cyclesToYear
+        self.molad = timeInWeek(BHRD) + CYCLE_REMAINDER * self.cyclesToYear
         """The molad of the begning of this year"""
         
         # 4) Add the regular years and the leap years
 
         # The given year does not get its length added to the total time. This is accomplished by the for loop itself; the place in cycle is out of the range.
         for y in range(1, self.placeInCycle):
-            if y in leapYears: self.molad += leapYearRemainder
-            else:              self.molad += lunarYearRemainder
+            if y in LEAP_YEARS: self.molad += LEAP_YEAR_REMAINDER
+            else:               self.molad += LUNAR_YEAR_REMAINDER
         
-        date = BHRD + cycle * self.cyclesToYear
+        date = BHRD + CYCLE * self.cyclesToYear
         """The date of the molad in days from Shabbos before BHRD"""
         for y in range(1, self.placeInCycle):
-            if y in leapYears: date += leapYear
-            else:              date += lunarYear
+            if y in LEAP_YEARS: date += LEAP_YEAR
+            else:               date += LUNAR_YEAR
     
         #(Halacha 15 is in the month class)
 
@@ -99,16 +97,16 @@ class year:
 
         #7:4 
         # GTRD - If the molad of Tishrei is on a day 3, and the molad is after 9 hours and 204 chalakim, and the year is not a  leap year, Rosh Chodesh is set to day 5, which is two days after the molad. 
-        elif((self.molad.days == 3)
-         and (self.molad >= (3, 9, 204))
-         and (self.placeInCycle not in leapYears)):
+        elif(self.molad.days == 3
+         and self.molad >= (3, 9, 204)
+         and self.placeInCycle not in LEAP_YEARS):
             self.day = self.molad.days + 2
 
         #7:5 
         # BTU TKPT - If the molad of Tishrei is on a day 2, and the molad is after 15 hours and 589 chalakim, and it is the year after a  leap year, Rosh Chodesh is set to day 3. 
-        elif((self.molad.days == 2)
-         and (self.molad >= (2, 15, 589))
-         and (self.placeInCycle - 1 in leapYears)):
+        elif(self.molad.days == 2
+         and self.molad >= (2, 15, 589)
+         and self.placeInCycle - 1 in LEAP_YEARS):
             self.day = self.molad.days + 1
         
         #7:6
@@ -135,18 +133,18 @@ class year:
                             True, False, True, False, True, False]
         """Those months that are whole in this year. True = whole"""
         # In a leap year Addar I is a full month.
-        if self.placeInCycle in leapYears: self.wholeMonths.insert(5, True)
+        if self.placeInCycle in LEAP_YEARS: self.wholeMonths.insert(5, True)
         
         #8:6
-        yearType = { 'full' : False, 'lacking' : False, 'orderly' : False}
+        yearType = {'full' : False, 'lacking' : False, 'orderly' : False}
         """An indicator if the current year's months (Marhesvan and Kislev) are lacking, whole, or accorting to thier normal pattern, Marheshvan lacking and Kislev whole."""
         
         #8:7
         # Determinimg the type of year for setting the days of Rosh Chodesh of the different months.
         if startYear != 0:
-            daysBetween = (self.yearAfter(dummyYear).day - self.day -1) % 7
+            daysBetween = (self.yearAfter(dummyYear= True).day - self.day - 1) % 7
             """The number of days between Rosh Hashanah this year and Rosh Hashana next year, not inclusive"""
-            if self.placeInCycle not in leapYears:
+            if self.placeInCycle not in LEAP_YEARS:
                 #For different days between, set different year types
                 yearType[{2: 'lacking', 3: 'orderly', 4: 'full'}[daysBetween]] = True
             
@@ -163,4 +161,4 @@ class year:
         """Generates the next year after this one.
         
         A dummy year is one that does not determin if its months are lacking or whole."""
-        return year(self.yearsFromCreation + 1, (0 if dummyYear else 1))
+        return Year(self.yearsFromCreation + 1, 0 if dummyYear else 1)
