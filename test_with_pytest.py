@@ -63,13 +63,13 @@ def test_eq():
     assert not BHRD == (1, 2, 3)
     assert not BHRD == (2, 5, 200)
 def test_ge():
-    assert BHRD >= (2, 5, 200)
+    assert BHRD >= (2, 5, 203)
     assert BHRD >= (2, 5, 204)
-    assert not BHRD >= (2, 5, 210)
+    assert not BHRD >= (2, 5, 205)
 def test_lt():
     assert BHRD < (2, 5, 205)
-    assert BHRD < (2, 5, 204)
-    assert not BHRD < (2, 5, 200)
+    assert not BHRD < (2, 5, 204)
+    assert not BHRD < (2, 5, 203)
 
 def test_negetive_year():
     assert Year(0 ).molad == (3, 7, 695)

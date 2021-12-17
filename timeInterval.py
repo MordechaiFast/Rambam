@@ -92,7 +92,7 @@ class timeInterval:
             if   self[i] <  other[i]: return True
             elif self[i] == other[i]: continue
             else: return False
-        else: return True
+        else: return False
 
     #math functions
     def __add__(self, addend):
