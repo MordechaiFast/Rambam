@@ -1,4 +1,4 @@
-from year import *
+from calendarUnits import *
 def test_all_dechios():
     wantedYears = [None] * 15
     for i in range(1, 100):
@@ -14,7 +14,8 @@ def test_all_dechios():
             assert thisYear.day == 7
             if not wantedYears[2]: wantedYears[2] = thisYear
         # 7:2
-        elif thisYear.molad.days == 2 and thisYear.molad.hours >= 18:
+        elif (thisYear.molad.days == 2 
+          and thisYear.molad.hours >= 18):
             assert thisYear.day == 3
             if not wantedYears[3]: wantedYears[3] = thisYear
         elif (thisYear.molad.days == 2
@@ -67,5 +68,6 @@ def test_all_dechios():
         elif thisYear.molad.days == 7 and thisYear.molad.hours < 18:
             assert thisYear.day == 7
             if not wantedYears[14]: wantedYears[14] = thisYear
+    print()
     for thisYear in wantedYears[:]:
         print (f"Year {thisYear.yearsFromCreation:>2} Molad {thisYear.molad} Rosh Hashana {thisYear.day}")

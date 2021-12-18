@@ -1,6 +1,5 @@
-from timeInterval import timeInterval
-from year import Year, LUNAR_YEAR, CYCLE_YEARS, CYCLE
-from month import Month
+from timeMeasures import timeInterval
+from calendarUnits import Year, LUNAR_YEAR, CYCLE_YEARS, CYCLE, Month
 
 #9:1
 solarYear = timeInterval(365,6)

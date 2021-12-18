@@ -1,3 +1,4 @@
+"""Contains classes for lenghts of time in absolute measure and in terms of the week."""
 #6:2
 HOURS_IN_DAY = 24
 """The day is broken up into 24 hours. """
@@ -39,17 +40,23 @@ class timeInterval:
         self.days += self.hours // HOURS_IN_DAY
         self.hours %= HOURS_IN_DAY
 
+        return self
+
     # iteration functions
     def __getitem__(self, key) -> int:
-        if   key == 0: return self.days
-        elif key == 1: return self.hours
-        elif key == 2: return self.chalakim
+        if   key in {0, 'days'}: return self.days
+        elif key in {1, 'hours'}: return self.hours
+        elif key in {2, 'chalakim'}: return self.chalakim
         else: raise IndexError
     def __setitem__(self, key, value):
-        if   key == 0: self.days = value
-        elif key == 1: self.hours = value
-        elif key == 2: self.chalakim = value
+        if   key in {0, 'days'}: self.days = value
+        elif key in {1, 'hours'}: self.hours = value
+        elif key in {2, 'chalakim'}: self.chalakim = value
         else: raise IndexError
+    
+    # String function
+    def __str__(self) -> str:
+        return f"{self.days} {self.hours:>2} {self.chalakim:>4}"
 
     # Allow operators to work with tuples
     def tuple_check(self, input, operation: str):
@@ -101,8 +108,7 @@ class timeInterval:
         sum = timeInterval()
         for i in range (self.FULL_LENGTH):
             sum[i] = self[i] + addend[i]
-        sum.reduce()
-        return sum
+        return sum.reduce()
  
     def __sub__(self, subtrahend):
         subtrahend = self.tuple_check(subtrahend, "subtract")
@@ -110,27 +116,21 @@ class timeInterval:
         difference = timeInterval()
         for i in range (self.FULL_LENGTH -1, -1, -1):
             difference[i] = self[i] + -subtrahend[i]
-        difference.reduce()
-        return difference
+        return difference.reduce()
 
     def __mul__(self, factor):
         product = timeInterval()
         for i in range(len(self)):
             product[i] = self[i] * factor
-        product.reduce()
-        return product
+        return product.reduce()
 
     def __floordiv__(self, divisor):
         return self * (1 / divisor)
-    
-    # String function
-    def __str__(self) -> str:
-        return f"{self.days} {self.hours:>2} {self.chalakim:>4}"
 
 class timeInWeek (timeInterval):
     """A time of week, or the offset of a time of week."""
     def __init__(self, totalTime: timeInterval):
-        super().__init__(days=totalTime.days, hours=totalTime.hours, chalakim=totalTime.chalakim)
+        super().__init__(days= totalTime.days, hours= totalTime.hours, chalakim= totalTime.chalakim)
 
     def reduce(self):
         """Reduces the number of chalakim to less than 1080 and the hours to less than 24, adding the whole hours and whole days. Sets the day to a day of the week 1-7."""

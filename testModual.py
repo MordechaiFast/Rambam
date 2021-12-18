@@ -1,6 +1,6 @@
 import unittest
-from timeInterval import *
-from year import *
+from timeMeasures import *
+from calendarUnits import *
 from season import*
 
 class TestLengthValues(unittest.TestCase):

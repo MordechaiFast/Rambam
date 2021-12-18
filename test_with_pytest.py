@@ -1,6 +1,6 @@
+from timeMeasures import *
+from calendarUnits import *
 from season import *
-from timeInterval import *
-from year import *
 
 def test_fractions():
     assert timeInterval(1.25) == (1,6)

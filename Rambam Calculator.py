@@ -3,7 +3,7 @@
 #6:1
 # The first step in calculating the moon sighting for a given month is to work out how many days after a date with known solar and lunar positions. In order to to that we must work out the aproximate date of conjunction, the molad.
  
-from timeInterval import timeInterval
+from timeMeasures import timeInterval
 
 #sample time printing
 def printTime (title, time:timeInterval, space = False):
@@ -17,12 +17,12 @@ space = True
 print ("\nRambam calulations\n")
 
 #6:3
-from year import LUNAR_MONTH
+from calendarUnits import LUNAR_MONTH
 #printTime("6:3 One month is:", lunarMonth, space)
 
 #6:4
 # The length of the various types of years.
-from year import LUNAR_YEAR, LEAP_YEAR
+from calendarUnits import LUNAR_YEAR, LEAP_YEAR
 from season import solarYear, solarYearExcess
 """
 printTime("6:4 Twevle months is:", lunarYear)
@@ -32,7 +32,7 @@ printTime("That is more than a lunar year by:", solarYearExcess, space)
 #"""
 
 #6:5
-from year import LUNAR_MONTH_REMAINDER, LUNAR_YEAR_REMAINDER, LEAP_YEAR_REMAINDER 
+from calendarUnits import LUNAR_MONTH_REMAINDER, LUNAR_YEAR_REMAINDER, LEAP_YEAR_REMAINDER 
 """
 printTime("6:5 Each month moves the molad:", lunarMonthRemainder)
 printTime("Each regular year:", lunarYearRemainder)
@@ -47,7 +47,7 @@ printTime("Molad Iyyar will be:", exampleMonth + lunarMonthRemainder, space)
 printTime("6:8 Molad Nissan the next year will be:", exampleMonth + lunarYearRemainder, space)
 #"""
 
-from year import BHRD
+from calendarUnits import BHRD
 #printTime("6:8 BHRD was:", BHRD, space)
 
 #6:9
@@ -55,7 +55,7 @@ from year import BHRD
 printTime("6:9 The molad of Tishrei after BHRD was, after rounding:", BHRD + LUNAR_YEAR_REMAINDER, space)
 
 #6:10
-from year import CYCLE_YEARS, CYCLE
+from calendarUnits import CYCLE_YEARS, CYCLE
 from season import solarCycle, solarCycleExcess
 """
 printTime("6:10 One 19 year cycle is:", cycle)
@@ -64,11 +64,11 @@ printTime("That is more than a lunar cycle by:", solarCycleExcess, space)
 #"""
 
 #6:11
-from year import LEAP_YEARS
+from calendarUnits import LEAP_YEARS
 #print("6:11 The leap years are:", leapYears, "\n")
 
 #6:12
-from year import CYCLE_REMAINDER
+from calendarUnits import CYCLE_REMAINDER
 #printTime("6:12 Each cycle moves the molad:", cycleRemainder, space)
 
 #6:13
@@ -77,7 +77,7 @@ from year import CYCLE_REMAINDER
 
 #6:14
 # Given a year, find the molad for the start of that year.
-from year import Year
+from calendarUnits import Year
 
 RambamsYear = Year(4938)
 """
@@ -87,7 +87,7 @@ print("That was cycle", RambamsYear.cyclesToYear + 1, " year", RambamsYear.place
 
 #6:15
 # For any month, find the molad of that month.
-from month import Month
+from calendarUnits import Month
 
 printNextTishrei = True
 startFromTishrei = True

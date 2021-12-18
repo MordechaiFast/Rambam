@@ -1,6 +1,5 @@
-from timeInterval import CHALAKIM_IN_HOUR, HOURS_IN_DAY
-from year import *
-from month import *
+from timeMeasures import CHALAKIM_IN_HOUR, HOURS_IN_DAY
+from calendarUnits import *
 from season import *
 
 def test_lengths():
