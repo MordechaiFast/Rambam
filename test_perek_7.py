@@ -14,13 +14,13 @@ def test_all_dechios():
             assert thisYear.day == 7
             if not wantedYears[2]: wantedYears[2] = thisYear
         # 7:2
-        elif (thisYear.molad.days == 2 
-          and thisYear.molad.hours >= 18):
+        elif(thisYear.molad.days == 2 
+         and thisYear.molad.hours >= 18):
             assert thisYear.day == 3
             if not wantedYears[3]: wantedYears[3] = thisYear
-        elif (thisYear.molad.days == 2
-          and thisYear.molad.hours < 18 
-          and thisYear.placeInCycle -1 not in LEAP_YEARS):
+        elif(thisYear.molad.days == 2
+         and thisYear.molad.hours < 18 
+         and thisYear.placeInCycle -1 not in LEAP_YEARS):
             assert thisYear.day == 2
             if not wantedYears[4]: wantedYears[4] = thisYear
         # 7:3
@@ -34,32 +34,32 @@ def test_all_dechios():
             assert thisYear.day == 7
             if not wantedYears[7]: wantedYears[7] = thisYear
         # 7:4
-        elif (thisYear.molad.days == 3
-          and thisYear.molad >= (3, 9, 204)
-          and thisYear.placeInCycle not in LEAP_YEARS):
+        elif(thisYear.molad.days == 3
+         and thisYear.molad >= (3, 9, 204)
+         and thisYear.placeInCycle not in LEAP_YEARS):
             assert thisYear.day == 5
             if not wantedYears[8]: wantedYears[8] = thisYear
         # 7:5
-        elif (thisYear.molad.days == 2
-          and thisYear.molad >= (2, 15, 589)
-          and thisYear.placeInCycle -1 in LEAP_YEARS):
+        elif(thisYear.molad.days == 2
+         and thisYear.molad >= (2, 15, 589)
+         and thisYear.placeInCycle -1 in LEAP_YEARS):
             assert thisYear.day == 3
             if not wantedYears[9]: wantedYears[9] = thisYear
         # 7:6
-        elif (thisYear.molad.days == 3
-          and thisYear.molad < (3, 9, 204)
-          and thisYear.placeInCycle not in LEAP_YEARS):
+        elif(thisYear.molad.days == 3
+         and thisYear.molad < (3, 9, 204)
+         and thisYear.placeInCycle not in LEAP_YEARS):
             assert thisYear.day == 3
             if not wantedYears[10]: wantedYears[10] = thisYear
-        elif (thisYear.molad.days == 2
-          and thisYear.molad < (2, 15, 589)
-          and thisYear.placeInCycle - 1 in LEAP_YEARS):
+        elif(thisYear.molad.days == 2
+         and thisYear.molad < (2, 15, 589)
+         and thisYear.placeInCycle - 1 in LEAP_YEARS):
             assert thisYear.day == 2
             if not wantedYears[11]: wantedYears[11] = thisYear
         # More cases where the day of Rosh Hashanah is the day of the molad
-        elif (thisYear.molad.days == 3
-          and thisYear.molad.hours < 18
-          and thisYear.placeInCycle in LEAP_YEARS):
+        elif(thisYear.molad.days == 3
+         and thisYear.molad.hours < 18
+         and thisYear.placeInCycle in LEAP_YEARS):
             assert thisYear.day == 3
             if not wantedYears[12]: wantedYears[12] = thisYear
         elif thisYear.molad.days == 5 and thisYear.molad.hours < 18:

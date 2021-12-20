@@ -15,17 +15,19 @@ def test_nagative_input():
 def test_adding_tuple():
     assert BHRD + (1, 12) == (3, 17, 204)
 
-# Try negitave time
 def test_negetive_result():
+    BHRD = timeInterval(2,5,204)
     assert BHRD - (7,) == (-5, 5, 204)
     assert BHRD - (7, 5, 204) == (-5,)
     assert BHRD - (7, 6) == (-6, 23, 204)
 
-# Test indexing
 def test_index_retreval():
     assert BHRD[0] == 2
     assert BHRD[1] == 5
     assert BHRD[2] == 204
+    assert BHRD['days'] == 2
+    assert BHRD['hours'] == 5
+    assert BHRD['chalakim'] == 204
 def test_index_setting():
     newExample = timeInterval()
     newExample[0] = 1
@@ -34,6 +36,12 @@ def test_index_setting():
     assert newExample[0] == 1
     assert newExample[1] == 2
     assert newExample[2] == 3
+    newExample['days'] = 4
+    newExample['hours'] = 5
+    newExample['chalakim'] = 6
+    assert newExample.days == 4
+    assert newExample.hours == 5
+    assert newExample.chalakim == 6
 def test_index_out_of_bounds():
     try: assert BHRD[3]
     except IndexError : pass
@@ -53,7 +61,7 @@ def test_non_tuple_math():
     except TypeError as err: 
         assert err.args[0] == "Can only subtract timeInterval or tuple"
 
-def test_len_func():
+def test_len():
     assert len(BHRD) == 3
     assert len(solarYear) == 2
     assert len(timeInterval(1)) == 1
