@@ -25,6 +25,10 @@ LEAP_YEARS = {0, 3, 6, 8, 11, 14, 17, 19}
 """The leap years in a 19 year cycle are years 3, 6, 8, 11, 14, 17, and 19"""
 ADU = {1,4,6}
 """The day of Rosh Chodesh Tishrei (Rosh Hashanah) is never set to days 1, 4, or 6, according to the set calandar. """
+GTRD = timeInterval(7,18) - LUNAR_YEAR_REMAINDER
+"""If the molad of this year is after (3, 9, 204), and this year is a non-leap year, next year's molad will end up being on day 7 after noon, which gets pushed off to day 2, which makes too many whole monts for our calandar, so we push off the beginging of this year."""
+BTU_TKPT = LEAP_YEAR_REMAINDER + timeInterval(3, 18)
+"""When a leap year begins on day 3 after noon, Rosh Hashana is pushed off to day 5, but next year's molad is on day 2, and sometimes before noon. In that case, there would be too few whole months for our calandar, so we push off the following year's Rosh Hashana."""
 
 class Year:
     """Holds the year number from Creation, 
@@ -58,8 +62,7 @@ class Year:
         """The molad of the begning of this year"""
         
         # 4) Add the regular years and the leap years
-
-        # The given year does not get its length added to the total time. This is accomplished by the for loop itself; the place in cycle is out of the range.
+        # The given year does not get its length added to the total time. This is accomplished by the range function; the place in cycle is out of the range.
         for y in range(1, self.placeInCycle):
             if y in LEAP_YEARS: self.molad += LEAP_YEAR_REMAINDER
             else:               self.molad += LUNAR_YEAR_REMAINDER
@@ -88,14 +91,14 @@ class Year:
         #7:4 
         # GTRD - If the molad of Tishrei is on a day 3, and the molad is after 9 hours and 204 chalakim, and the year is not a  leap year, Rosh Chodesh is set to day 5, which is two days after the molad. 
         elif (self.molad.days == 3
-          and self.molad >= (3, 9, 204)
+          and self.molad >= GTRD
           and self.placeInCycle not in LEAP_YEARS):
             self.day = self.molad.days + 2
 
         #7:5 
         # BTU TKPT - If the molad of Tishrei is on a day 2, and the molad is after 15 hours and 589 chalakim, and it is the year after a  leap year, Rosh Chodesh is set to day 3. 
         elif (self.molad.days == 2
-          and self.molad >= (2, 15, 589)
+          and self.molad >= BTU_TKPT
           and self.placeInCycle - 1 in LEAP_YEARS):
             self.day = self.molad.days + 1
         
@@ -107,24 +110,25 @@ class Year:
         # An internal calculation only needs to calculate the day of Rosh Hashana, so it ends here.
         if startYear == 0: return
 
-        date = BHRD + CYCLE * self.cyclesToYear
-        """The date of the molad in days from Shabbos before BHRD"""
+        # Calculate the date
+        objectiveMolad = CYCLE * self.cyclesToYear + BHRD
+        """The molad in days from Shabbos before BHRD"""
         for y in range(1, self.placeInCycle):
-            if y in LEAP_YEARS: date += LEAP_YEAR
-            else:               date += LUNAR_YEAR
+            if y in LEAP_YEARS: objectiveMolad += LEAP_YEAR
+            else:               objectiveMolad += LUNAR_YEAR
     
         if self.day == 7 and self.molad.days == 7:
-            # date.days%7==0 so day-days==7, but we want 0
-            self.date = date.days
+            # objectiveMolad.days%7==0 so day-days==7, but we want 0
+            self.date = objectiveMolad.days
             """The date of Rosh Hashanah of this year in days from Shabbos before BHRD"""
         else:
-            self.date = date.days + (self.day - date.days % 7)
+            self.date = objectiveMolad.days + (self.day - objectiveMolad.days % 7)
         #self.molad.days and date.days%7 were the same before the pushing-off
         
         #8:3 
         # If the length of a month was exactly 29.5 days, the months would go one whole and one short.
         self.wholeMonths = [True, False] * 6
-        """Those months that are whole in this year. True = whole"""
+        """Those months that are whole in this year. True == whole"""
         # (This list of whole months starts with Tishrei, and assumes that Marheshvan will be lacking and Kislev will be full.)
         # Since the length of a lunar month is not exactly 29 1/2 days, some years have more whole months than short months and (as a result of pushing off Rosh Hashana) some years have more short months than whole months.
         

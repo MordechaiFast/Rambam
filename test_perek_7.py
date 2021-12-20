@@ -1,4 +1,7 @@
 from calendarUnits import *
+def test_GTRD_and_BTUTKPT():
+    assert GTRD == (3, 9, 204)
+    assert BTU_TKPT == (2, 15, 589)
 def test_all_dechios():
     wantedYears = [None] * 15
     for i in range(1, 100):
