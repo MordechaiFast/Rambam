@@ -23,14 +23,14 @@ class timeInterval:
         """Reduces the number of chalakim to less than 1080 and the hours to less than 24, adding the whole hours and whole days. Converts fractional parts of days and hours to hours and chalakim. Does not affect the day count."""
         # Convert fractional days into hours
         self.hours += (self.days % 1) * HOURS_IN_DAY
-        self.days //= 1
+        self.days = int(self.days // 1)
         
         # Convert fractional hours into chalakim
         self.chalakim += (self.hours % 1) * CHALAKIM_IN_HOUR
-        self.hours //= 1
+        self.hours = int(self.hours // 1)
 
         # Fractional chalakim will be ignored untill the subclass fine time interval
-        self.chalakim //= 1
+        self.chalakim = int(self.chalakim // 1)
 
         # Carry the whole hours, then round the remaining chalakim. (This also works for negetive inputs.)
         self.hours += self.chalakim // CHALAKIM_IN_HOUR
@@ -129,7 +129,8 @@ class timeInterval:
 
 class timeInWeek (timeInterval):
     """A time of week, or the offset of a time of week."""
-    def __init__(self, totalTime: timeInterval):
+    def __init__(self, totalTime):
+        totalTime = self.tuple_check(totalTime, "create time from")
         super().__init__(days= totalTime.days, hours= totalTime.hours, chalakim= totalTime.chalakim)
 
     def reduce(self):
@@ -139,6 +140,8 @@ class timeInWeek (timeInterval):
         self.days %= 7
         # We want Shabbos to be appear as 7, even though its mod is 0.
         if self.days == 0 : self.days = 7
+
+        return self
 
     def __add__(self, addend):
         return timeInWeek(super().__add__(addend))

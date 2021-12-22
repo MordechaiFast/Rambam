@@ -23,7 +23,7 @@ from calendarUnits import LUNAR_MONTH
 #6:4
 # The length of the various types of years.
 from calendarUnits import LUNAR_YEAR, LEAP_YEAR
-from season import solarYear, solarYearExcess
+from season import SOLAR_YEAR, SOLAR_YEAR_EXCESS
 """
 printTime("6:4 Twevle months is:", lunarYear)
 printTime("Thirteen months is:", leapYear)
@@ -56,7 +56,7 @@ printTime("6:9 The molad of Tishrei after BHRD was, after rounding:", BHRD + LUN
 
 #6:10
 from calendarUnits import CYCLE_YEARS, CYCLE
-from season import solarCycle, solarCycleExcess
+from season import SOLAR_CYCLE, SOLAR_CYCLE_EXCESS
 """
 printTime("6:10 One 19 year cycle is:", cycle)
 printTime("One solar cycle is:", solarCycle)
@@ -153,7 +153,7 @@ print ("The Rambam's example first occurs on year:", myYear.yearsFromCreation)
 #9:1
 #printTime("Some say the lenght of a solar year is:", solarYear, space)
 #9:2
-from season import seasonLength
+from season import SEASON_LENGTH
 #printTime("19 solar years are then in excess of the lunar years by:", solarCycleExcess)
 #printTime("A standard season lenght is:", seasonLength, space)
 

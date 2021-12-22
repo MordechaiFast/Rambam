@@ -11,6 +11,7 @@ def test_nagative_input():
     assert timeInterval(2,-1) == (1,23)
     assert timeInterval(-1,-1,-1) == (-2,22,1079)
     assert timeInterval(0,-30) == (-2,18)
+    assert timeInterval(-29.5) == (-30,6)
 
 def test_adding_tuple():
     assert BHRD + (1, 12) == (3, 17, 204)
@@ -63,7 +64,7 @@ def test_non_tuple_math():
 
 def test_len():
     assert len(BHRD) == 3
-    assert len(solarYear) == 2
+    assert len(SOLAR_YEAR) == 2
     assert len(timeInterval(1)) == 1
     assert len(timeInterval()) == 0
 def test_eq():

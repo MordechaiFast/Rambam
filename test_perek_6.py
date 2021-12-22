@@ -15,9 +15,9 @@ def test_math():
     assert LUNAR_YEAR == (354, 8, 876)
     assert LEAP_YEAR == (383, 21, 589)
     # Two place tI test
-    assert solarYear == (365, 6)
+    assert SOLAR_YEAR == (365, 6)
     # Subtraction test
-    assert solarYearExcess == (10, 21, 204)
+    assert SOLAR_YEAR_EXCESS == (10, 21, 204)
 def test_remainders():
     #6:5
     # Tests with rounding days to weeks
@@ -38,7 +38,7 @@ def test_rounding():
 def test_cycle():
     # 6:10
     # Combined arithmatic test
-    assert solarCycleExcess == (0, 1, 485)
+    assert SOLAR_CYCLE_EXCESS == (0, 1, 485)
     # 6:11
     assert LEAP_YEARS >= {3, 6, 8, 11, 14, 17, 19}
     # For internal reasons, leapYears includes 0.
@@ -59,8 +59,3 @@ def test_month():
     assert Month(Year(21), 1, startFromTishrei= False).molad == (4, 10, 1033)
     # Nissan in a leap year
     assert Month(Year(22), 1, startFromTishrei= False).molad == (3, 8, 542)
-
-def test_season():
-    # 9:1
-    # Floor division test
-    assert seasonLength == (91,7.5)
