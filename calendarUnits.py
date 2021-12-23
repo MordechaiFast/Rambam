@@ -123,7 +123,7 @@ class Year:
             """The date of Rosh Hashanah of this year in days from Shabbos before BHRD"""
         else:
             self.date = objectiveMolad.days + (self.day - objectiveMolad.days % 7)
-        #self.molad.days and date.days%7 were the same before the pushing-off
+            #self.molad.days and objectiveMolad.days%7 were the same before the pushing-off
         
         #8:3 
         # If the length of a month was exactly 29.5 days, the months would go one whole and one short.
