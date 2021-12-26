@@ -13,8 +13,8 @@ LUNAR_YEAR_REMAINDER = LUNAR_MONTH_REMAINDER * 12
 """The offset of the molad after one regular year"""
 LEAP_YEAR_REMAINDER = LUNAR_MONTH_REMAINDER * 13
 """The offset of the molad after one leap year"""
-BHRD = timeInWeek(timeInterval(6,14)) - LUNAR_YEAR_REMAINDER
-"""Starting molad"""
+BHRD = timeInWeek(timeInterval(6,14) - LUNAR_YEAR_REMAINDER)
+"""The molad of the end of the year of creation was (6, 14, 0), so the molad of the begining of that year was (2, 5, 204)."""
 CYCLE_YEARS = 19
 """In a cycle of 19 lunar years with 7 leap years, the number of days is the same as 19 solar years"""
 CYCLE = LUNAR_YEAR * 12 + LEAP_YEAR * 7
@@ -22,12 +22,12 @@ CYCLE = LUNAR_YEAR * 12 + LEAP_YEAR * 7
 CYCLE_REMAINDER = LUNAR_YEAR_REMAINDER * 12 + LEAP_YEAR_REMAINDER * 7
 """The length of a cycle in days of the week."""
 LEAP_YEARS = {0, 3, 6, 8, 11, 14, 17, 19}
-"""The leap years in a 19 year cycle are years 3, 6, 8, 11, 14, 17, and 19"""
+"""The leap years in a 19 year cycle are years 3, 6, 8, 11, 14, 17, and 19."""
 ADU = {1,4,6}
-"""The day of Rosh Chodesh Tishrei (Rosh Hashanah) is never set to days 1, 4, or 6, according to the set calandar. """
+"""The day of Rosh Chodesh Tishrei (Rosh Hashanah) is never set to days 1, 4, or 6, according to the set calandar."""
 GTRD = timeInterval(7,18) - LUNAR_YEAR_REMAINDER
 """If the molad of this year is after (3, 9, 204), and this year is a non-leap year, next year's molad will end up being on day 7 after noon, which gets pushed off to day 2, which makes too many whole monts for our calandar, so we push off the beginging of this year."""
-BTU_TKPT = LEAP_YEAR_REMAINDER + timeInterval(3, 18)
+BTU_TKPT = timeInterval(3, 18) + LEAP_YEAR_REMAINDER
 """When a leap year begins on day 3 after noon, Rosh Hashana is pushed off to day 5, but next year's molad is on day 2, and sometimes before noon. In that case, there would be too few whole months for our calandar, so we push off the following year's Rosh Hashana."""
 
 class Year:
@@ -36,16 +36,11 @@ class Year:
     the date and day of the week of Rosh Hashana, 
     and the list of whole months."""
 
-    # 1) Take the number of years from the year of creation.
-    def __init__(self, count: int, startYear = 1) -> None:
-        # startYear being 0 means that this is an internal calculation instance of the year class, and we won't want to calculate if its length, only it's Rosh Hashana day, for the needs of the previous year. 
-        if startYear in {1,0}:
-            self.yearsFromCreation = count
-            """The number of years from year 1 = the year of BHRD"""
-        # If the year count is not from creation, determin the number of years from creation. 
-        else:
-            self.yearsFromCreation = startYear - 1 + count
-            # E.g. if the starting year is 2 (the year of Man's creation) and the year is 1, then it is two years in the count from the creation year.
+    def __init__(self, count: int, startYear= 1, dummyYear= False) -> None:
+        # 1) Take the number of years from the year of creation.
+        self.yearsFromCreation = startYear - 1 + count
+        """The number of years from year 1 = the year of BHRD"""
+        # E.g. if the starting year is 2 (the year of Man's creation) and the year is 1, then it is two years in the count from the creation year.
 
         # 2) Divide that into cycles. We now know the number of cycles and the year within the current cycle.
         self.cyclesToYear = self.yearsFromCreation // CYCLE_YEARS
@@ -67,8 +62,6 @@ class Year:
             if y in LEAP_YEARS: self.molad += LEAP_YEAR_REMAINDER
             else:               self.molad += LUNAR_YEAR_REMAINDER
         
-        #(Halacha 15 is in the month class)
-
         # Defining Rosh Hashana of the year
         #7:1
         # When the molad would have it so, Rosh Chodesh is set to the next day.   
@@ -108,7 +101,7 @@ class Year:
             self.day = self.molad.days
         
         # An internal calculation only needs to calculate the day of Rosh Hashana, so it ends here.
-        if startYear == 0: return
+        if dummyYear: return
 
         # Calculate the date
         objectiveMolad = CYCLE * self.cyclesToYear + BHRD
@@ -161,7 +154,7 @@ class Year:
         """Generates the next year after this one.
         
         A dummy year is one that does not determin if its months are lacking or whole."""
-        return Year(self.yearsFromCreation + 1, 0 if dummyYear else 1)
+        return Year(self.yearsFromCreation + 1, dummyYear= dummyYear)
 
 MONTH_NAMES = ["Tishrei", "Marchesvan", "Kislev ", "Teves  ", "Shevat ", "Addar  ",
 "Nissan ", "Iyyar  ", "Sivan  ", "Tamuz  ", "Av     ", "Elul   "]
