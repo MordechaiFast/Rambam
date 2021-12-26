@@ -11,7 +11,7 @@ def test_nagative_input():
     assert timeInterval(2,-1) == (1,23)
     assert timeInterval(-1,-1,-1) == (-2,22,1079)
     assert timeInterval(0,-30) == (-2,18)
-    assert timeInterval(-29.5) == (-30,6)
+    assert timeInterval(-29.5) == (-30,12)
 
 def test_adding_tuple():
     assert BHRD + (1, 12) == (3, 17, 204)
@@ -68,15 +68,19 @@ def test_len():
     assert len(timeInterval(1)) == 1
     assert len(timeInterval()) == 0
 def test_eq():
-    assert BHRD == (2, 5, 204)
+    assert     BHRD == (2, 5, 204)
     assert not BHRD == (1, 2, 3)
     assert not BHRD == (2, 5, 200)
+def test_gt():
+    assert     BHRD > (2, 5, 203)
+    assert not BHRD > (2, 5, 204)
+    assert not BHRD > (2, 5, 205)
 def test_ge():
-    assert BHRD >= (2, 5, 203)
-    assert BHRD >= (2, 5, 204)
+    assert     BHRD >= (2, 5, 204)
+    assert     BHRD >= (2, 5, 203)
     assert not BHRD >= (2, 5, 205)
 def test_lt():
-    assert BHRD < (2, 5, 205)
+    assert     BHRD < (2, 5, 205)
     assert not BHRD < (2, 5, 204)
     assert not BHRD < (2, 5, 203)
 

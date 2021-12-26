@@ -87,9 +87,10 @@ class timeInterval:
         other = self.tuple_check(other, "compare")
         
         for i in range(self.FULL_LENGTH):
-            if self[i] > other[i]: continue
+            if   self[i] >  other[i]: return True
+            elif self[i] == other[i]: continue
             else: return False
-        else: return True
+        else: return False
 
     def __ge__(self, other) -> bool:
         other = self.tuple_check(other, "compare")
