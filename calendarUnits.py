@@ -27,7 +27,7 @@ ADU = {1,4,6}
 """The day of Rosh Chodesh Tishrei (Rosh Hashanah) is never set to days 1, 4, or 6, according to the set calandar."""
 GTRD = timeInterval(7,18) - LUNAR_YEAR_REMAINDER
 """If the molad of this year is after (3, 9, 204), and this year is a non-leap year, next year's molad will end up being on day 7 after noon, which gets pushed off to day 2, which makes too many whole monts for our calandar, so we push off the beginging of this year."""
-BTU_TKPT = timeInterval(3, 18) + LEAP_YEAR_REMAINDER
+BTU_TKPT = timeInWeek(timeInterval(3, 18) + LEAP_YEAR_REMAINDER)
 """When a leap year begins on day 3 after noon, Rosh Hashana is pushed off to day 5, but next year's molad is on day 2, and sometimes before noon. In that case, there would be too few whole months for our calandar, so we push off the following year's Rosh Hashana."""
 
 class Year:
