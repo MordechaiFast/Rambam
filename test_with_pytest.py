@@ -49,9 +49,11 @@ def test_index_out_of_bounds():
 
 def test_non_tuple_comparison():
     try: assert BHRD == 2
-    except TypeError: pass
+    except TypeError as err: 
+        assert err.args[0] == "Can only compare timeInterval or tuple"
     try: assert BHRD >= 2
-    except TypeError: pass
+    except TypeError as err: 
+        assert err.args[0] == "Can only compare timeInterval or tuple"
 def test_non_tuple_math():
     try: BHRD + 2
     except TypeError as err: 
@@ -69,6 +71,7 @@ def test_eq():
     assert     BHRD == (2, 5, 204)
     assert not BHRD == (1, 2, 3)
     assert not BHRD == (2, 5, 200)
+    assert not BHRD == (2, 5)
 def test_gt():
     assert     BHRD > (2, 5, 203)
     assert not BHRD > (2, 5, 204)

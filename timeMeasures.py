@@ -69,6 +69,24 @@ class timeInterval:
         elif not isinstance(input, timeInterval):
             raise TypeError("Can only " + operation + " timeInterval or tuple")
         return input
+    
+    # Generator for comparing to either timeInterval or tuple
+    def compare(this, that):
+        if isinstance(that, timeInterval):
+            yield this.days, that.days
+            yield this.hours, that.hours
+            yield this.chalakim, that.chalakim
+        elif type(that) is tuple and len(that) == 3:
+            yield this.days, that[0]
+            yield this.hours, that[1]
+            yield this.chalakim, that[2]
+        elif type(that) is tuple and len(that) < 3:
+            that += (0,0,0)
+            yield this.days, that[0]
+            yield this.hours, that[1]
+            yield this.chalakim, that[2]
+        else:
+            raise TypeError("Can only compare timeInterval or tuple")
         
     # The following methods should work unchanged in a four item subclass.
     def __len__(self):
@@ -78,27 +96,27 @@ class timeInterval:
 
     # comparison functions
     def __eq__(self, other) -> bool:
-        for x, y in zip(self, other):
+        for x,y in self.compare(other):
             if x == y: continue
             else: return False
         else: return True
 
     def __gt__(self, other) -> bool:
-        for x, y in zip(self, other):
+        for x,y in self.compare(other):
             if   x >  y: return True
             elif x == y: continue
             else: return False
         else: return False
 
     def __ge__(self, other) -> bool:
-        for x, y in zip(self, other):
+        for x,y in self.compare(other):
             if   x >  y: return True
             elif x == y: continue            
             else: return False
         return True
 
     def __lt__(self, other) -> bool:
-        for x, y in zip(self, other):
+        for x,y in self.compare(other):
             if   x <  y: return True
             elif x == y: continue          
             else: return False
