@@ -15,9 +15,6 @@ class timeInterval:
         self.chalakim = chalakim
         self.reduce()
 
-    FULL_LENGTH = 3
-    """How many places this type of time measure accepts."""
-
     #6:9
     def reduce(self):
         """Reduces the number of chalakim to less than 1080 and the hours to less than 24, adding the whole hours and whole days. Converts fractional parts of days and hours to hours and chalakim. Does not affect the day count."""
@@ -59,17 +56,7 @@ class timeInterval:
     # String function
     def __str__(self) -> str:
         return f"{self.days} {self.hours:>2} {self.chalakim:>4}"
-
-    # Allow operators to work with tuples
-    def tuple_check(self, input, operation: str):
-        if type(input) is tuple:
-            # In case of a tuple of less than three numbers, compleate the tuple to three places.
-            input += (0,0,0)
-            input = timeInterval(input[0], input[1], input[2])
-        elif not isinstance(input, timeInterval):
-            raise TypeError("Can only " + operation + " timeInterval or tuple")
-        return input
-    
+   
     # Generator for comparing to either timeInterval or tuple
     def compare(this, that):
         if isinstance(that, timeInterval):
@@ -89,11 +76,6 @@ class timeInterval:
             raise TypeError("Can only compare timeInterval or tuple")
         
     # The following methods should work unchanged in a four item subclass.
-    def __len__(self):
-        for i in range (self.FULL_LENGTH -1, -1, -1):
-            if self[i]: return i + 1
-        else: return 0
-
     # comparison functions
     def __eq__(self, other) -> bool:
         for x,y in self.compare(other):

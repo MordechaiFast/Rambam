@@ -62,11 +62,6 @@ def test_non_tuple_math():
     except TypeError as err: 
         assert err.args[0] == "Can only compare timeInterval or tuple"
 
-def test_len():
-    assert len(BHRD) == 3
-    assert len(SOLAR_YEAR) == 2
-    assert len(timeInterval(1)) == 1
-    assert len(timeInterval()) == 0
 def test_eq():
     assert     BHRD == (2, 5, 204)
     assert not BHRD == (1, 2, 3)
