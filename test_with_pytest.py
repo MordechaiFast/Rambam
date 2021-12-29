@@ -57,10 +57,10 @@ def test_non_tuple_comparison():
 def test_non_tuple_math():
     try: BHRD + 2
     except TypeError as err: 
-        assert err.args[0] == "Can only add timeInterval or tuple"
+        assert err.args[0] == "Can only compare timeInterval or tuple"
     try: BHRD - 2
     except TypeError as err: 
-        assert err.args[0] == "Can only subtract timeInterval or tuple"
+        assert err.args[0] == "Can only compare timeInterval or tuple"
 
 def test_len():
     assert len(BHRD) == 3
@@ -88,3 +88,6 @@ def test_lt():
 def test_negetive_year():
     assert Year(0 ).molad == (3, 7, 695)
     assert Year(-1).molad == (5, 22, 899)
+
+def test_subtraction():
+    assert BHRD - (1, 2, 3) == (1, 3, 201)

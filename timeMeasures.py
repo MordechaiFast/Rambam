@@ -124,25 +124,21 @@ class timeInterval:
 
     #math functions
     def __add__(self, addend):
-        addend = self.tuple_check(addend, "add")
-
         sum = timeInterval()
-        for i in range (self.FULL_LENGTH):
-            sum[i] = self[i] + addend[i]
+        for i, (x, y) in enumerate(self.compare(addend)):
+            sum[i] = x + y
         return sum.reduce()
  
     def __sub__(self, subtrahend):
-        subtrahend = self.tuple_check(subtrahend, "subtract")
-
         difference = timeInterval()
-        for i in range (self.FULL_LENGTH -1, -1, -1):
-            difference[i] = self[i] + -subtrahend[i]
+        for i, (x, y) in enumerate(self.compare(subtrahend)):
+            difference[i] = x - y
         return difference.reduce()
 
     def __mul__(self, factor):
         product = timeInterval()
-        for i in range(len(self)):
-            product[i] = self[i] * factor
+        for i, x in enumerate(self):
+            product[i] = x * factor
         return product.reduce()
 
     def __floordiv__(self, divisor):
