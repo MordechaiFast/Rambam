@@ -26,7 +26,7 @@ def test_remainders():
     assert LEAP_YEAR_REMAINDER == (5, 21, 589)
 def test_adding():
     # 6:6-7
-    exampleMonth = timeInterval(1,17,107)
+    exampleMonth = TimeInterval(1,17,107)
     assert exampleMonth + (1,12,793) == (3,5,900)    
 def test_BHRD():
     # 6:8

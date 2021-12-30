@@ -3,10 +3,10 @@
 #6:1
 # The first step in calculating the moon sighting for a given month is to work out how many days after a date with known solar and lunar positions. In order to to that we must work out the aproximate date of conjunction, the molad.
  
-from timeMeasures import timeInterval
+from timeMeasures import TimeInterval
 
 #sample time printing
-def printTime (title, time:timeInterval, space = False):
+def printTime (title, time:TimeInterval, space = False):
     """Prints the title on the first line, the days, hours and chalakim of the given time on the second line, and a blank line if requested."""
 
     print (title)
@@ -40,7 +40,7 @@ printTime("Each leap year:", leapYearRemainder, space)
 #"""
 
 #6:6-8
-exampleMonth = timeInterval(1,17,107)
+exampleMonth = TimeInterval(1,17,107)
 """
 printTime("6:7 For example, if molad Nissan is:", exampleMonth)
 printTime("Molad Iyyar will be:", exampleMonth + lunarMonthRemainder, space)

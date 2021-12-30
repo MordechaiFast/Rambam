@@ -1,8 +1,8 @@
-from timeMeasures import timeInterval
+from timeMeasures import TimeInterval
 from calendarUnits import Year, LUNAR_YEAR, CYCLE_YEARS, CYCLE, Month
 
 #9:1
-SOLAR_YEAR = timeInterval(365.25)
+SOLAR_YEAR = TimeInterval(365.25)
 """The length of a year of 365.25 days"""
 #9:2
 SOLAR_CYCLE = SOLAR_YEAR * CYCLE_YEARS
@@ -13,7 +13,7 @@ SEASON_LENGTH = SOLAR_YEAR // 4
 """The length of a season, one quarter of a 365.25 day year"""
 
 #9:3
-SEASON_BEFOR_MOLAD = timeInterval(7, 9, 642)
+SEASON_BEFOR_MOLAD = TimeInterval(7, 9, 642)
 """How long before the molad of Nissan in the year 1 of creation was the begining of the Nissan season"""
 #9:4
 SOLAR_YEAR_EXCESS = SOLAR_YEAR - LUNAR_YEAR

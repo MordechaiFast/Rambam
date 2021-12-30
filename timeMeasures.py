@@ -7,7 +7,7 @@ CHALAKIM_IN_HOUR = 1080
 """The hour is broken up into 1080 chalakim (parts). This is just a number that has many divisors."""
 
 # Defining a time interval and how to calculate with it
-class timeInterval:
+class TimeInterval:
     """Used for the lenght of a month, year, etc."""
 
     def __init__(self, days=0, hours=0, chalakim=0):
@@ -40,16 +40,16 @@ class timeInterval:
 
     # iteration functions
     def __getitem__(self, key) -> int:
-        if   key in {0, 'days'}: return self.days
-        elif key in {1, 'hours'}: return self.hours
-        elif key in {2, 'chalakim'}: return self.chalakim
+        if   key is 0: return self.days
+        elif key is 1: return self.hours
+        elif key is 2: return self.chalakim
         else: raise IndexError
-    def __setitem__(self, key, value):
-        if   key in {0, 'days'}: self.days = value
-        elif key in {1, 'hours'}: self.hours = value
-        elif key in {2, 'chalakim'}: self.chalakim = value
-        else: raise IndexError
-    def __iter__(self):
+    """def __setitem__(self, key, value):
+        if   key is 0: self.days = value
+        elif key is 1: self.hours = value
+        elif key is 2: self.chalakim = value
+        else: raise IndexError"""
+    def __iter__(self) -> int:
         yield from [self.days, self.hours, self.chalakim]
 
     # String function
@@ -87,27 +87,21 @@ class timeInterval:
 
     #math functions
     def __add__(self, addend):
-        sum = [None] * 3
-        for i, (x, y) in enumerate(zip_longest(self, addend, fillvalue= 0)):
-            sum[i] = x + y
-        return timeInterval(sum[0], sum[1], sum[2])
+        sum = [x + y for x, y in zip_longest(self, addend, fillvalue= 0)]
+        return TimeInterval(sum[0], sum[1], sum[2])
  
     def __sub__(self, subtrahend):
-        difference = [None] * 3
-        for i, (x, y) in enumerate(zip_longest(self, subtrahend, fillvalue= 0)):
-            difference[i] = x - y
-        return timeInterval(difference[0], difference[1], difference[2])
+        difference = [x - y for x, y in zip_longest(self, subtrahend, fillvalue= 0)]
+        return TimeInterval(difference[0], difference[1], difference[2])
 
     def __mul__(self, factor):
-        product = [None] * 3
-        for i, x in enumerate(self):
-            product[i] = x * factor
-        return timeInterval(product[0], product[1], product[2])
+        product = [x * factor for x in self]
+        return TimeInterval(product[0], product[1], product[2])
 
     def __floordiv__(self, divisor):
         return self * (1 / divisor)
 
-class timeInWeek (timeInterval):
+class TimeInWeek (TimeInterval):
     """A time of week, or the offset of a time of week."""
     def __init__(self, totalTime):
         super().__init__(days= totalTime[0], hours= totalTime[1], chalakim= totalTime[2])
@@ -121,10 +115,10 @@ class timeInWeek (timeInterval):
         if self.days == 0 : self.days = 7
 
     def __add__(self, addend):
-        return timeInWeek(super().__add__(addend))
+        return TimeInWeek(super().__add__(addend))
     def __mul__(self, factor):
-        return timeInWeek(super().__mul__(factor))
+        return TimeInWeek(super().__mul__(factor))
     def __sub__(self, subtrahend):
-        return timeInWeek(super().__sub__(subtrahend))
+        return TimeInWeek(super().__sub__(subtrahend))
     def __floordiv__(self, divisor):
-        return timeInWeek(super().__floordiv__(divisor))
+        return TimeInWeek(super().__floordiv__(divisor))
