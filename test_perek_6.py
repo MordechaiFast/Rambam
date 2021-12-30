@@ -1,11 +1,10 @@
-from timeMeasures import CHALAKIM_IN_HOUR, HOURS_IN_DAY
 from calendarUnits import *
 from season import *
 
 def test_lengths():
     # Test values in 6:2
-    assert HOURS_IN_DAY == 24
-    assert CHALAKIM_IN_HOUR == 1080
+    # HOURS_IN_DAY == 24
+    # CHALAKIM_IN_HOUR == 1080
     # 6:3
     # Equivilance test
     assert LUNAR_MONTH == (29, 12, 793)
