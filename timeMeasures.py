@@ -1,3 +1,4 @@
+from itertools import zip_longest
 """Contains classes for lenghts of time in absolute measure and in terms of the week."""
 #6:2
 HOURS_IN_DAY = 24
@@ -37,8 +38,6 @@ class timeInterval:
         self.days += self.hours // HOURS_IN_DAY
         self.hours %= HOURS_IN_DAY
 
-        return self
-
     # iteration functions
     def __getitem__(self, key) -> int:
         if   key in {0, 'days'}: return self.days
@@ -52,53 +51,35 @@ class timeInterval:
         else: raise IndexError
     def __iter__(self):
         yield from [self.days, self.hours, self.chalakim]
-    
+
     # String function
     def __str__(self) -> str:
         return f"{self.days} {self.hours:>2} {self.chalakim:>4}"
-   
-    # Generator for comparing to either timeInterval or tuple
-    def compare(this, that):
-        if isinstance(that, timeInterval):
-            yield this.days, that.days
-            yield this.hours, that.hours
-            yield this.chalakim, that.chalakim
-        elif type(that) is tuple and len(that) == 3:
-            yield this.days, that[0]
-            yield this.hours, that[1]
-            yield this.chalakim, that[2]
-        elif type(that) is tuple and len(that) < 3:
-            that += (0,0,0)
-            yield this.days, that[0]
-            yield this.hours, that[1]
-            yield this.chalakim, that[2]
-        else:
-            raise TypeError("Can only compare timeInterval or tuple")
         
     # The following methods should work unchanged in a four item subclass.
     # comparison functions
     def __eq__(self, other) -> bool:
-        for x,y in self.compare(other):
+        for x, y in zip_longest(self, other, fillvalue= 0):
             if x == y: continue
             else: return False
         else: return True
 
     def __gt__(self, other) -> bool:
-        for x,y in self.compare(other):
+        for x, y in zip_longest(self, other, fillvalue= 0):
             if   x >  y: return True
             elif x == y: continue
             else: return False
         else: return False
 
     def __ge__(self, other) -> bool:
-        for x,y in self.compare(other):
+        for x, y in zip_longest(self, other, fillvalue= 0):
             if   x >  y: return True
             elif x == y: continue            
             else: return False
         return True
 
     def __lt__(self, other) -> bool:
-        for x,y in self.compare(other):
+        for x, y in zip_longest(self, other, fillvalue= 0):
             if   x <  y: return True
             elif x == y: continue          
             else: return False
@@ -106,22 +87,22 @@ class timeInterval:
 
     #math functions
     def __add__(self, addend):
-        sum = timeInterval()
-        for i, (x, y) in enumerate(self.compare(addend)):
+        sum = [None] * 3
+        for i, (x, y) in enumerate(zip_longest(self, addend, fillvalue= 0)):
             sum[i] = x + y
-        return sum.reduce()
+        return timeInterval(sum[0], sum[1], sum[2])
  
     def __sub__(self, subtrahend):
-        difference = timeInterval()
-        for i, (x, y) in enumerate(self.compare(subtrahend)):
+        difference = [None] * 3
+        for i, (x, y) in enumerate(zip_longest(self, subtrahend, fillvalue= 0)):
             difference[i] = x - y
-        return difference.reduce()
+        return timeInterval(difference[0], difference[1], difference[2])
 
     def __mul__(self, factor):
-        product = timeInterval()
+        product = [None] * 3
         for i, x in enumerate(self):
             product[i] = x * factor
-        return product.reduce()
+        return timeInterval(product[0], product[1], product[2])
 
     def __floordiv__(self, divisor):
         return self * (1 / divisor)
@@ -129,8 +110,7 @@ class timeInterval:
 class timeInWeek (timeInterval):
     """A time of week, or the offset of a time of week."""
     def __init__(self, totalTime):
-        totalTime = self.tuple_check(totalTime, "create time from")
-        super().__init__(days= totalTime.days, hours= totalTime.hours, chalakim= totalTime.chalakim)
+        super().__init__(days= totalTime[0], hours= totalTime[1], chalakim= totalTime[2])
 
     def reduce(self):
         """Reduces the number of chalakim to less than 1080 and the hours to less than 24, adding the whole hours and whole days. Sets the day to a day of the week 1-7."""
@@ -139,8 +119,6 @@ class timeInWeek (timeInterval):
         self.days %= 7
         # We want Shabbos to be appear as 7, even though its mod is 0.
         if self.days == 0 : self.days = 7
-
-        return self
 
     def __add__(self, addend):
         return timeInWeek(super().__add__(addend))
