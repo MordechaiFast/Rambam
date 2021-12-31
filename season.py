@@ -32,3 +32,7 @@ class season:
 
         #self.time + SOLAR_YEAR_EXCESS * (thisYear.placeInCycle-1)
         #self.time + SEASON_LENGTH * seasonNumber
+
+short_season = CYCLE / (CYCLE_YEARS * 4)
+print(short_season)
+print(short_season * 4)
