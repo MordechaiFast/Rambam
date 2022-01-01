@@ -13,18 +13,6 @@ class TimeInterval:
         self.days = days
         self.hours = hours
         self.chalakim = chalakim
-
-        # For converting a TimeInterval to a TimeInWeek, a TimeInterval gets passed to the new object. To handel that:
-        if isinstance(days, TimeInterval):
-            self.days = days.days
-            self.hours = days.hours
-            self.chalakim = days.chalakim
-        # The math functions return a TimeInterval with a list. To handel that:
-        elif type(days) is list:
-            self.days = days[0]
-            self.hours = days[1]
-            self.chalakim = days[2]
-
         self.reduce()
 
     def reduce(self):
@@ -58,7 +46,7 @@ class TimeInterval:
     def __str__(self) -> str:
         return f"{self.days} {self.hours:>2} {self.chalakim:>4}"
         
-    # The following methods should work unchanged in a four item subclass.
+    # The following methods work unchanged in a four item subclass.
     # comparison functions
     def __eq__(self, other) -> bool:
         for x, y in zip_longest(self, other, fillvalue= 0):
@@ -89,17 +77,18 @@ class TimeInterval:
 
     # math functions
     def __add__(self, addend):
-        return type(self)([x + y
+        return type(self)(*[x + y
          for x, y in zip_longest(self, addend, fillvalue= 0)])
     def __sub__(self, subtrahend):
-        return type(self)([x - y 
+        return type(self)(*[x - y 
          for x, y in zip_longest(self, subtrahend, fillvalue= 0)])
     def __mul__(self, factor):
-        return type(self)([x * factor for x in self])
+        return type(self)(*[x * factor for x in self])
     def __floordiv__(self, divisor):
-        return type(self)([x / divisor for x in self])
+        return type(self)(*[x / divisor for x in self])
     def __truediv__(self, divisor):
-        return FineTimeInterval([x / divisor for x in self], regaim_total= divisor)
+        return FineTimeInterval(*[x / divisor for x in self],
+         regaim_total= divisor)
 
 class TimeInWeek (TimeInterval):
     """A time of week, or the offset of a time of week."""
@@ -116,17 +105,12 @@ class FineTimeInterval(TimeInterval):
     WARNING: Using two bases at once will cause errors."""
     regaim_total = 0    # A class variable shared by all active instences.
     
-    def __init__(self, days=0, hours=0, chalakim=0, regaim=0, regaim_total=None):
+    def __init__(self, days=0, hours=0, chalakim=0, regaim=0,
+     regaim_total=None):
         if regaim_total:
             FineTimeInterval.regaim_total = regaim_total
 
         self.regaim = regaim
-        if type(days) is FineTimeInterval:
-            self.regaim = days.reraim
-        elif type(days) is list:
-            try: self.regaim = days[3]
-            except IndexError: pass
-        
         super().__init__(days=days, hours=hours, chalakim=chalakim)
     
     def reduce(self):
@@ -153,14 +137,6 @@ class FineTimeInterval(TimeInterval):
         # Carry the whole days, then round the remaining hours.
         self.days += self.hours // HOURS_IN_DAY
         self.hours %= HOURS_IN_DAY
-
-    """ def __add__(self, addend):
-        sum = [x + y for x, y in zip_longest(self, addend, fillvalue= 0)]
-        return type(self)(sum[0], sum[1], sum[2], sum[3])
-
-    def __mul__(self, factor):
-        product = [x * factor for x in self]
-        return type(self)(product[0], product[1], product[2], product[3]) """
 
     # String function
     def __str__(self) -> str:
