@@ -1,19 +1,21 @@
 from timeMeasures import TimeInWeek, TimeInterval
 
 # Constants
-LUNAR_MONTH = TimeInterval(29,12,793)
+CHALAKIM_IN_HOUR = 1080
+"""The hour is broken up into 1080 chalakim (parts). This is just a number that has many divisors."""
+LUNAR_MONTH = TimeInterval(29,12,793, parts_in_hour= CHALAKIM_IN_HOUR)
 """The length of a month"""
 LUNAR_YEAR = LUNAR_MONTH * 12
 """The lenght of a lunar year of 12 months"""
 LEAP_YEAR = LUNAR_MONTH * 13
 """The lenght of a leap year of 13 months"""
-LUNAR_MONTH_REMAINDER = TimeInWeek(*(LUNAR_MONTH))
+LUNAR_MONTH_REMAINDER = TimeInWeek(*LUNAR_MONTH)
 """The offset of the molad after one month"""
 LUNAR_YEAR_REMAINDER = LUNAR_MONTH_REMAINDER * 12
 """The offset of the molad after one regular year"""
 LEAP_YEAR_REMAINDER = LUNAR_MONTH_REMAINDER * 13
 """The offset of the molad after one leap year"""
-BHRD = TimeInWeek(*(TimeInterval(6,14) - LUNAR_YEAR_REMAINDER))
+BHRD = TimeInWeek(6,14) - LUNAR_YEAR_REMAINDER
 """The molad of the end of the year of creation was (6, 14, 0), so the molad of the begining of that year was (2, 5, 204)."""
 CYCLE_YEARS = 19
 """In a cycle of 19 lunar years with 7 leap years, the number of days is the same as 19 solar years"""
@@ -25,9 +27,9 @@ LEAP_YEARS = {0, 3, 6, 8, 11, 14, 17, 19}
 """The leap years in a 19 year cycle are years 3, 6, 8, 11, 14, 17, and 19."""
 ADU = {1,4,6}
 """The day of Rosh Chodesh Tishrei (Rosh Hashanah) is never set to days 1, 4, or 6, according to the set calandar."""
-GTRD = TimeInWeek(*(TimeInterval(7,18) - LUNAR_YEAR_REMAINDER))
+GTRD = TimeInWeek(7,18) - LUNAR_YEAR_REMAINDER
 """If the molad of this year is after (3, 9, 204), and this year is a non-leap year, next year's molad will end up being on day 7 after noon, which gets pushed off to day 2, which makes too many whole monts for our calandar, so we push off the beginging of this year."""
-BTU_TKPT = TimeInWeek(*(TimeInterval(3, 18) + LEAP_YEAR_REMAINDER))
+BTU_TKPT = TimeInWeek(3, 18) + LEAP_YEAR_REMAINDER
 """When a leap year begins on day 3 after noon, Rosh Hashana is pushed off to day 5, but next year's molad is on day 2, and sometimes before noon. In that case, there would be too few whole months for our calandar, so we push off the following year's Rosh Hashana."""
 
 class Year:

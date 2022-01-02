@@ -10,7 +10,7 @@ def printTime (title, time:TimeInterval, space = False):
     """Prints the title on the first line, the days, hours and chalakim of the given time on the second line, and a blank line if requested."""
 
     print (title)
-    print ("Days:", time.days, "Hours:", time.hours, "Chalakim:", time.chalakim)
+    print ("Days:", time.days, "Hours:", time.hours, "Chalakim:", time.parts)
     if space: print("")
 space = True
 
