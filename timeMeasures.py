@@ -36,7 +36,7 @@ class TimeInterval:
         # Fractional chalakim will be ignored untill the subclass FineTimeInterval
         self.chalakim = int(self.chalakim // 1)
 
-    # iteration function
+    # Iteration function
     def __iter__(self) -> int:
         yield from [self.days, self.hours, self.chalakim]
 
@@ -101,29 +101,29 @@ class FineTimeInterval(TimeInterval):
     """A Time interval with divisons of less than a chailek. The precision is set by the defining division.
     
     WARNING: Using two bases at once will cause errors."""
-    regaim_total = 0    # A class variable shared by all active instences.
+    regaim_total = 1    # A class variable shared by all active instences.
     
     def __init__(self, days=0, hours=0, chalakim=0, regaim=0,
      regaim_total=None):
         if regaim_total:
             FineTimeInterval.regaim_total = regaim_total
-
         self.regaim = regaim
         super().__init__(days=days, hours=hours, chalakim=chalakim)
     
     def reduce_chalakim(self):
        # Convert fractional chalkim to regaim
-        self.regaim += int((self.chalakim % 1) * self.regaim_total)
+        self.regaim += (self.chalakim % 1) * self.regaim_total
         self.chalakim = int(self.chalakim // 1)
-
+        # Truncate fractional regaim
+        self.regaim = int(self.regaim // 1)
         # Carry the whole chalakim, then round the remaining regaim.
         self.chalakim += self.regaim // self.regaim_total
         self.regaim %= self.regaim_total
 
+    # Iteration function
+    def __iter__(self) -> int:
+        yield from [self.days, self.hours, self.chalakim, self.regaim]
+
     # String function
     def __str__(self) -> str:
         return f"{self.days} {self.hours:>2} {self.chalakim:>4} {self.regaim:>2}"
-
-    # iteration function
-    def __iter__(self) -> int:
-        yield from [self.days, self.hours, self.chalakim, self.regaim]
