@@ -5,7 +5,7 @@ class TimeInterval:
     parts_in_hour = 1   # As a class variable, could conceviably be set to any value.
 
     def __init__(self, days=0, hours=0, parts=0, *, parts_in_hour=None):
-        if parts_in_hour:
+        if parts_in_hour:   # 0 would cause a division by zero, so rule that out too.
             TimeInterval.parts_in_hour = parts_in_hour
         self.days = days
         self.hours = hours
@@ -106,7 +106,7 @@ class FineTimeInterval(TimeInterval):
     
     def __init__(self, days=0, hours=0, parts=0, moments=0, *,
      moments_in_part=None):
-        if moments_in_part:
+        if moments_in_part: # 0 would cause a division by zero, so rule that out too.
             FineTimeInterval.moments_in_part = moments_in_part
         self.moments = moments
         super().__init__(days=days, hours=hours, parts=parts)

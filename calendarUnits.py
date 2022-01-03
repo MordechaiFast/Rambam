@@ -4,17 +4,17 @@ from timeMeasures import TimeInWeek, TimeInterval
 CHALAKIM_IN_HOUR = 1080
 """The hour is broken up into 1080 chalakim (parts). This is just a number that has many divisors."""
 LUNAR_MONTH = TimeInterval(29,12,793, parts_in_hour= CHALAKIM_IN_HOUR)
-"""The length of a month"""
+"""The length of a month, (29, 12, 793)"""
 LUNAR_YEAR = LUNAR_MONTH * 12
-"""The lenght of a lunar year of 12 months"""
+"""The lenght of a lunar year of 12 months, (354, 8, 876)"""
 LEAP_YEAR = LUNAR_MONTH * 13
-"""The lenght of a leap year of 13 months"""
+"""The lenght of a leap year of 13 months, (383, 21, 589)"""
 LUNAR_MONTH_REMAINDER = TimeInWeek(*LUNAR_MONTH)
-"""The offset of the molad after one month"""
+"""The offset of the molad after one month, (1, 12, 793)"""
 LUNAR_YEAR_REMAINDER = LUNAR_MONTH_REMAINDER * 12
-"""The offset of the molad after one regular year"""
+"""The offset of the molad after one regular year, (4, 8, 876)"""
 LEAP_YEAR_REMAINDER = LUNAR_MONTH_REMAINDER * 13
-"""The offset of the molad after one leap year"""
+"""The offset of the molad after one leap year, (5, 21, 589)"""
 BHRD = TimeInWeek(6,14) - LUNAR_YEAR_REMAINDER
 """The molad of the end of the year of creation was (6, 14, 0), so the molad of the begining of that year was (2, 5, 204)."""
 CYCLE_YEARS = 19
