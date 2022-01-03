@@ -135,6 +135,7 @@ class Year:
         return self.my_date
     
     def whole_months(self) -> list:
+        """Returns a list of the months in this year that are whole (30 days)."""
         if self.my_whole_months is not None: return self.my_whole_months
         #8:3 
         # If the length of a month was exactly 29.5 days, the months would go one whole and one short.
@@ -185,57 +186,56 @@ class Month:
         # Save the year
         self.year = year
         """The year that this month is a part of"""
-
         # Convert month from Nissan to months from Tishrei, when neccesary
         if startFromTishrei:
-            monthCount = monthReference
+            self.monthCount = monthReference
             """The number of this month from Tishrei = 0"""
         else:
             # For months between Tishrei and Nissan: 
             if monthReference > 6:
                 # We want Tishrei to be 0, so take away 7.
-                monthCount = monthReference - 7
+                self.monthCount = monthReference - 7
             # For months between Nissan and Tishrei, it depends if the given year is a leap year.
             elif year.placeInCycle in LEAP_YEARS:
                 # Nissan is 7 months from Tishrei in a leap year.
-                monthCount = monthReference + 6
+                self.monthCount = monthReference + 6
             else:
                 # Nissan is 6 months from Tishrei in a regular year.
-                monthCount = monthReference + 5
-
+                self.monthCount = monthReference + 5
         # Find the month's name
         if year.placeInCycle not in LEAP_YEARS:
-            self.name = MONTH_NAMES[monthCount]
+            self.name = MONTH_NAMES[self.monthCount]
             """The name of the month"""
         else:
-            self.name = MONTH_NAMES_IN_LEAP_YEAR[monthCount]
+            self.name = MONTH_NAMES_IN_LEAP_YEAR[self.monthCount]
+        # Don't calculate the date untill asked
+        self.my_date = None
+        """The date of Rosh Chodesh of this month"""
     
         #6:15
         # To find the molad of a specific month, add the molad of a month for each month until the requiered month.
-        self.molad = year.molad + LUNAR_MONTH_REMAINDER * monthCount
+        self.molad = year.molad + LUNAR_MONTH_REMAINDER * self.monthCount
         """The molad of this month"""
 
-        # Defning the day of Rosh Chodesh
+    def two_day_Rosh_Chodesh(self):
+        """Returns the True if Rosh Chodesh of this month is two days, False if not."""
         #8:4
         # For a month following a full month, Rosh Chodesh is two days.
-        if year.wholeMonths()[monthCount-1]:
+        return self.year.wholeMonths()[self.monthCount-1]
         # [-1] returns the last item in the list, which is what we want.
-            self.twoDayRoshChodesh = True
-            """If this month has a two day Rosh Chodesh"""
-        else:
-            self.twoDayRoshChodesh = False
 
-        # Working out the date of Rosh Chodesh for the month, and the day of the week. (Not worked out in Rambam.)
+    def date(self):
+        """Returns out the date of Rosh Chodesh for the month, in days from the Shabbos before BHRD."""
+        if self.my_date is not None: return self.my_date
         # Start with the first month: Rosh Chodesh Tishrei is Rosh Hashana. 
-        self.date = year.date
-        """The date of Rosh Chodesh of this month, in days from 
-        the Shabbos before BHRD"""
-
-        for monthIsWhole in year.wholeMonths[:monthCount]:
+        self.my_date = self.year.date
+        for monthIsWhole in self.year.whole_months()[:self.monthCount]:
             if monthIsWhole:
-                self.date += WHOLE_MONTH
+                self.my_date += WHOLE_MONTH
             else:
-                self.date += SHORT_MONTH
-        self.day = self.date % 7
-        """The day of the week of Rosh Chodesh of this month from 1-7"""
-        if self.day == 0: self.day = 7
+                self.my_date += SHORT_MONTH
+        return self.my_date
+    
+    def day_of_week(self):
+        """Calculates the day of the week of Rosh Chodesh of this month."""
+        return self.date % 7 if self.date % 7 != 0 else 7
