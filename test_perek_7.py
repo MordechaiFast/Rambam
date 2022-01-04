@@ -6,6 +6,7 @@ def test_all_dechios():
     wantedYears = [None] * 15
     for i in range(1, 100):
         thisYear = Year(i)
+        thisYear.Rosh_Hashana()
         # 7:1
         if   thisYear.molad.days == 1:
             assert thisYear.day == 2

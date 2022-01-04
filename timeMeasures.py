@@ -1,8 +1,12 @@
-from itertools import zip_longest
 # Defining a time interval and how to calculate with it
+from itertools import zip_longest
+#6:2
+HOURS_IN_DAY = 24
+"""The day is broken up into 24 hours. """
+
 class TimeInterval:
     """Used for the lenght of a month, year, etc."""
-    parts_in_hour = 1   # As a class variable, could conceviably be set to any value.
+    parts_in_hour = 1   # A class variable. Could conceviably be set to any value.
 
     def __init__(self, days=0, hours=0, parts=0, *, parts_in_hour=None):
         if parts_in_hour:   # 0 would cause a division by zero, so rule that out too.
@@ -14,9 +18,6 @@ class TimeInterval:
 
     def reduce(self):
         """Reduces the number of parts to less than an hour and the hours to less than 24, adding the whole hours and whole days. Converts fractional parts of days and hours to hours and parts. Does not affect the whole day count."""
-        #6:2
-        HOURS_IN_DAY = 24
-        """The day is broken up into 24 hours. """
         #6:9
         # Convert fractional days into hours
         self.hours += (self.days % 1) * HOURS_IN_DAY
