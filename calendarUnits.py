@@ -160,9 +160,8 @@ class Year:
         else:   #On a leap year:
             yearType[{4: 'lacking', 5: 'orderly', 6: 'full'}[daysBetween]] = True
         # (8:6) The months of Marheshvan and Kislev are variable.
-        # Tishrei is month 0 
         if yearType['lacking']:
-            self.my_whole_months[2] = False
+            self.my_whole_months[2] = False     # Tishrei is month 0 
         if yearType['full']:
             self.my_whole_months[1] = True
         return self.my_whole_months
