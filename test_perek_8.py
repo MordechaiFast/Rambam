@@ -42,7 +42,7 @@ def test_variable_months():
                 assert Month(thisYear, 9).two_day_Rosh_Chodesh()
                 assert Month(thisYear, 10).two_day_Rosh_Chodesh()        
 def test_check_rules():
-    # 8:9
+    # 8:10
     for i in range(1, 100):
         thisYear = Year(i)
         if thisYear.Rosh_Hashana() == 3:

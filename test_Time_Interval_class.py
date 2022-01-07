@@ -20,31 +20,6 @@ def test_negetive_result():
     assert BHRD - (7, 5, 204) == (-5,)
     assert BHRD - (7, 6) == (-6, 23, 204)
 
-""" def test_index_retreval():
-    assert BHRD[0] == 2
-    assert BHRD[1] == 5
-    assert BHRD[2] == 204
-    #assert BHRD['days'] == 2
-    #assert BHRD['hours'] == 5
-    #assert BHRD['chalakim'] == 204 """
-"""def test_index_setting():
-    newExample = TimeInterval()
-    newExample[0] = 1
-    newExample[1] = 2
-    newExample[2] = 3
-    assert newExample[0] == 1
-    assert newExample[1] == 2
-    assert newExample[2] == 3
-    newExample['days'] = 4
-    newExample['hours'] = 5
-    newExample['chalakim'] = 6
-    assert newExample.days == 4
-    assert newExample.hours == 5
-    assert newExample.chalakim == 6"""
-""" def test_index_out_of_bounds():
-    try: assert BHRD[3]
-    except IndexError : pass """
-
 def test_non_tuple_comparison():
     try: assert BHRD == 2
     except TypeError: pass 

@@ -79,10 +79,15 @@ class TimeInterval:
     def __add__(self, addend):
         return type(self)(*[x + y
          for x, y in zip_longest(self, addend, fillvalue= 0)])
+    def __radd__(self, addend):
+        return type(self)(*[x + y
+         for x, y in zip_longest(addend, self, fillvalue= 0)])
     def __sub__(self, subtrahend):
         return type(self)(*[x - y 
          for x, y in zip_longest(self, subtrahend, fillvalue= 0)])
     def __mul__(self, factor):
+        return type(self)(*[x * factor for x in self])
+    def __rmul__(self, factor):
         return type(self)(*[x * factor for x in self])
     def __floordiv__(self, divisor):
         return type(self)(*[x / divisor for x in self])
