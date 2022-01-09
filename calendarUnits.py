@@ -40,8 +40,6 @@ class Year:
         self.yearsFromCreation = startYear - 1 + count
         """The number of years from year 1 = the year of BHRD"""
         # E.g. if the starting year is 2 (the year of Man's creation) and the year is 1, then it is two years in the count from the creation year.
-        self.molad = None
-        """The molad of the begning of this year"""
         # Always calculate the molad of the year. This is needed for everyhting else.
         self.calc_molad()
         self.day = None
@@ -52,7 +50,6 @@ class Year:
         """Those months that are whole in this year. True == whole"""
 
     def calc_molad(self):
-        if self.molad is not None: return
         # 6:14
         # 1) Take the number of years from the year of creation.
         # 2) Divide that into cycles. We now know the number of cycles and the year within the current cycle.
@@ -67,6 +64,7 @@ class Year:
     
         # 3) Add together the full cycles
         self.molad =  CYCLE_REMAINDER * self.cyclesToYear + BHRD
+        """The molad of the begning of this year"""
         
         # 4) Add the regular years and the leap years
         # The given year does not get its length added to the total time. This is accomplished by the range function; the place in cycle is out of the range.
@@ -226,11 +224,11 @@ class Month:
         """Returns out the date of Rosh Chodesh for the month, in days from the Shabbos before BHRD."""
         if self.my_date is not None: return self.my_date
         # Start with the first month: Rosh Chodesh Tishrei is Rosh Hashana. 
-        self.my_date = self.year.date
+        self.my_date = self.year.date()
         for monthIsWhole in self.year.whole_months()[:self.monthCount]:
             self.my_date += WHOLE_MONTH if monthIsWhole else SHORT_MONTH
         return self.my_date
     
     def day_of_week(self) -> int:
         """Calculates the day of the week of Rosh Chodesh of this month."""
-        return self.date % 7 if self.date % 7 != 0 else 7
+        return self.date() % 7 if self.date() % 7 != 0 else 7
