@@ -1,5 +1,5 @@
 from timeMeasures import *
-BHRD = TimeInterval(2,5,204)
+BHRD = TimeInterval(2,5,204, parts_in_hour=1080)
 
 def test_fractions():
     assert TimeInterval(1.25) == (1,6)
@@ -45,6 +45,7 @@ def test_ge():
     assert     BHRD >= (2, 5, 203)
     assert not BHRD >= (2, 5, 205)
 def test_lt():
+    assert     BHRD < (2, 6, 200)
     assert     BHRD < (2, 5, 205)
     assert not BHRD < (2, 5, 204)
     assert not BHRD < (2, 5, 203)

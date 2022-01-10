@@ -42,9 +42,23 @@ class TimeInterval:
     def __iter__(self) -> int:
         yield from [self.days, self.hours, self.parts]
 
-    # String function
+    # String functions
     def __str__(self) -> str:
-        return f"{self.days} {self.hours:>2} {self.parts:>4}"
+        return f"{self.days} {self.hours:2} {self.parts:4}"
+    def __repr__(self) -> str:
+        return f"TI{{{self.days};{self.hours},{self.parts}:{self.parts_in_hour}}}"
+    def __format__(self, __format_spec: str) -> str:
+        try: length = int(__format_spec)
+        except ValueError:
+            return str(self).format(__format_spec)
+        if length == 8:
+            if self.parts == 0:
+                return f"{self.days:2} {self.hours:2}  "
+            else:
+                fractional_hours = self.hours + self.parts/self.parts_in_hour
+                return f"{self.days:2} {fractional_hours:.2}"
+        else:
+            return str(self).format(__format_spec)
         
     # The following methods work unchanged in a four item subclass.
     # comparison functions
@@ -52,14 +66,14 @@ class TimeInterval:
         for x, y in zip_longest(self, other, fillvalue= 0):
             if x == y: continue
             else: return False
-        else: return True
+        return True
 
     def __gt__(self, other) -> bool:
         for x, y in zip_longest(self, other, fillvalue= 0):
             if   x >  y: return True
             elif x == y: continue
             else: return False
-        else: return False
+        return False
 
     def __ge__(self, other) -> bool:
         for x, y in zip_longest(self, other, fillvalue= 0):
@@ -73,7 +87,7 @@ class TimeInterval:
             if   x <  y: return True
             elif x == y: continue          
             else: return False
-        else: return False
+        return False
 
     # math functions
     def __add__(self, addend):
