@@ -48,17 +48,13 @@ class TimeInterval:
     def __repr__(self) -> str:
         return f"TI{{{self.days};{self.hours},{self.parts}:{self.parts_in_hour}}}"
     def __format__(self, __format_spec: str) -> str:
-        try: length = int(__format_spec)
-        except ValueError:
-            return str(self).format(__format_spec)
-        if length == 8:
+        if 'f' in __format_spec:
             if self.parts == 0:
                 return f"{self.days:2} {self.hours:2}  "
             else:
-                fractional_hours = self.hours + self.parts/self.parts_in_hour
-                return f"{self.days:2} {fractional_hours:.2}"
+                return f"{self.days:2} {self.hours + self.parts/self.parts_in_hour:4.3}"
         else:
-            return str(self).format(__format_spec)
+            return f"{self!s:{__format_spec}}"
         
     # The following methods work unchanged in a four item subclass.
     # comparison functions
@@ -147,4 +143,4 @@ class FineTimeInterval(TimeInterval):
 
     # String function
     def __str__(self) -> str:
-        return f"{self.days} {self.hours:>2} {self.parts:>4} {self.moments:>2}"
+        return f"{self.days} {self.hours:2} {self.parts:4} {self.moments:2}"
