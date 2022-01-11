@@ -1,7 +1,7 @@
 from calendarUnits import *
 
 RambamsYear = Year(4938)
-print("6:14 The year the Ramabam was writing was:", RambamsYear.yearsFromCreation)
+print("The year the Ramabam was writing was:", RambamsYear.yearsFromCreation)
 print("That was cycle", RambamsYear.cyclesToYear + 1, " year", RambamsYear.placeInCycle, "\n")
 
 def printMonthsOfYear (aYear: Year, printNextTishrei = False):
