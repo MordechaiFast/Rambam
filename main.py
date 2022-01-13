@@ -19,20 +19,28 @@ def index():
 
 def printMonthsOfYear (year, printNextTishrei = False):
     """Prints all of the months of the given year, with their names, molad, and days of Rosh Chodesh."""
-    return_string = "<font=mono>"
     aYear = Year(int(year))
-    return_string += "<p>The year " + str(aYear.yearsFromCreation) + " is cycle " + str(aYear.cyclesToYear + 1) + " year " + str(aYear.placeInCycle) + "</p><p></p>"
+    return_string = f"""<p>The year {aYear.yearsFromCreation} is cycle {
+        aYear.cyclesToYear + 1} year {aYear.placeInCycle}</p><p></p>"""
+    return_string += "<table>"
     for thisMonth in aYear:
         if thisMonth.two_day_Rosh_Chodesh():
             if thisMonth.day_of_week() == 1:
-                return_string += "<p>" + thisMonth.name + "<t>" + str(thisMonth.molad) + "<t>" + "7 1</p>"
+                return_string += f"""<tr><td>{thisMonth.name}</td>
+                <td>{thisMonth.molad}</td><td>7 1</td></tr>"""
             else:
-                return_string += "<p>" + thisMonth.name + "<t>" + str(thisMonth.molad) + "<t>" + str(thisMonth.day_of_week() - 1) + " " + str(thisMonth.day_of_week()) + "</p>"
+                return_string += f"""<tr><td>{thisMonth.name}</td>
+                <td>{thisMonth.molad}</td>
+                <td>{thisMonth.day_of_week() - 1} {thisMonth.day_of_week()}</td>
+                </tr>"""
         else:
-            return_string += "<p>" + thisMonth.name + "<t>" + str(thisMonth.molad) + "<t>" + str(thisMonth.day_of_week()) + "</p>"
+            return_string += f"""<tr><td>{thisMonth.name}</td>
+            <td>{thisMonth.molad}</td><td>{thisMonth.day_of_week()}</td></tr>"""
     if printNextTishrei:
         thisMonth = Month(aYear.yearAfter(), 7)
-        return_string += "<p>" + thisMonth.name + "<t>" + str(thisMonth.molad) + "<t>" + str(thisMonth.day_of_week()) + "</p>"
+        return_string += f"""<tr><td>{thisMonth.name}</td>
+        <td>{thisMonth.molad}</td><td>{thisMonth.day_of_week()}</td></tr>"""
+    return_string += "</table>"
     return return_string
 
 if __name__ == "__main__":
