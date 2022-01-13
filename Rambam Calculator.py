@@ -1,9 +1,5 @@
 from calendarUnits import *
 
-RambamsYear = Year(4938)
-print("The year the Ramabam was writing was:", RambamsYear.yearsFromCreation)
-print("That was cycle", RambamsYear.cyclesToYear + 1, " year", RambamsYear.placeInCycle, "\n")
-
 def printMonthsOfYear (aYear: Year, printNextTishrei = False):
     """Prints all of the months of the given year, with their names, molad, and days of Rosh Chodesh."""
 
@@ -19,4 +15,7 @@ def printMonthsOfYear (aYear: Year, printNextTishrei = False):
         thisMonth = Month(aYear.yearAfter(), 7)
         print(thisMonth.name, "\t", thisMonth.molad, "\t", thisMonth.day_of_week())
 
+RambamsYear = Year(4938)
+print("The year the Ramabam was writing was:", RambamsYear.yearsFromCreation)
+print("That was cycle", RambamsYear.cyclesToYear + 1, " year", RambamsYear.placeInCycle, "\n")
 printMonthsOfYear(RambamsYear)
