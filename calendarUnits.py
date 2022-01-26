@@ -72,6 +72,9 @@ class Year:
             if y in LEAP_YEARS: self.molad += LEAP_YEAR_REMAINDER
             else:               self.molad += LUNAR_YEAR_REMAINDER
 
+    def __repr__(self) -> str:
+        return f"Year {self.yearsFromCreation}"
+    
     def __iter__(self):
         yield from [Month(self, n, startFromTishrei=True) for n in range
          (12 if self.placeInCycle not in LEAP_YEARS else 13)]

@@ -52,7 +52,8 @@ class TimeInterval:
             if self.parts == 0:
                 return f"{self.days:2} {self.hours:2}  "
             else:
-                return f"{self.days:2} {self.hours + self.parts/self.parts_in_hour:4.3}"
+                return (f"{self.days:2} "
+                 f"{self.hours + self.parts/self.parts_in_hour:4.3}")
         else:
             return f"{self!s:{__format_spec}}"
         
@@ -114,6 +115,9 @@ class TimeInWeek (TimeInterval):
         # We want Shabbos to be appear as 7, even though its mod is 0.
         if self.days == 0 : self.days = 7
 
+    def __repr__(self) -> str:
+        return f"TiW{{{self.days};{self.hours},{self.parts}:{self.parts_in_hour}}}"
+
 class FineTimeInterval(TimeInterval):
     """A Time interval with divisons of less than a chailek. The precision is set by the defining division.
     
@@ -144,3 +148,7 @@ class FineTimeInterval(TimeInterval):
     # String function
     def __str__(self) -> str:
         return f"{self.days} {self.hours:2} {self.parts:4} {self.moments:2}"
+
+    def __repr__(self) -> str:
+        return (f"fTI{{{self.days};{self.hours},{self.parts}"
+         f":{self.parts_in_hour},{self.moments}:{self.moments_in_part}}}")

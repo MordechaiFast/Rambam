@@ -1,6 +1,7 @@
+#!/usr/bin/env python
 from calendarUnits import *
 
-def printMonthsOfYear (aYear: Year, printNextTishrei = False):
+def printMonthsOfYear(aYear: Year, printNextTishrei = False):
     """Prints all of the months of the given year, with their names, molad, and days of Rosh Chodesh."""
 
     for thisMonth in aYear:

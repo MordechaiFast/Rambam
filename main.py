@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 from flask import Flask
 from flask import request
 from calendarUnits import *
@@ -17,7 +18,7 @@ def index():
               </form>""" + table
 
 
-def printMonthsOfYear (year, printNextTishrei = False):
+def printMonthsOfYear (year, printNextTishrei=False):
     """Prints all of the months of the given year, with their names, molad, and days of Rosh Chodesh."""
     aYear = Year(int(year))
     return_string = f"""<p>The year {aYear.yearsFromCreation} is cycle {
@@ -27,19 +28,23 @@ def printMonthsOfYear (year, printNextTishrei = False):
         if thisMonth.two_day_Rosh_Chodesh():
             if thisMonth.day_of_week() == 1:
                 return_string += f"""<tr><td>{thisMonth.name}</td>
-                <td>{thisMonth.molad}</td><td>7 1</td></tr>"""
+                <td>{thisMonth.molad.days}</td><td>{thisMonth.molad.hours}</td>
+                <td>{thisMonth.molad.parts}</td><td>7 1</td></tr>"""
             else:
                 return_string += f"""<tr><td>{thisMonth.name}</td>
-                <td>{thisMonth.molad}</td>
+                <td>{thisMonth.molad.days}</td><td>{thisMonth.molad.hours}</td>
+                <td>{thisMonth.molad.parts}</td>
                 <td>{thisMonth.day_of_week() - 1} {thisMonth.day_of_week()}</td>
                 </tr>"""
         else:
             return_string += f"""<tr><td>{thisMonth.name}</td>
-            <td>{thisMonth.molad}</td><td>{thisMonth.day_of_week()}</td></tr>"""
+            <td>{thisMonth.molad.days}</td><td>{thisMonth.molad.hours}</td>
+            <td>{thisMonth.molad.parts}</td><td>{thisMonth.day_of_week()}</td></tr>"""
     if printNextTishrei:
         thisMonth = Month(aYear.yearAfter(), 7)
         return_string += f"""<tr><td>{thisMonth.name}</td>
-        <td>{thisMonth.molad}</td><td>{thisMonth.day_of_week()}</td></tr>"""
+        <td>{thisMonth.molad.days}</td><td>{thisMonth.molad.hours}</td>
+        <td>{thisMonth.molad.parts}</td><td>{thisMonth.day_of_week()}</td></tr>"""
     return_string += "</table>"
     return return_string
 
