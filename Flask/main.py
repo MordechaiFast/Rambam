@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 from flask import Flask
 from flask import request
-from calendarUnits import *
+import sys; sys.path.append('../Rambam/')
+from classes.calendarUnits import *
 
 app = Flask(__name__)
 
@@ -29,22 +30,25 @@ def printMonthsOfYear (year, printNextTishrei=False):
             if thisMonth.day_of_week() == 1:
                 return_string += f"""<tr><td>{thisMonth.name}</td>
                 <td>{thisMonth.molad.days}</td><td>{thisMonth.molad.hours}</td>
-                <td>{thisMonth.molad.parts}</td><td>7 1</td></tr>"""
+                <td>{thisMonth.molad.parts}</td><td></td>
+                <td>7 1</td></tr>"""
             else:
                 return_string += f"""<tr><td>{thisMonth.name}</td>
                 <td>{thisMonth.molad.days}</td><td>{thisMonth.molad.hours}</td>
-                <td>{thisMonth.molad.parts}</td>
+                <td>{thisMonth.molad.parts}</td><td></td>
                 <td>{thisMonth.day_of_week() - 1} {thisMonth.day_of_week()}</td>
                 </tr>"""
         else:
             return_string += f"""<tr><td>{thisMonth.name}</td>
             <td>{thisMonth.molad.days}</td><td>{thisMonth.molad.hours}</td>
-            <td>{thisMonth.molad.parts}</td><td>{thisMonth.day_of_week()}</td></tr>"""
+            <td>{thisMonth.molad.parts}</td></td><td>
+            <td>{thisMonth.day_of_week()}</td></tr>"""
     if printNextTishrei:
         thisMonth = Month(aYear.yearAfter(), 7)
         return_string += f"""<tr><td>{thisMonth.name}</td>
         <td>{thisMonth.molad.days}</td><td>{thisMonth.molad.hours}</td>
-        <td>{thisMonth.molad.parts}</td><td>{thisMonth.day_of_week()}</td></tr>"""
+        <td>{thisMonth.molad.parts}</td></td><td>
+        <td>{thisMonth.day_of_week()}</td></tr>"""
     return_string += "</table>"
     return return_string
 
