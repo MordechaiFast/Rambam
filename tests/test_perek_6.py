@@ -1,5 +1,5 @@
-from calendarUnits import *
-from season import *
+from classes.calendarUnits import *
+from classes.season import *
 
 def test_lengths():
     # Test values in 6:2

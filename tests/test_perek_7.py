@@ -1,4 +1,4 @@
-from calendarUnits import *
+from classes.calendarUnits import *
 def test_GTRD_and_BTUTKPT():
     assert GTRD == (3, 9, 204)
     assert BTU_TKPT == (2, 15, 589)

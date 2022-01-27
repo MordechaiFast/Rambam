@@ -1,4 +1,4 @@
-from timeMeasures import *
+from classes.timeMeasures import TimeInterval
 BHRD = TimeInterval(2,5,204, parts_in_hour=1080)
 
 def test_fractions():
@@ -53,7 +53,7 @@ def test_lt():
 def test_subtraction():
     assert BHRD - (1, 2, 3) == (1, 3, 201)
 
-from calendarUnits import Year
+from classes.calendarUnits import Year
 def test_negetive_year():
     assert Year(0 ).molad == (3, 7, 695)
     assert Year(-1).molad == (5, 22, 899)

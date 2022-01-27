@@ -1,4 +1,4 @@
-from timeMeasures import TimeInWeek, TimeInterval
+from classes.timeMeasures import TimeInWeek, TimeInterval
 
 # Constants
 CHALAKIM_IN_HOUR = 1080

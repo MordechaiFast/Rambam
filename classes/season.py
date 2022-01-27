@@ -1,4 +1,4 @@
-from calendarUnits import *
+from classes.calendarUnits import *
 
 #9:1
 SOLAR_YEAR = TimeInterval(365.25)
