@@ -46,7 +46,8 @@ class TimeInterval:
     def __str__(self) -> str:
         return f"{self.days} {self.hours:2} {self.parts:4}"
     def __repr__(self) -> str:
-        return f"TI{{{self.days};{self.hours},{self.parts}:{self.parts_in_hour}}}"
+        return f"""{self.__class__.__name__}({self.days};{self.hours},
+        {self.parts}:{self.parts_in_hour})"""
     def __format__(self, __format_spec: str) -> str:
         if 'f' in __format_spec:
             if self.parts == 0:
@@ -115,9 +116,6 @@ class TimeInWeek (TimeInterval):
         # We want Shabbos to be appear as 7, even though its mod is 0.
         if self.days == 0 : self.days = 7
 
-    def __repr__(self) -> str:
-        return f"TiW{{{self.days};{self.hours},{self.parts}:{self.parts_in_hour}}}"
-
 class FineTimeInterval(TimeInterval):
     """A Time interval with divisons of less than a chailek. The precision is set by the defining division.
     
@@ -150,5 +148,5 @@ class FineTimeInterval(TimeInterval):
         return f"{self.days} {self.hours:2} {self.parts:4} {self.moments:2}"
 
     def __repr__(self) -> str:
-        return (f"fTI{{{self.days};{self.hours},{self.parts}"
-         f":{self.parts_in_hour},{self.moments}:{self.moments_in_part}}}")
+        return (f"{self.__class__.__name__}({self.days};{self.hours},{self.parts}"
+         f":{self.parts_in_hour},{self.moments}:{self.moments_in_part})")
