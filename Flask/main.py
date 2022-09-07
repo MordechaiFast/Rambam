@@ -22,12 +22,13 @@ def index():
 def printMonthsOfYear (year, printNextTishrei=False):
     """Prints all of the months of the given year, with their names, molad, and days of Rosh Chodesh."""
     aYear = Year(int(year))
-    return_string = f"""<p>The year {aYear.yearsFromCreation} is cycle {
-        aYear.cyclesToYear + 1} year {aYear.placeInCycle}</p><p></p>"""
+    return_string = f"""<p>The year {aYear.years_from_creation} is cycle {
+        aYear.cycles_to_year + 1} year {aYear.place_in_cycle}</p><p></p>"""
     return_string += "<table>"
     for thisMonth in aYear:
-        if thisMonth.two_day_Rosh_Chodesh():
-            if thisMonth.day_of_week() == 1:
+        Rosh_Chodesh = Day(thisMonth)
+        if thisMonth.two_day_Rosh_Chodesh:
+            if thisMonth.day_of_week == 1:
                 return_string += f"""<tr><td>{thisMonth.name}</td>
                 <td>{thisMonth.molad.days}</td><td>{thisMonth.molad.hours}</td>
                 <td>{thisMonth.molad.parts}</td><td></td>
@@ -36,19 +37,19 @@ def printMonthsOfYear (year, printNextTishrei=False):
                 return_string += f"""<tr><td>{thisMonth.name}</td>
                 <td>{thisMonth.molad.days}</td><td>{thisMonth.molad.hours}</td>
                 <td>{thisMonth.molad.parts}</td><td></td>
-                <td>{thisMonth.day_of_week() - 1} {thisMonth.day_of_week()}</td>
+                <td>{Rosh_Chodesh.day_of_week - 1} {Rosh_Chodesh.day_of_week}</td>
                 </tr>"""
         else:
             return_string += f"""<tr><td>{thisMonth.name}</td>
             <td>{thisMonth.molad.days}</td><td>{thisMonth.molad.hours}</td>
             <td>{thisMonth.molad.parts}</td></td><td>
-            <td>{thisMonth.day_of_week()}</td></tr>"""
+            <td>{Rosh_Chodesh.day_of_week}</td></tr>"""
     if printNextTishrei:
-        thisMonth = Month(aYear.yearAfter(), 7)
+        thisMonth = Month(aYear.year_after, 7)
         return_string += f"""<tr><td>{thisMonth.name}</td>
         <td>{thisMonth.molad.days}</td><td>{thisMonth.molad.hours}</td>
         <td>{thisMonth.molad.parts}</td></td><td>
-        <td>{thisMonth.day_of_week()}</td></tr>"""
+        <td>{Rosh_Chodesh.day_of_week}</td></tr>"""
     return_string += "</table>"
     return return_string
 

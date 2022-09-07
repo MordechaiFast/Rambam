@@ -1,4 +1,4 @@
-# Defining a time interval and how to calculate with it
+"""Defining a time interval and how to calculate with it"""
 from itertools import zip_longest
 #6:2
 HOURS_IN_DAY = 24
@@ -6,10 +6,12 @@ HOURS_IN_DAY = 24
 
 class TimeInterval:
     """Used for the lenght of a month, year, etc."""
-    parts_in_hour = 1   # A class variable. Could conceviably be set to any value.
+    parts_in_hour = 1   
+    # A class variable. Could conceviably be set to any value.
 
     def __init__(self, days=0, hours=0, parts=0, *, parts_in_hour=None):
-        if parts_in_hour:   # 0 would cause a division by zero, so rule that out too.
+        if parts_in_hour:   
+        # 0 would cause a division by zero, so rule that out too.
             TimeInterval.parts_in_hour = parts_in_hour
         self.days = days
         self.hours = hours
@@ -17,7 +19,12 @@ class TimeInterval:
         self.reduce()
 
     def reduce(self):
-        """Reduces the number of parts to less than an hour and the hours to less than 24, adding the whole hours and whole days. Converts fractional parts of days and hours to hours and parts. Does not affect the whole day count."""
+        """Reduce the number of parts to less than an hour, etc.
+        
+        Reduces the number of parts to less than an hour and the hours 
+        to less than 24, adding the whole hours and whole days. Converts 
+        fractional parts of days and hours to hours and parts. Does not 
+        affect the whole day count."""
         #6:9
         # Convert fractional days into hours
         self.hours += (self.days % 1) * HOURS_IN_DAY
@@ -27,7 +34,8 @@ class TimeInterval:
         self.hours = int(self.hours // 1)
         # Set the parts
         self.reduce_parts()
-        # Carry the whole hours, then round the remaining parts. (This also works for negetive inputs.)
+        # Carry the whole hours, then round the remaining parts.
+        # (This also works for negetive inputs.)
         self.hours += self.parts // TimeInterval.parts_in_hour
         self.parts %= TimeInterval.parts_in_hour        
         # Carry the whole days, then round the remaining hours.
@@ -35,7 +43,8 @@ class TimeInterval:
         self.hours %= HOURS_IN_DAY
 
     def reduce_parts(self):
-        # Fractional parts will be ignored untill the subclass FineTimeInterval
+        # Fractional parts will be ignored
+        # untill the subclass FineTimeInterval
         self.parts = int(self.parts // 1)
 
     # Iteration function
@@ -46,45 +55,50 @@ class TimeInterval:
     def __str__(self) -> str:
         return f"{self.days} {self.hours:2} {self.parts:4}"
     def __repr__(self) -> str:
-        return f"""{self.__class__.__name__}({self.days};{self.hours},
-        {self.parts}:{self.parts_in_hour})"""
-    def __format__(self, __format_spec: str) -> str:
-        if 'f' in __format_spec:
-            if self.parts == 0:
-                return f"{self.days:2} {self.hours:2}  "
-            else:
-                return (f"{self.days:2} "
-                 f"{self.hours + self.parts/self.parts_in_hour:4.3}")
-        else:
-            return f"{self!s:{__format_spec}}"
+        return (f"{self.__class__.__name__}({self.days}, {self.hours}, "
+        f"{self.parts}, parts_in_hour={self.parts_in_hour})")
         
     # The following methods work unchanged in a four item subclass.
     # comparison functions
     def __eq__(self, other) -> bool:
         for x, y in zip_longest(self, other, fillvalue= 0):
-            if x == y: continue
-            else: return False
+            if x == y:
+                continue
+            else:
+                return False
         return True
 
     def __gt__(self, other) -> bool:
         for x, y in zip_longest(self, other, fillvalue= 0):
-            if   x >  y: return True
-            elif x == y: continue
-            else: return False
+            if   x >  y:
+                return True
+            elif x == y:
+                continue
+            else: # x < y
+                return False
+        # if x == y for all
         return False
 
     def __ge__(self, other) -> bool:
         for x, y in zip_longest(self, other, fillvalue= 0):
-            if   x >  y: return True
-            elif x == y: continue            
-            else: return False
+            if   x >  y:
+                return True
+            elif x == y:
+                continue            
+            else: # x < y
+                return False
+        # if x == y for all
         return True
 
     def __lt__(self, other) -> bool:
         for x, y in zip_longest(self, other, fillvalue= 0):
-            if   x <  y: return True
-            elif x == y: continue          
-            else: return False
+            if   x <  y:
+                return True
+            elif x == y:
+                continue          
+            else: # x > y
+                return False
+        # if x == y for all
         return False
 
     # math functions
@@ -114,17 +128,22 @@ class TimeInWeek (TimeInterval):
         super().reduce()
         self.days %= 7
         # We want Shabbos to be appear as 7, even though its mod is 0.
-        if self.days == 0 : self.days = 7
+        if self.days == 0:
+            self.days = 7
 
 class FineTimeInterval(TimeInterval):
-    """A Time interval with divisons of less than a chailek. The precision is set by the defining division.
+    """A Time interval with divisons of less than a chailek.
+    
+    The precision is set by the defining division.
     
     WARNING: Using two bases at once will cause errors."""
-    moments_in_part = 1    # A class variable shared by all active instences.
+    moments_in_part = 1    
+    # A class variable shared by all active instences.
     
     def __init__(self, days=0, hours=0, parts=0, moments=0, *,
      moments_in_part=None):
-        if moments_in_part: # 0 would cause a division by zero, so rule that out too.
+        if moments_in_part:
+        # 0 would cause a division by zero, so rule that out too.
             FineTimeInterval.moments_in_part = moments_in_part
         self.moments = moments
         super().__init__(days=days, hours=hours, parts=parts)
@@ -148,5 +167,9 @@ class FineTimeInterval(TimeInterval):
         return f"{self.days} {self.hours:2} {self.parts:4} {self.moments:2}"
 
     def __repr__(self) -> str:
-        return (f"{self.__class__.__name__}({self.days};{self.hours},{self.parts}"
-         f":{self.parts_in_hour},{self.moments}:{self.moments_in_part})")
+        return (f"{self.__class__.__name__}({self.days}, {self.hours}, "
+        f"{self.parts}, {self.moments}, moments_in_part="
+        f"{self.moments_in_part})")
+
+    def __truediv__(self, divisor):
+        raise TypeError(f"Not supported for {self.__class__.__name__}")

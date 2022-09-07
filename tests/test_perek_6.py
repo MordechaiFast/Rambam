@@ -52,9 +52,9 @@ def test_year():
 def test_month():
     # 6:15
     assert Month(Year(21), 7).molad == (2, 6, 595)
-    assert Month(Year(21), 0, startFromTishrei= True).molad == (2, 6, 595)
+    assert Month(Year(21), 0, start_from_Tishrei= True).molad == (2, 6, 595)
     assert Month(Year(21), 8).molad == (3, 19, 308)
     # Calculate Nissan
-    assert Month(Year(21), 1, startFromTishrei= False).molad == (4, 10, 1033)
+    assert Month(Year(21), 1, start_from_Tishrei= False).molad == (4, 10, 1033)
     # Nissan in a leap year
-    assert Month(Year(22), 1, startFromTishrei= False).molad == (3, 8, 542)
+    assert Month(Year(22), 1, start_from_Tishrei= False).molad == (3, 8, 542)
