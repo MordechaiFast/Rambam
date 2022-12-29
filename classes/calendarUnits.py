@@ -1,3 +1,4 @@
+from functools import cache
 from classes.timeMeasures import TimeInWeek, TimeInterval
 
 # Constants
@@ -55,16 +56,7 @@ class Year:
         # and the year is 1, then it is two years in the count from the 
         # creation year.
         self._calc_molad()
-        # Always calculate the molad of the year. This is needed for 
-        # everyhting else.
-        self._Rosh_Hashana_day = None
-        """The day of the week of Rosh Hashanah of this year from 1-7"""
-        self._date = None
-        """The date of Rosh Hashanah of this year in days from Shabbos 
-        before BHRD"""
-        self._whole_months = None
-        """Those months that are whole in this year. True == whole"""
-
+        
     def _calc_molad(self):
         # 6:14
         # 1) Take the number of years from the year of creation.
@@ -80,7 +72,7 @@ class Year:
             self.place_in_cycle = CYCLE_YEARS
     
         # 3) Add together the full cycles
-        self.molad =  CYCLE_REMAINDER * self.cycles_to_year + BHRD
+        self.molad = CYCLE_REMAINDER * self.cycles_to_year + BHRD
         """The molad of the begning of this year"""
         
         # 4) Add the regular years and the leap years
@@ -92,41 +84,44 @@ class Year:
 
     def __repr__(self) -> str:
         return f"Year({self.years_from_creation})"
+    def __str__(self) -> str:
+        return str(self.years_from_creation)
     
+    @cache
     def __iter__(self):
         yield from [Month(self, n, start_from_Tishrei=True) for n in range
          (12 if self.place_in_cycle not in LEAP_YEARS else 13)]
     
     @property
+    @cache
     def year_after(self):
         """Generates the next year after this one."""
         return Year(self.years_from_creation + 1)
         
     @property
+    @cache
     def Rosh_Hashana(self) -> int:
         """Returns the day of the week of Rosh Hashana of this year."""
-        if self._Rosh_Hashana_day is not None:
-            return self._Rosh_Hashana_day
         #7:1
         # The day of Rosh Chodesh Tishrei (Rosh Hashanah) is never set 
         # to days 1, 4, or 6, according to the set calandar. When the 
         # molad would have it so, Rosh Chodesh is set to the next day.   
         if self.molad.days in ADU:
-            self._Rosh_Hashana_day = self.molad.days + 1
+            Rosh_Hashana_day = self.molad.days + 1
         #7:2
         # If the molad is after noon, Rosh Chodesh is set to the next 
         # day, if the next day is not 1, 4 or 6.
         elif self.molad.hours >= 18:
             if self.molad.days % 7 + 1 not in ADU:
             # mod needed in case day is 7, to set it to 0
-                self._Rosh_Hashana_day = self.molad.days + 1
+                Rosh_Hashana_day = self.molad.days + 1
                 # We know that the day is not 7, so no need to mod.     
         #7:3
         # If the molad is after noon and the next day is 1, 4, or 6, 
         # Rosh Chodesh is two days after the molad.
             elif self.molad.days % 7 + 1 in ADU:
             # Realy just else, but keeping to the Rambam text.
-                self._Rosh_Hashana_day = self.molad.days % 7 + 2
+                Rosh_Hashana_day = self.molad.days % 7 + 2
         #7:4 
         # GTRD - If the molad of Tishrei is on a day 3, and the molad 
         # is after 9 hours and 204 chalakim, and the year is not a leap 
@@ -135,7 +130,7 @@ class Year:
         elif (self.molad.days == 3
           and self.molad >= GTRD
           and self.place_in_cycle not in LEAP_YEARS):
-            self._Rosh_Hashana_day = self.molad.days + 2
+            Rosh_Hashana_day = self.molad.days + 2
         #7:5 
         # BTU TKPT - If the molad of Tishrei is on a day 2, and the 
         # molad is after 15 hours and 589 chalakim, and it is the year 
@@ -143,40 +138,39 @@ class Year:
         elif (self.molad.days == 2
           and self.molad >= BTU_TKPT
           and self.place_in_cycle - 1 in LEAP_YEARS):
-            self._Rosh_Hashana_day = self.molad.days + 1
+            Rosh_Hashana_day = self.molad.days + 1
         #7:6
         # If none of the cases applies, Rosh Hashana is on the day of 
         # the molad. 
         else:
-            self._Rosh_Hashana_day = self.molad.days
-        return self._Rosh_Hashana_day
+            Rosh_Hashana_day = self.molad.days
+        return Rosh_Hashana_day
 
     @property
+    @cache
     def date(self) -> int:
         """ Calculates the date of Rosh Hashana of this year in days from 
         the Shabbos before BHRD."""
-        if self._date is None:
-            objective_molad = CYCLE * self.cycles_to_year + BHRD
-            """The molad in days from Shabbos before BHRD"""
-            for y in range(1, self.place_in_cycle):
-                if y in LEAP_YEARS:
-                    objective_molad += LEAP_YEAR
-                else:
-                    objective_molad += LUNAR_YEAR
-            self._date = (objective_molad.days 
-            + self.Rosh_Hashana - self.molad.days % 7)
-        return self._date
+        objective_molad = CYCLE * self.cycles_to_year + BHRD
+        """The molad in days from Shabbos before BHRD"""
+        for y in range(1, self.place_in_cycle):
+            if y in LEAP_YEARS:
+                objective_molad += LEAP_YEAR
+            else:
+                objective_molad += LUNAR_YEAR
+        date = (objective_molad.days 
+                + self.Rosh_Hashana - self.molad.days % 7)
+        return date
     
     @property
+    @cache
     def whole_months(self) -> list:
         """Returns a list of the months in this year that are whole 
         (30 days), starting with Tishrei."""
-        if self._whole_months is not None:
-            return self._whole_months
         #8:3 
         # If the length of a month was exactly 29.5 days, the months 
         # would go one whole and one short.
-        self._whole_months = [True, False] * 6
+        whole_months = [True, False] * 6
         # (This list of whole months starts with Tishrei, and assumes 
         # that Marheshvan will be lacking and Kislev will be full.)
         # Since the length of a lunar month is not exactly 29 1/2 days, 
@@ -189,7 +183,7 @@ class Year:
         # Tishrei 30, Teves 29, Shevat 30, Addar (II) 29. In a leap 
         # year Addar I is a full month.
         if self.place_in_cycle in LEAP_YEARS:
-            self._whole_months.insert(5, True)
+            whole_months.insert(5, True)
         #8:6
         # Determinimg the type of year for setting the days of Rosh 
         # Chodesh of the different months.
@@ -210,10 +204,10 @@ class Year:
                     )[days_between]
         # (8:6) The months of Marheshvan and Kislev are variable.
         if   year_type == 'lacking':
-            self._whole_months[2] = False     # Tishrei is month 0 
+            whole_months[2] = False     # Tishrei is month 0 
         elif year_type == 'full':
-            self._whole_months[1] = True
-        return self._whole_months
+            whole_months[1] = True
+        return whole_months
 
 MONTH_NAMES = ["Tishrei", "Marchesvan", "Kislev", "Teves", "Shevat", "Addar",
 "Nissan", "Iyyar", "Sivan", "Tamuz", "Av", "Elul"]
@@ -230,7 +224,7 @@ class Month:
     Holds the year that the month is in, 
     the month's name, 
     the molad of that month, 
-    and the date and day of the week Rosh Chodesh."""
+    and the date of Rosh Chodesh."""
     
     def __init__(self, year: Year, month_reference: int, *,
      start_from_Tishrei=False) -> None:
@@ -259,10 +253,7 @@ class Month:
                 if   year.place_in_cycle not in LEAP_YEARS
                 else MONTH_NAMES_IN_LEAP_YEAR[self.month_count])
         """The name of the month"""
-        # Don't calculate the date untill asked
-        self._date = None
-        """The date of Rosh Chodesh of this month"""
-    
+        
         #6:15
         # To find the molad of a specific month, add the molad of a 
         # month for each month until the requiered month.
@@ -270,11 +261,16 @@ class Month:
         """The molad of this month"""
 
     def __str__(self) -> str:
-        return f"{self.name} {self.year.years_from_creation}"
+        return f"{self.name} {self.year}"
+
+    def __iter__(self):
+        yield from [Day(self, n) for n in range(1, 
+         (WHOLE_MONTH if self.is_whole else SHORT_MONTH) +1)]
 
     @property
     def two_day_Rosh_Chodesh(self) -> bool:
-        """Returns the True if Rosh Chodesh of this month is two days, False if not."""
+        """Returns the True if Rosh Chodesh of this month is two days, 
+        False if not."""
         #8:4
         # For a month following a full month, Rosh Chodesh is two days.
         return self.year.whole_months[self.month_count-1]
@@ -286,37 +282,37 @@ class Month:
         return self.year.whole_months[self.month_count]
 
     @property
+    @cache
     def date(self) -> int:
-        """Returns out the date of Rosh Chodesh for the month, in days from the Shabbos before BHRD."""
-        if self._date is None:
-            # Start with the first month: Rosh Chodesh Tishrei is Rosh Hashana. 
-            self._date = self.year.date
-            for monthIsWhole in self.year.whole_months[:self.month_count]:
-                self._date += WHOLE_MONTH if monthIsWhole else SHORT_MONTH
-        return self._date
+        """Returns out the date of Rosh Chodesh for the month, in days 
+        from the Shabbos before BHRD."""
+        # Start with the first month: Rosh Chodesh Tishrei is Rosh Hashana. 
+        date = self.year.date
+        for whole in self.year.whole_months[:self.month_count]:
+            date += WHOLE_MONTH if whole else SHORT_MONTH
+        return date
 
     @property
+    @cache
     def month_after(self):
         """Generates the next month after this one."""
         if self.month_count < 11 or (
            self.year.place_in_cycle in LEAP_YEARS and self.month_count == 11):
-            return Month(self.year, self.month_count + 1)
+            return Month(self.year, self.month_count + 1, start_from_Tishrei=True)
         else: # must be last month of the year
             return Month(self.year.year_after, 7)
         
 class Day:
     def __init__(self, month: Month, day: int = 1) -> None:
+        """Automatically fixes dates past the end of the month."""
         self.month = month
         self.day = day
-    
+        while self.day > (days_in_month := 30 if self.month.is_whole else 29):
+            self.day -= days_in_month
+            self.month = self.month.month_after
+        
     def __add__(self, addend: int):
-        day = self.day + addend
-        month = Month(self.month.year, self.month.month_count,
-                      start_from_Tishrei=True)
-        while day > (days_in_month := 30 if month.is_whole else 29):
-            day -= days_in_month
-            month = month.month_after
-        return type(self)(month, day)
+        return type(self)(self.month, self.day + addend)
 
     @classmethod
     def from_date(cls, date: int):
@@ -327,18 +323,17 @@ class Day:
             year_count += CYCLE_YEARS
             d -= CYCLE
         for y in range(1, CYCLE_YEARS+1):
-            year_lenght = LEAP_YEAR if y in LEAP_YEARS else LUNAR_YEAR
-            if d > year_lenght:
+            year_length = LEAP_YEAR if y in LEAP_YEARS else LUNAR_YEAR
+            if d > year_length:
                 year_count += 1
-                d -= year_lenght
+                d -= year_length
             else:
                 break
         while d > LUNAR_MONTH:
             # Rosh Chodesh can never be eariler than the day of the molad
             month_count += 1
             d -= LUNAR_MONTH
-        month = Month(Year(year_count), month_count,
-                        start_from_Tishrei=True)
+        month = Month(Year(year_count), month_count, start_from_Tishrei=True)
         day = date - month.date+1
         if day < 1:
             # Rosh Chodeh is later than the molad this month,
@@ -356,7 +351,7 @@ class Day:
 
     @property
     def date(self) -> int:
-        return self.month.date-1 + self.day
+        return self.month.date + self.day-1
 
     @property
     def day_of_week(self) -> int:

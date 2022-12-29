@@ -25,5 +25,6 @@ RambamsYear = Year(4938)
 print("The year the Ramabam was writing was:", RambamsYear.years_from_creation)
 print("That was cycle", RambamsYear.cycles_to_year + 1, " year", RambamsYear.place_in_cycle, "\n")
 printMonthsOfYear(RambamsYear)
-
-printMonthsOfYear(Year(int(input('Year: '))))
+print()
+new_year = int(input('Year: '))
+printMonthsOfYear(Year(new_year))

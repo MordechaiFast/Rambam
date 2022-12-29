@@ -1,5 +1,7 @@
 """Defining a time interval and how to calculate with it"""
+
 from itertools import zip_longest
+
 #6:2
 HOURS_IN_DAY = 24
 """The day is broken up into 24 hours. """
@@ -51,6 +53,9 @@ class TimeInterval:
     def __iter__(self) -> int:
         yield from [self.days, self.hours, self.parts]
 
+    # Hash function
+    def __hash__(self) -> int:
+        return hash((self.days, self.hours, self.parts, self.parts_in_hour))
     # String functions
     def __str__(self) -> str:
         return f"{self.days} {self.hours:2} {self.parts:4}"
@@ -59,6 +64,10 @@ class TimeInterval:
         f"{self.parts}, parts_in_hour={self.parts_in_hour})")
         
     # The following methods work unchanged in a four item subclass.
+    # absolute value
+    def __abs__(self):
+        return self * -1 if self < type(self)(0) else self
+
     # comparison functions
     def __eq__(self, other) -> bool:
         for x, y in zip_longest(self, other, fillvalue= 0):
