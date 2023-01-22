@@ -57,7 +57,7 @@ class Degrees(TimeInterval):
         yield from self.parts
 
     def __truediv__(self, divisor):
-        if type(divisor) is type(self):
+        if isinstance(divisor, Degrees):
             numerator, denominator = 0, 0
             for a, b in zip_longest(
              [self.degrees, *self.parts], [divisor.degrees, *divisor.parts],

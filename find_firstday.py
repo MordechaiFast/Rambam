@@ -3,7 +3,8 @@ from classes.sighting import sighting
 
 
 p, n = 0, 0
-for y in range(5780, 5800):
+first_year, last_year = 5750, 5780
+for y in range(first_year, last_year):
     year = Year(y)
     #print(f'Year {year}: {year.molad}, {year.Rosh_Hashana}')
     for month in year:
@@ -17,4 +18,5 @@ for y in range(5780, 5800):
                 p += 1
     #        print(day.month.name, end=', ')
     #print()
-print(f'{p/n = }')
+print(f'{first_year = } {last_year = }')
+print(f'{p/n = }') 
