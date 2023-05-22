@@ -1,6 +1,6 @@
 from classes.calendarUnits import Year, Month, Day
 from classes.degrees import Degrees
-from classes.sighting import (solar_position, lunar_position, lunar_lattitude, 
+from sighting import (solar_position, lunar_position, lunar_lattitude, 
     distance, annalisys, sighting)
 from argparse import ArgumentParser
 

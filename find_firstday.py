@@ -1,5 +1,5 @@
 from classes.calendarUnits import Day, Month, Year
-from classes.sighting import sighting
+from sighting import sighting
 
 
 p, n = 0, 0

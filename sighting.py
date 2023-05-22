@@ -1,5 +1,5 @@
 from classes.calendarUnits import Year, Month, Day
-from classes.degrees import Degrees, DegreesOfCircle
+from classes.timeInterval import Degrees, Degrees3, DegreesOfCircle
 
 # 11:9
 signs = {
@@ -75,7 +75,7 @@ assert(solar_progresion_delta *354   == Degrees(348, 55,  9))
 
 # 12:2
 solar_hight_delta = DegreesOfCircle(0, 0, 15) /10/10
-assert(solar_hight_delta * 10    == Degrees(0, 0, 1, 30))
+assert(solar_hight_delta * 10    == Degrees3(0, 0, 1, 30))
 assert(solar_hight_delta * 100   == Degrees(0, 0, 15))
 assert(solar_hight_delta * 1000  == Degrees(0, 2, 30))
 assert(solar_hight_delta * 10000 == Degrees(0, 25))
@@ -176,9 +176,9 @@ def lunar_position(date: Day, verbose=False) -> DegreesOfCircle:
         round(signs['תאומים']): Degrees(0, 30),
         round(signs['אריה']): Degrees(0, 15),
         mid(signs['בתולה']): Degrees(),
-        mid(signs['מאזנים']): Degrees(0, 15) * -1,
-        round(signs['קשת']): Degrees(0, 30) * -1,
-        round(signs['דלי']): Degrees(0, 15) * -1,
+        mid(signs['מאזנים']): -Degrees(0, 15),
+        round(signs['קשת']): -Degrees(0, 30),
+        round(signs['דלי']): -Degrees(0, 15),
         mid(signs['דגים']): Degrees(),
         361: None
     }
@@ -292,7 +292,7 @@ def lunar_lattitude(date: Day, verbose=False) -> Degrees:
     headpoint = Degrees(360) - current_headpoint_progresion
     width_track = lunar_position(date) - headpoint
     width, interm_sign = tracking_correction(width_track, width_tracking)
-    direction = interm_sign * -1
+    direction = -interm_sign
     if verbose:
         print(result.format('headpoint progresion',
             str(current_headpoint_progresion)))

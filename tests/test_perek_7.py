@@ -88,4 +88,4 @@ def test_all_dechios():
                 wantedYears[14] = thisYear
     print()
     for thisYear in wantedYears:
-        print (f"Year {thisYear.yearsFromCreation:>2} Molad {thisYear.molad} Rosh Hashana {thisYear.Rosh_Hashana}")
+        print (f"Year {thisYear.years_from_creation:>2} Molad {thisYear.molad} Rosh Hashana {thisYear.Rosh_Hashana}")

@@ -64,10 +64,6 @@ class TimeInterval:
         f"{self.parts}, parts_in_hour={self.parts_in_hour})")
         
     # The following methods work unchanged in a four item subclass.
-    # absolute value
-    def __abs__(self):
-        return self * -1 if self < type(self)(0) else self
-
     # comparison functions
     def __eq__(self, other) -> bool:
         for x, y in zip_longest(self, other, fillvalue= 0):
@@ -89,15 +85,7 @@ class TimeInterval:
         return False
 
     def __ge__(self, other) -> bool:
-        for x, y in zip_longest(self, other, fillvalue= 0):
-            if   x >  y:
-                return True
-            elif x == y:
-                continue            
-            else: # x < y
-                return False
-        # if x == y for all
-        return True
+        return self > other or self == other
 
     def __lt__(self, other) -> bool:
         for x, y in zip_longest(self, other, fillvalue= 0):
@@ -129,6 +117,10 @@ class TimeInterval:
     def __truediv__(self, divisor):
         return FineTimeInterval(*[x / divisor for x in self],
          moments_in_part= divisor)
+    # absolute value
+    def __abs__(self):
+        return self * -1 if self < type(self)(0) else self
+
 
 class TimeInWeek (TimeInterval):
     """A time of week, or the offset of a time of week."""

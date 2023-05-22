@@ -1,10 +1,12 @@
 from functools import cache
-from classes.timeMeasures import TimeInWeek, TimeInterval
+from classes.timeInterval import TimeInWeek, TimeInterval
 
 # Constants
 CHALAKIM_IN_HOUR = 1080
-"""The hour is broken up into 1080 chalakim (parts). This is just a number that has many divisors."""
-LUNAR_MONTH = TimeInterval(29,12,793, parts_in_hour= CHALAKIM_IN_HOUR)
+"""The hour is broken up into 1080 chalakim (parts). This is just a number that 
+has many divisors."""
+LUNAR_MONTH = TimeInterval(29,12,793, 
+    units={'days': 7, 'hours': 24, 'parts': CHALAKIM_IN_HOUR})
 """The length of a month, (29, 12, 793)"""
 LUNAR_YEAR = LUNAR_MONTH * 12
 """The lenght of a lunar year of 12 months, (354, 8, 876)"""
@@ -50,16 +52,13 @@ class Year:
     list of whole months."""
 
     def __init__(self, count: int, start_year=1) -> None:
+        # 6:14
+        # 1) Take the number of years from the year of creation.
         self.years_from_creation = start_year - 1 + count
         """The number of years from year 1 = the year of BHRD"""
         # E.g. if the starting year is 2 (the year of Man's creation) 
         # and the year is 1, then it is two years in the count from the 
         # creation year.
-        self._calc_molad()
-        
-    def _calc_molad(self):
-        # 6:14
-        # 1) Take the number of years from the year of creation.
         # 2) Divide that into cycles. We now know the number of cycles 
         # and the year within the current cycle.
         self.cycles_to_year = self.years_from_creation // CYCLE_YEARS
@@ -248,11 +247,6 @@ class Month:
             else:
                 # Nissan is 6 months from Tishrei in a regular year.
                 self.month_count = month_reference + 5
-        # Find the month's name
-        self.name = (MONTH_NAMES[self.month_count]
-                if   year.place_in_cycle not in LEAP_YEARS
-                else MONTH_NAMES_IN_LEAP_YEAR[self.month_count])
-        """The name of the month"""
         
         #6:15
         # To find the molad of a specific month, add the molad of a 
@@ -265,8 +259,15 @@ class Month:
 
     def __iter__(self):
         yield from [Day(self, n) for n in range(1, 
-         (WHOLE_MONTH if self.is_whole else SHORT_MONTH) +1)]
+            (WHOLE_MONTH if self.is_whole else SHORT_MONTH) +1)]
 
+    @property
+    def name(self) -> str:
+        """The name of the month"""
+        return ( MONTH_NAMES[self.month_count]
+            if   self.year.place_in_cycle not in LEAP_YEARS
+            else MONTH_NAMES_IN_LEAP_YEAR[self.month_count])
+        
     @property
     def two_day_Rosh_Chodesh(self) -> bool:
         """Returns the True if Rosh Chodesh of this month is two days, 
