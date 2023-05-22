@@ -1,6 +1,4 @@
-# Calculating-programs
-
-(Should be called Rambam)
+# Rambam
 
 My first project, and my most intensive. This project actually needs to do something useful. Most of my projects are basically proof of concept for various python features.
 
